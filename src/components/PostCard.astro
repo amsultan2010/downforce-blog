@@ -212,3 +212,16 @@ const dateStr = date.toLocaleDateString('en-GB', {
     transform: translateX(4px);
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.post-card').forEach(card => {
+    card.style.transition = card.style.transition + ', transform 0.08s ease';
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const rx = ((e.clientY - r.top  - r.height / 2) / r.height *  7).toFixed(2);
+      const ry = ((e.clientX - r.left - r.width  / 2) / r.width  * -7).toFixed(2);
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+</script>

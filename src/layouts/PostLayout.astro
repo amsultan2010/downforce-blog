@@ -58,16 +58,16 @@ const schemaJson = JSON.stringify({
     <!-- Post header -->
     <header class="post-header">
       <div class="container post-header-inner">
-        <div class="post-meta-top">
+        <div class="post-meta-top ph-anim" style="--d:0s">
           {race && <span class="post-race">{race}</span>}
           <time datetime={date.toISOString()} class="post-date">{dateStr}</time>
         </div>
 
-        <h1 class="post-title">{title}</h1>
+        <h1 class="post-title ph-anim" style="--d:0.1s">{title}</h1>
 
-        <p class="post-excerpt">{excerpt}</p>
+        <p class="post-excerpt ph-anim" style="--d:0.2s">{excerpt}</p>
 
-        <ul class="post-tags" aria-label="Tags">
+        <ul class="post-tags ph-anim" style="--d:0.28s" aria-label="Tags">
           {tags.map(tag => (
             <li class="post-tag">{tag}</li>
           ))}
@@ -87,6 +87,17 @@ const schemaJson = JSON.stringify({
 <style>
   .post-wrapper {
     padding-top: 80px; /* header height */
+  }
+
+  .ph-anim {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(3px);
+    animation: phIn 0.6s cubic-bezier(0.22,1,0.36,1) var(--d, 0s) forwards;
+  }
+
+  @keyframes phIn {
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
   }
 
   .post-back {

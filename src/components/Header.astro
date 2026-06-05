@@ -55,7 +55,12 @@ const isActive = (href: string) =>
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    transition: border-color 0.2s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .site-header.scrolled {
+    border-bottom-color: var(--accent);
+    box-shadow: 0 1px 32px rgba(232, 74, 37, 0.12);
   }
 
   .header-inner {
@@ -63,6 +68,11 @@ const isActive = (href: string) =>
     align-items: center;
     justify-content: space-between;
     height: 56px;
+    transition: height 0.3s var(--ease-out-quint);
+  }
+
+  .site-header.scrolled .header-inner {
+    height: 48px;
   }
 
   .logo {
@@ -154,4 +164,9 @@ const isActive = (href: string) =>
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('df-theme', next);
   });
+
+  const header = document.querySelector('.site-header');
+  window.addEventListener('scroll', () => {
+    header?.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
 </script>

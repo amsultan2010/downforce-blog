@@ -228,10 +228,43 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── scroll reveal ─── */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.65s var(--ease-out-quint), transform 0.65s var(--ease-out-quint);
+  transform: translateY(28px);
+  filter: blur(4px);
+  transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint), filter 0.7s var(--ease-out-quint);
 }
 .reveal-on-scroll.revealed {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  filter: blur(4px);
+  transition: opacity 0.65s var(--ease-out-quint), transform 0.65s var(--ease-out-quint), filter 0.65s var(--ease-out-quint);
+}
+.reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
+}
+
+/* ─── reading progress bar ─── */
+#read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--amber));
+  z-index: 200;
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+
+/* ─── shimmer keyframe (used by cards) ─── */
+@keyframes shimmer {
+  from { transform: translateX(-100%) skewX(-12deg); }
+  to   { transform: translateX(220%) skewX(-12deg); }
 }

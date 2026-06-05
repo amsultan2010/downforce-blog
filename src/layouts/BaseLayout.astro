@@ -70,6 +70,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
 
   <body>
+    <div id="read-progress" aria-hidden="true"></div>
     {showLoader && <LoadingAnimation />}
     <Header />
 
@@ -82,18 +83,27 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 </html>
 
 <script>
-  // Scroll-reveal observer — attaches to any .reveal-on-scroll elements
-  const observer = new IntersectionObserver(
+  // Scroll-reveal observer
+  const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
+          revealObserver.unobserve(entry.target);
         }
       });
     },
     { threshold: 0.08 }
   );
+  document.querySelectorAll('.reveal-on-scroll, .reveal-left').forEach((el) => revealObserver.observe(el));
 
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el));
+  // Reading progress bar — only active on post pages
+  const bar = document.getElementById('read-progress');
+  if (bar && document.querySelector('.post-wrapper')) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = total > 0 ? `${Math.min((scrolled / total) * 100, 100)}%` : '0%';
+    }, { passive: true });
+  }
 </script>

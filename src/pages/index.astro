@@ -19,14 +19,14 @@ const [featuredPost, ...restPosts] = posts;
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-accent-line" aria-hidden="true"></div>
-      <h1 class="hero-title">the downforce<br />blog</h1>
-      <p class="hero-tagline">race analysis.<br class="mobile-break" /> actual opinions.</p>
-      <div class="hero-sub">
+      <h1 class="hero-title hero-anim" style="--d:0.05s">the downforce<br />blog</h1>
+      <p class="hero-tagline hero-anim" style="--d:0.2s">race analysis.<br class="mobile-break" /> actual opinions.</p>
+      <div class="hero-sub hero-anim" style="--d:0.32s">
         <span>formula one &amp; beyond</span>
         <span class="dot" aria-hidden="true">·</span>
         <span>no corporate hedging</span>
       </div>
-      <a href="#posts" class="hero-cta">read the latest →</a>
+      <a href="#posts" class="hero-cta hero-anim" style="--d:0.44s">read the latest →</a>
     </div>
     <div class="hero-scroll-hint" aria-hidden="true">
       <span>scroll</span>
@@ -77,17 +77,17 @@ const [featuredPost, ...restPosts] = posts;
         "this isn't a press release. it's a race report with a point of view."
       </p>
       <div class="editorial-pillars">
-        <div class="pillar">
+        <div class="pillar reveal-left" style="transition-delay:0s">
           <span class="pillar-icon">◆</span>
           <span class="pillar-label">race analysis</span>
           <span class="pillar-text">lap-by-lap breakdowns that go beyond the podium</span>
         </div>
-        <div class="pillar">
+        <div class="pillar reveal-left" style="transition-delay:0.1s">
           <span class="pillar-icon">◆</span>
           <span class="pillar-label">team dynamics</span>
           <span class="pillar-text">strategy calls, inter-team politics, and engineer decisions</span>
         </div>
-        <div class="pillar">
+        <div class="pillar reveal-left" style="transition-delay:0.2s">
           <span class="pillar-icon">◆</span>
           <span class="pillar-label">hot takes</span>
           <span class="pillar-text">opinions you won't find in the official press kits</span>
@@ -173,10 +173,26 @@ const [featuredPost, ...restPosts] = posts;
   }
 
   .hero-accent-line {
-    width: 40px;
+    width: 0;
     height: 3px;
     background: var(--accent);
     margin-bottom: 2rem;
+    animation: accentDraw 0.5s var(--ease-out-quint) 0.05s forwards;
+  }
+
+  @keyframes accentDraw {
+    to { width: 40px; }
+  }
+
+  .hero-anim {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(4px);
+    animation: heroIn 0.65s var(--ease-out-quint) var(--d, 0s) forwards;
+  }
+
+  @keyframes heroIn {
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
   }
 
   .hero-title {

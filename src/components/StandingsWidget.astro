@@ -4,33 +4,53 @@
 
 <section class="standings-section reveal-on-scroll" id="standings">
   <div class="container">
-    <div class="section-header">
-      <h2 class="section-label">2025 standings</h2>
-      <span class="standings-round" id="standings-round"></span>
+    <div class="standings-header">
+      <div class="standings-header-left">
+        <h2 class="standings-title">championship standings</h2>
+        <span class="standings-round" id="standings-round">loading…</span>
+      </div>
+      <div class="standings-live-dot" aria-label="Live data">
+        <span class="live-pulse"></span>
+        <span class="live-label">live</span>
+      </div>
     </div>
 
     <div class="standings-grid">
+      <!-- Drivers -->
       <div class="standings-panel">
-        <h3 class="standings-panel-title">drivers championship</h3>
+        <div class="panel-tab">
+          <span class="tab-label">drivers</span>
+          <span class="tab-line"></span>
+        </div>
         <ol class="standings-list" id="drivers-list" aria-label="Driver standings">
-          {Array.from({ length: 10 }).map(() => (
-            <li class="standings-row skeleton">
-              <span class="s-pos"></span>
-              <span class="s-name"></span>
-              <span class="s-pts"></span>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <li class="standings-row skeleton" style={`animation-delay: ${i * 0.06}s`}>
+              <span class="sk-pos"></span>
+              <span class="sk-body">
+                <span class="sk-name"></span>
+                <span class="sk-team"></span>
+              </span>
+              <span class="sk-pts"></span>
             </li>
           ))}
         </ol>
       </div>
 
+      <!-- Constructors -->
       <div class="standings-panel">
-        <h3 class="standings-panel-title">constructors championship</h3>
+        <div class="panel-tab">
+          <span class="tab-label">constructors</span>
+          <span class="tab-line"></span>
+        </div>
         <ol class="standings-list" id="constructors-list" aria-label="Constructor standings">
-          {Array.from({ length: 10 }).map(() => (
-            <li class="standings-row skeleton">
-              <span class="s-pos"></span>
-              <span class="s-name"></span>
-              <span class="s-pts"></span>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <li class="standings-row skeleton" style={`animation-delay: ${i * 0.06}s`}>
+              <span class="sk-pos"></span>
+              <span class="sk-body">
+                <span class="sk-name"></span>
+                <span class="sk-team"></span>
+              </span>
+              <span class="sk-pts"></span>
             </li>
           ))}
         </ol>
@@ -43,30 +63,113 @@
 
 <style>
   .standings-section {
-    padding: 4rem 0;
-    border-top: 1px solid var(--border);
+    background: var(--bg-dark);
+    padding: 4rem 0 4.5rem;
   }
 
+  /* ── header ── */
+  .standings-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    gap: 1rem;
+  }
+
+  .standings-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-light);
+    text-transform: lowercase;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .standings-round {
+    font-size: 0.9rem;
+    color: var(--text-light-muted);
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
+  .standings-live-dot {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding-top: 0.3rem;
+    flex-shrink: 0;
+  }
+
+  .live-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3ddc84;
+    display: block;
+    position: relative;
+  }
+
+  .live-pulse::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(61, 220, 132, 0.25);
+    animation: livePulse 2s ease-out infinite;
+  }
+
+  @keyframes livePulse {
+    0% { transform: scale(0.6); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  .live-label {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #3ddc84;
+  }
+
+  /* ── grid ── */
   .standings-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
+    gap: 3rem;
   }
 
-  @media (max-width: 720px) {
-    .standings-grid { grid-template-columns: 1fr; gap: 2rem; }
+  @media (max-width: 800px) {
+    .standings-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   }
 
-  .standings-panel-title {
+  /* ── panel tab ── */
+  .panel-tab {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tab-label {
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 0.8125rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
+    color: var(--text-light-muted);
+    white-space: nowrap;
   }
 
+  .tab-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(243, 237, 225, 0.1);
+  }
+
+  /* ── rows ── */
   .standings-list {
     display: flex;
     flex-direction: column;
@@ -74,137 +177,268 @@
 
   .standings-row {
     display: grid;
-    grid-template-columns: 2rem 1fr auto;
+    grid-template-columns: 2.5rem auto 1fr auto;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.9375rem;
-    transition: background 0.15s ease, padding 0.15s ease, margin 0.15s ease;
+    gap: 0;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(243, 237, 225, 0.06);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.2s ease;
   }
 
-  .standings-row:first-child { border-top: 1px solid var(--border); }
+  .standings-row:first-child {
+    border-top: 1px solid rgba(243, 237, 225, 0.06);
+  }
 
   .standings-row:hover {
-    background: var(--bg-card);
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    margin: 0 -0.5rem;
-    border-radius: var(--radius-sm);
+    background: rgba(243, 237, 225, 0.04);
   }
 
+  /* team color bar — populated by JS */
+  .standings-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--team-color, transparent);
+    opacity: 0.85;
+    transition: width 0.2s ease, opacity 0.2s ease;
+  }
+
+  .standings-row:hover::before {
+    width: 5px;
+    opacity: 1;
+  }
+
+  /* position */
   .s-pos {
     font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-muted);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: rgba(243, 237, 225, 0.25);
     text-align: center;
+    line-height: 1;
+    padding-left: 0.5rem;
   }
 
-  .standings-row:nth-child(1) .s-pos { color: var(--amber); }
-  .standings-row:nth-child(2) .s-pos,
-  .standings-row:nth-child(3) .s-pos { color: var(--text-muted); }
+  .standings-row[data-pos="1"] .s-pos { color: var(--amber); }
+  .standings-row[data-pos="2"] .s-pos { color: rgba(243, 237, 225, 0.6); }
+  .standings-row[data-pos="3"] .s-pos { color: #C27C28; }
 
-  .s-name {
+  /* team color swatch */
+  .s-swatch {
+    width: 4px;
+    align-self: stretch;
+    margin: 0.25rem 0.75rem 0.25rem 0.5rem;
+    border-radius: 2px;
+    background: var(--team-color, rgba(243,237,225,0.15));
+    flex-shrink: 0;
+    display: block;
+  }
+
+  /* name block */
+  .s-body {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0.15rem;
+    padding-right: 0.75rem;
+    min-width: 0;
   }
 
-  .driver-full {
-    font-weight: 500;
-    color: var(--text);
-    font-size: 0.9375rem;
+  .s-driver {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .driver-team {
+  .s-team {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--text-light-muted);
     font-weight: 300;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* points + bar */
+  .s-pts-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+    min-width: 4.5rem;
   }
 
   .s-pts {
     font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
+    font-size: 1.375rem;
+    font-weight: 800;
+    color: var(--text-light);
+    line-height: 1;
     white-space: nowrap;
-    text-align: right;
   }
 
   .pts-label {
     font-size: 0.6875rem;
     font-weight: 400;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
+    color: var(--text-light-muted);
+    letter-spacing: 0.06em;
     margin-left: 0.2rem;
     text-transform: uppercase;
   }
 
-  .skeleton .s-pos,
-  .skeleton .s-name,
-  .skeleton .s-pts {
-    background: var(--border);
-    border-radius: 3px;
-    animation: shimmer 1.4s ease-in-out infinite;
+  .s-bar-track {
+    width: 100%;
+    height: 2px;
+    background: rgba(243, 237, 225, 0.08);
+    border-radius: 1px;
+    overflow: hidden;
   }
 
-  .skeleton .s-pos { width: 1.5rem; height: 1rem; display: block; }
-  .skeleton .s-name { width: 8rem; height: 1.2rem; display: block; }
-  .skeleton .s-pts { width: 3rem; height: 1rem; display: block; }
+  .s-bar-fill {
+    height: 100%;
+    border-radius: 1px;
+    background: var(--team-color, rgba(243, 237, 225, 0.3));
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.8s var(--ease-out-quint);
+  }
+
+  /* ── skeleton ── */
+  .skeleton {
+    animation: skFade 0.5s ease both;
+  }
+
+  @keyframes skFade {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .sk-pos, .sk-body, .sk-name, .sk-team, .sk-pts {
+    display: block;
+    background: rgba(243, 237, 225, 0.08);
+    border-radius: 3px;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+
+  .sk-pos { width: 1.5rem; height: 1.5rem; margin: 0 auto; }
+  .sk-body { display: flex; flex-direction: column; gap: 0.35rem; padding: 0 0.75rem; }
+  .sk-name { width: 8rem; height: 1rem; }
+  .sk-team { width: 5rem; height: 0.7rem; }
+  .sk-pts { width: 3rem; height: 1.2rem; margin-left: auto; }
 
   @keyframes shimmer {
-    0%, 100% { opacity: 0.35; }
-    50% { opacity: 0.7; }
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.65; }
   }
 
-  .standings-round {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-    font-style: italic;
-  }
-
+  /* ── error ── */
   .standings-error {
-    font-size: 0.9375rem;
-    color: var(--text-muted);
+    font-size: 1rem;
+    color: var(--text-light-muted);
     font-style: italic;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
   }
 </style>
 
 <script>
   const BASE = 'https://api.jolpi.ca/ergast/f1';
 
+  const TEAM_COLORS: Record<string, string> = {
+    'McLaren':      '#FF8000',
+    'Red Bull':     '#3671C6',
+    'Ferrari':      '#E8002D',
+    'Mercedes':     '#27F4D2',
+    'Aston Martin': '#229971',
+    'Alpine':       '#FF87BC',
+    'Williams':     '#64C4FF',
+    'RB':           '#6692FF',
+    'Sauber':       '#52E252',
+    'Kick Sauber':  '#52E252',
+    'Haas':         '#B6BABD',
+    'Haas F1 Team': '#B6BABD',
+  };
+
+  function teamColor(name: string): string {
+    for (const [key, color] of Object.entries(TEAM_COLORS)) {
+      if (name.includes(key)) return color;
+    }
+    return 'rgba(243,237,225,0.3)';
+  }
+
+  function animateBars() {
+    document.querySelectorAll<HTMLElement>('.s-bar-fill').forEach(el => {
+      const w = el.dataset.width ?? '0';
+      el.style.transform = `scaleX(${w})`;
+    });
+  }
+
   function renderDrivers(standings: any[]) {
     const list = document.getElementById('drivers-list');
     if (!list) return;
-    list.innerHTML = standings.map((d: any) => `
-      <li class="standings-row">
-        <span class="s-pos">${d.position}</span>
-        <span class="s-name">
-          <span class="driver-full">${d.Driver.givenName} ${d.Driver.familyName}</span>
-          <span class="driver-team">${d.Constructors[0]?.name ?? ''}</span>
-        </span>
-        <span class="s-pts">${d.points}<span class="pts-label">pts</span></span>
-      </li>
-    `).join('');
+    const maxPts = parseFloat(standings[0]?.points ?? 1);
+    list.innerHTML = standings.map((d: any) => {
+      const color = teamColor(d.Constructors[0]?.name ?? '');
+      const pct = (parseFloat(d.points) / maxPts).toFixed(3);
+      const lastName = d.Driver.familyName.toUpperCase();
+      const firstName = d.Driver.givenName;
+      return `
+        <li class="standings-row" data-pos="${d.position}" style="--team-color:${color}">
+          <span class="s-pos">${d.position}</span>
+          <span class="s-swatch" style="background:${color}" aria-hidden="true"></span>
+          <span class="s-body">
+            <span class="s-driver">${firstName} <strong>${lastName}</strong></span>
+            <span class="s-team">${d.Constructors[0]?.name ?? ''}</span>
+          </span>
+          <span class="s-pts-block">
+            <span class="s-pts">${d.points}<span class="pts-label">pts</span></span>
+            <span class="s-bar-track">
+              <span class="s-bar-fill" data-width="${pct}" style="background:${color}"></span>
+            </span>
+          </span>
+        </li>
+      `;
+    }).join('');
+    requestAnimationFrame(() => requestAnimationFrame(animateBars));
   }
 
   function renderConstructors(standings: any[]) {
     const list = document.getElementById('constructors-list');
     if (!list) return;
-    list.innerHTML = standings.map((c: any) => `
-      <li class="standings-row">
-        <span class="s-pos">${c.position}</span>
-        <span class="s-name">
-          <span class="driver-full">${c.Constructor.name}</span>
-          <span class="driver-team">${c.Constructor.nationality}</span>
-        </span>
-        <span class="s-pts">${c.points}<span class="pts-label">pts</span></span>
-      </li>
-    `).join('');
+    const maxPts = parseFloat(standings[0]?.points ?? 1);
+    list.innerHTML = standings.map((c: any) => {
+      const color = teamColor(c.Constructor.name);
+      const pct = (parseFloat(c.points) / maxPts).toFixed(3);
+      return `
+        <li class="standings-row" data-pos="${c.position}" style="--team-color:${color}">
+          <span class="s-pos">${c.position}</span>
+          <span class="s-swatch" style="background:${color}" aria-hidden="true"></span>
+          <span class="s-body">
+            <span class="s-driver"><strong>${c.Constructor.name.toUpperCase()}</strong></span>
+            <span class="s-team">${c.Constructor.nationality}</span>
+          </span>
+          <span class="s-pts-block">
+            <span class="s-pts">${c.points}<span class="pts-label">pts</span></span>
+            <span class="s-bar-track">
+              <span class="s-bar-fill" data-width="${pct}" style="background:${color}"></span>
+            </span>
+          </span>
+        </li>
+      `;
+    }).join('');
+    requestAnimationFrame(() => requestAnimationFrame(animateBars));
   }
 
   async function loadStandings() {
@@ -223,7 +457,7 @@
 
       if (dList) {
         const roundEl = document.getElementById('standings-round');
-        if (roundEl) roundEl.textContent = `after round ${dList.round}`;
+        if (roundEl) roundEl.textContent = `after round ${dList.round} · ${dList.season} season`;
         renderDrivers(dList.DriverStandings.slice(0, 10));
       }
       if (cList) {

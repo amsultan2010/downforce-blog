@@ -34,25 +34,19 @@ const [featuredPost, ...restPosts] = posts;
     </div>
   </section>
 
-  <!-- Race photos strip -->
+  <!-- Race photos strip (2×2) -->
   <section class="photo-strip" aria-label="Race photography">
     <div class="photo-item">
-      <img
-        src="/images/race1.jpg"
-        alt="F1 cars battling through a corner"
-        loading="eager"
-        width="960"
-        height="540"
-      />
+      <img src="/images/race1.jpg" alt="F1 cars battling through a corner" loading="eager" width="960" height="540" />
     </div>
     <div class="photo-item">
-      <img
-        src="/images/race2.jpg"
-        alt="F1 cars racing under the lights"
-        loading="eager"
-        width="960"
-        height="540"
-      />
+      <img src="/images/race2.jpg" alt="F1 cars racing under the lights" loading="eager" width="960" height="540" />
+    </div>
+    <div class="photo-item">
+      <img src="/images/race3.jpg" alt="F1 action on track" loading="lazy" width="960" height="540" />
+    </div>
+    <div class="photo-item">
+      <img src="/images/race4.jpg" alt="F1 racing at speed" loading="lazy" width="960" height="540" />
     </div>
   </section>
 
@@ -242,15 +236,16 @@ const [featuredPost, ...restPosts] = posts;
   .photo-strip {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    height: 360px;
+    grid-template-rows: 1fr 1fr;
+    height: 560px;
   }
 
   @media (max-width: 600px) {
     .photo-strip {
-      grid-template-columns: 1fr;
-      height: auto;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      height: 340px;
     }
-    .photo-item { height: 220px; }
   }
 
   .photo-item {

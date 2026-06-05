@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="about"
+  description="about the downforce blog — race analysis with actual opinions"
+>
+  <div class="about-wrapper">
+    <div class="container">
+      <div class="about-header reveal-on-scroll">
+        <div class="about-accent-line" aria-hidden="true"></div>
+        <h1 class="about-title">about</h1>
+      </div>
+
+      <div class="about-body reveal-on-scroll">
+        <div class="about-bio">
+          <p class="bio-lead">
+            the downforce blog is a formula one analysis site built on the premise
+            that good sports writing should have a point of view.
+          </p>
+
+          <p>
+            we cover race weekends, technical regulation changes, driver moves, and the
+            long-arc narratives of the sport — with the goal of saying something
+            actually useful, not just describing what happened.
+          </p>
+
+          <p>
+            this isn't a news site. it doesn't break stories or chase paddock gossip.
+            what it does: takes the publicly available information and tries to make
+            sense of it, honestly, without the access-journalism hedging that turns
+            so much f1 coverage into corporate-approved summaries.
+          </p>
+
+          <p>
+            posts go up when there's something worth saying. that might be within
+            hours of a race, or a week later when the replay has been watched three
+            times and an argument has actually formed.
+          </p>
+        </div>
+
+        <aside class="about-details">
+          <div class="detail-block">
+            <h2 class="detail-label">what you'll find here</h2>
+            <ul class="detail-list">
+              <li>race reviews that actually say something</li>
+              <li>technical takes for non-engineers</li>
+              <li>opinion pieces on the sport's bigger questions</li>
+              <li>occasional off-season analysis</li>
+            </ul>
+          </div>
+
+          <div class="detail-block">
+            <h2 class="detail-label">stay updated</h2>
+            <ul class="detail-list">
+              <li>
+                <a href="/rss.xml" class="detail-link">rss feed →</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-wrapper {
+    padding-top: calc(56px + 4rem);
+    padding-bottom: 6rem;
+  }
+
+  .about-header {
+    margin-bottom: 3rem;
+  }
+
+  .about-accent-line {
+    width: 32px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--text);
+  }
+
+  .about-body {
+    display: grid;
+    grid-template-columns: 1fr minmax(200px, 280px);
+    gap: 5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .about-body {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .about-bio {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .bio-lead {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 3vw, 1.625rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .about-bio p {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+  }
+
+  .about-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .detail-label {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .detail-list li {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    padding-left: 0.75rem;
+    border-left: 2px solid var(--border);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .detail-list li:hover {
+    border-left-color: var(--accent);
+    color: var(--text);
+  }
+
+  .detail-link {
+    color: var(--accent);
+    transition: color 0.2s ease;
+  }
+  .detail-link:hover { color: var(--accent-hover); }
+</style>

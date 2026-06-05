@@ -1,0 +1,150 @@
+---
+// Only shown on initial page load; sessionStorage prevents re-showing within a session.
+---
+
+<div id="page-loader" aria-hidden="true">
+  <div class="loader-tracks">
+    <svg
+      class="tracks-svg"
+      viewBox="0 0 1200 60"
+      preserveAspectRatio="none"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+    >
+      <!-- Upper tire track -->
+      <path
+        class="track-path"
+        d="M-20 18 C80 18 160 26 280 18 C400 10 480 24 600 18 C720 12 800 26 920 18 C1040 10 1120 24 1220 18"
+        stroke="rgba(243,237,225,0.35)"
+        stroke-width="4"
+        stroke-linecap="round"
+      />
+      <!-- Lower tire track -->
+      <path
+        class="track-path track-path-2"
+        d="M-20 42 C80 42 160 34 280 42 C400 50 480 36 600 42 C720 48 800 34 920 42 C1040 50 1120 36 1220 42"
+        stroke="rgba(243,237,225,0.35)"
+        stroke-width="4"
+        stroke-linecap="round"
+      />
+    </svg>
+  </div>
+
+  <div class="loader-content">
+    <div class="loader-flag">
+      <!-- Mini checkered flag accent -->
+      <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="5" height="5" fill="rgba(243,237,225,0.6)"/>
+        <rect x="5" y="0" width="5" height="5" fill="rgba(243,237,225,0.2)"/>
+        <rect x="10" y="0" width="5" height="5" fill="rgba(243,237,225,0.6)"/>
+        <rect x="15" y="0" width="5" height="5" fill="rgba(243,237,225,0.2)"/>
+        <rect x="0" y="5" width="5" height="5" fill="rgba(243,237,225,0.2)"/>
+        <rect x="5" y="5" width="5" height="5" fill="rgba(243,237,225,0.6)"/>
+        <rect x="10" y="5" width="5" height="5" fill="rgba(243,237,225,0.2)"/>
+        <rect x="15" y="5" width="5" height="5" fill="rgba(243,237,225,0.6)"/>
+      </svg>
+    </div>
+    <p class="loader-title">the downforce blog</p>
+    <p class="loader-tagline">race analysis. actual opinions.</p>
+  </div>
+</div>
+
+<style>
+  #page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #1B3A26;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  #page-loader.loader-exit {
+    transform: translateY(-100%);
+  }
+
+  .loader-tracks {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .tracks-svg {
+    width: 100%;
+    height: 60px;
+  }
+
+  .track-path {
+    stroke-dasharray: 3000;
+    stroke-dashoffset: 3000;
+    animation: drawTrack 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.1s;
+  }
+
+  .track-path-2 {
+    animation-delay: 0.2s;
+  }
+
+  @keyframes drawTrack {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .loader-content {
+    position: relative;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: contentReveal 0.5s ease forwards;
+    animation-delay: 0.9s;
+  }
+
+  @keyframes contentReveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .loader-flag {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .loader-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.75rem, 5vw, 2.75rem);
+    font-weight: 800;
+    color: #F3EDE1;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .loader-tagline {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 300;
+    color: rgba(243, 237, 225, 0.55);
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+  }
+</style>
+
+<script>
+  const loader = document.getElementById('page-loader');
+  if (!loader) {
+    // already removed
+  } else if (sessionStorage.getItem('df-loaded')) {
+    loader.remove();
+  } else {
+    sessionStorage.setItem('df-loaded', '1');
+    setTimeout(() => {
+      loader.classList.add('loader-exit');
+      setTimeout(() => loader.remove(), 700);
+    }, 2000);
+  }
+</script>

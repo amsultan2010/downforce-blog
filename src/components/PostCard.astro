@@ -1,0 +1,189 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const { title, date, excerpt, tags, race } = post.data;
+
+const dateStr = date.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+---
+
+<article class:list={['post-card', { featured }]}>
+  <a href={`/posts/${post.id}`} class="card-link" tabindex="-1" aria-hidden="true"></a>
+
+  <div class="card-meta">
+    <time datetime={date.toISOString()} class="card-date">{dateStr}</time>
+    {race && <span class="card-race">{race}</span>}
+  </div>
+
+  <h2 class="card-title">
+    <a href={`/posts/${post.id}`}>{title}</a>
+  </h2>
+
+  <p class="card-excerpt">{excerpt}</p>
+
+  <div class="card-footer">
+    <ul class="card-tags" aria-label="Tags">
+      {tags.map((tag: string) => (
+        <li class="card-tag">{tag}</li>
+      ))}
+    </ul>
+    <span class="card-arrow" aria-hidden="true">→</span>
+  </div>
+</article>
+
+<style>
+  .post-card {
+    position: relative;
+    background: var(--bg-card);
+    padding: 1.75rem 2rem;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: box-shadow 0.25s var(--ease-out-quint), transform 0.25s var(--ease-out-quint);
+  }
+
+  .post-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s var(--ease-out-quint);
+  }
+
+  .post-card:hover {
+    box-shadow: 0 8px 32px rgba(27, 58, 38, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .post-card:hover::before {
+    transform: scaleY(1);
+  }
+
+  /* Featured card */
+  .post-card.featured {
+    padding: 2.25rem 2.5rem;
+  }
+
+  .post-card.featured .card-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .post-card.featured .card-excerpt {
+    font-size: 1rem;
+    max-width: 60ch;
+  }
+
+  /* Invisible overlay link for the entire card */
+  .card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .card-date {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .card-race {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    font-style: italic;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-title a {
+    color: var(--text);
+    transition: color 0.2s ease;
+  }
+
+  .post-card:hover .card-title a {
+    color: var(--green-mid);
+  }
+
+  .card-excerpt {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .card-tag {
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    padding: 0.2em 0.6em;
+    border-radius: var(--radius-sm);
+  }
+
+  .card-arrow {
+    font-size: 1rem;
+    color: var(--border-strong);
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+  }
+
+  .post-card:hover .card-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+</style>

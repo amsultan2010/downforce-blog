@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const allPosts = await getCollection('posts');
+const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="posts"
+  description="all posts from the downforce blog — race analysis with actual opinions"
+>
+  <div class="posts-wrapper">
+    <div class="container">
+      <div class="posts-header reveal-on-scroll">
+        <div class="posts-accent-line" aria-hidden="true"></div>
+        <h1 class="posts-title">posts</h1>
+        <p class="posts-count">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+      </div>
+
+      <div class="posts-list">
+        {posts.map((post, i) => (
+          <div class="reveal-on-scroll" style={`transition-delay: ${i * 0.06}s`}>
+            <PostCard post={post} />
+          </div>
+        ))}
+        {posts.length === 0 && (
+          <p class="no-posts">no posts yet. check back soon.</p>
+        )}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .posts-wrapper {
+    padding-top: calc(56px + 4rem);
+    padding-bottom: 6rem;
+  }
+
+  .posts-header {
+    margin-bottom: 3rem;
+  }
+
+  .posts-accent-line {
+    width: 32px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .posts-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .posts-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .posts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
+    gap: 1.5rem;
+  }
+
+  .no-posts {
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    font-style: italic;
+  }
+</style>

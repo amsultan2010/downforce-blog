@@ -291,30 +291,31 @@
   }
 </style>
 
-<script>
-  const loader = document.getElementById('page-loader');
+<script is:inline>
+  (function () {
+    var loader = document.getElementById('page-loader');
+    if (!loader) return;
 
-  if (loader) {
-    const pods = loader.querySelectorAll<HTMLElement>('.light-pod');
-    const gantry = loader.querySelector<HTMLElement>('.lights-gantry');
-    const wordmark = loader.querySelector<HTMLElement>('.loader-wordmark');
-    const underline = loader.querySelector<HTMLElement>('.loader-underline');
-    const tagline = loader.querySelector<HTMLElement>('.loader-tagline');
+    var pods = loader.querySelectorAll('.light-pod');
+    var gantry = loader.querySelector('.lights-gantry');
+    var wordmark = loader.querySelector('.loader-wordmark');
+    var underline = loader.querySelector('.loader-underline');
+    var tagline = loader.querySelector('.loader-tagline');
 
-    pods.forEach((pod, i) => {
-      setTimeout(() => pod.classList.add('lit'), 350 + i * 180);
+    pods.forEach(function (pod, i) {
+      setTimeout(function () { pod.classList.add('lit'); }, 350 + i * 180);
     });
 
-    setTimeout(() => {
-      gantry?.classList.add('lights-out');
-      wordmark?.classList.add('slam');
-      setTimeout(() => underline?.classList.add('draw'), 220);
-      setTimeout(() => tagline?.classList.add('fade'), 420);
+    setTimeout(function () {
+      if (gantry) gantry.classList.add('lights-out');
+      if (wordmark) wordmark.classList.add('slam');
+      setTimeout(function () { if (underline) underline.classList.add('draw'); }, 220);
+      setTimeout(function () { if (tagline) tagline.classList.add('fade'); }, 420);
     }, 1370);
 
-    setTimeout(() => {
+    setTimeout(function () {
       loader.classList.add('loader-exit');
-      setTimeout(() => loader.remove(), 800);
+      setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 800);
     }, 2500);
-  }
+  })();
 </script>

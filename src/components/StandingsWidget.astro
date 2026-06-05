@@ -1,620 +1,596 @@
 ---
-// Client-side only — Jolpica API. Shows top 10 by default, expandable.
 ---
 
-<section class="sw-section reveal-on-scroll" id="standings">
+<section class="sw" id="standings">
 
-  <!-- Header -->
-  <div class="sw-header">
-    <div class="sw-header-left">
-      <span class="sw-eyebrow">championship</span>
-      <h2 class="sw-title">standings</h2>
+  <div class="sw-head">
+    <div class="sw-head-left">
+      <span class="sw-eyebrow">2025 formula one</span>
+      <h2 class="sw-title">championship</h2>
     </div>
-    <div class="sw-header-right">
-      <span class="sw-round" id="sw-round">loading…</span>
-      <div class="sw-live">
-        <span class="sw-live-dot"></span>
-        <span>live</span>
-      </div>
+    <div class="sw-head-right">
+      <span class="sw-season" id="sw-season">—</span>
+      <span class="sw-live-badge">
+        <span class="sw-dot"></span>live data
+      </span>
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div class="sw-tabs">
-    <button class="sw-tab active" data-tab="drivers">drivers</button>
-    <button class="sw-tab" data-tab="constructors">constructors</button>
+  <div class="sw-tabs" role="tablist">
+    <button class="sw-tab active" data-tab="drivers" role="tab">drivers</button>
+    <button class="sw-tab" data-tab="constructors" role="tab">constructors</button>
   </div>
 
-  <!-- Panels -->
   <div class="sw-panel" id="panel-drivers">
-    <ol class="sw-list" id="drivers-list">
+    <ul class="sw-list" id="drivers-list" aria-label="Driver standings">
       {Array.from({ length: 10 }).map((_, i) => (
-        <li class="sw-row sk" style={`--d:${i * 40}ms`}>
-          <span class="sk-block sk-pos"></span>
-          <span class="sk-block sk-name"></span>
-          <span class="sk-block sk-pts"></span>
+        <li class="sw-row sw-skeleton" style={`--i:${i}`}>
+          <span class="sk sk-pos"></span>
+          <span class="sk sk-name"></span>
+          <span class="sk sk-pts"></span>
         </li>
       ))}
-    </ol>
-    <button class="sw-expand" id="expand-drivers" hidden>
-      show all <span id="expand-drivers-count"></span> drivers ↓
+    </ul>
+    <button class="sw-more" id="expand-drivers" hidden>
+      show all <span id="expand-count"></span> drivers ↓
     </button>
   </div>
 
-  <div class="sw-panel hidden" id="panel-constructors">
-    <ol class="sw-list" id="constructors-list">
+  <div class="sw-panel sw-hidden" id="panel-constructors">
+    <ul class="sw-list" id="constructors-list" aria-label="Constructor standings">
       {Array.from({ length: 10 }).map((_, i) => (
-        <li class="sw-row sk" style={`--d:${i * 40}ms`}>
-          <span class="sk-block sk-pos"></span>
-          <span class="sk-block sk-name"></span>
-          <span class="sk-block sk-pts"></span>
+        <li class="sw-row sw-skeleton" style={`--i:${i}`}>
+          <span class="sk sk-pos"></span>
+          <span class="sk sk-name"></span>
+          <span class="sk sk-pts"></span>
         </li>
       ))}
-    </ol>
+    </ul>
   </div>
 
-  <p class="sw-error" id="sw-error" hidden>standings unavailable — api offline</p>
+  <p class="sw-err" id="sw-error" hidden>standings unavailable — check back soon</p>
+
 </section>
 
 <style>
-  /* ─── section ─── */
-  .sw-section {
-    background: #0e1a10;
-    padding: 4.5rem 0;
+  /* ── shell ── */
+  .sw {
+    background: #080f09;
+    padding: 5rem 0 3rem;
     position: relative;
     overflow: hidden;
   }
 
-  /* halftone dot texture */
-  .sw-section::before {
+  /* grid lines */
+  .sw::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 22px 22px;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
     pointer-events: none;
   }
 
-  /* accent glow top-right */
-  .sw-section::after {
+  /* orange ambient glow */
+  .sw::after {
     content: '';
     position: absolute;
-    top: -80px;
-    right: -80px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(194,84,40,0.12) 0%, transparent 70%);
+    bottom: -120px; left: -120px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(194,84,40,0.15) 0%, transparent 65%);
     pointer-events: none;
   }
 
-  .sw-section > * { position: relative; z-index: 1; }
+  .sw > * { position: relative; z-index: 1; }
 
-  /* ─── header ─── */
-  .sw-header {
+  /* ── header ── */
+  .sw-head {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2rem;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 1rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1.5rem 2rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
   }
 
   .sw-eyebrow {
     display: block;
     font-family: var(--font-display);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
     color: #C25428;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.3rem;
   }
 
   .sw-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(3rem, 7vw, 5.5rem);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     color: #F3EDE1;
-    text-transform: lowercase;
-    line-height: 0.95;
+    line-height: 0.9;
+    text-transform: uppercase;
   }
 
-  .sw-header-right {
+  .sw-head-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.5rem;
-    padding-bottom: 0.35rem;
+    gap: 0.6rem;
+    padding-bottom: 0.4rem;
   }
 
-  .sw-round {
+  .sw-season {
     font-family: var(--font-display);
-    font-size: 0.95rem;
-    color: rgba(243,237,225,0.45);
+    font-size: 0.875rem;
     font-style: italic;
+    color: rgba(243,237,225,0.4);
     letter-spacing: 0.04em;
   }
 
-  .sw-live {
+  .sw-live-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.4rem;
     font-family: var(--font-display);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #3ddc84;
-    background: rgba(61,220,132,0.1);
-    border: 1px solid rgba(61,220,132,0.2);
-    padding: 0.25rem 0.6rem;
-    border-radius: 2rem;
+    border: 1px solid rgba(61,220,132,0.25);
+    background: rgba(61,220,132,0.07);
+    padding: 0.3rem 0.7rem;
+    border-radius: 100px;
   }
 
-  .sw-live-dot {
-    width: 6px;
-    height: 6px;
+  .sw-dot {
+    width: 5px; height: 5px;
     border-radius: 50%;
     background: #3ddc84;
     position: relative;
   }
-
-  .sw-live-dot::after {
+  .sw-dot::after {
     content: '';
     position: absolute;
     inset: -4px;
     border-radius: 50%;
     background: rgba(61,220,132,0.3);
-    animation: pulse 2s ease-out infinite;
+    animation: dotPulse 2s ease-out infinite;
   }
-
-  @keyframes pulse {
+  @keyframes dotPulse {
     0% { transform: scale(0.5); opacity: 1; }
-    100% { transform: scale(2.5); opacity: 0; }
+    100% { transform: scale(2.8); opacity: 0; }
   }
 
-  /* ─── tabs ─── */
+  /* ── tabs ── */
   .sw-tabs {
-    display: flex;
-    gap: 0;
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    margin-top: 2rem;
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-top: 2.5rem;
   }
 
   .sw-tab {
     font-family: var(--font-display);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(243,237,225,0.35);
-    padding: 0.75rem 1.5rem;
+    color: rgba(243,237,225,0.3);
+    padding: 0.8rem 1.75rem;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
-    transition: color 0.2s ease, border-color 0.2s ease;
     cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
   }
-
-  .sw-tab:hover { color: rgba(243,237,225,0.7); }
-
+  .sw-tab:hover { color: rgba(243,237,225,0.65); }
   .sw-tab.active {
     color: #F3EDE1;
     border-bottom-color: #C25428;
   }
 
-  /* ─── panel ─── */
+  /* ── panel ── */
   .sw-panel {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 1.5rem 1.5rem 0;
+    padding: 0 1.5rem;
+  }
+  .sw-hidden { display: none; }
+
+  /* ── list ── */
+  .sw-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
   }
 
-  .sw-panel.hidden { display: none; }
-
-  /* ─── list ─── */
-  .sw-list { display: flex; flex-direction: column; gap: 0; }
-
-  /* ─── row ─── */
+  /* ── row ── */
   .sw-row {
     display: grid;
-    grid-template-columns: 4rem 8px 1fr auto;
+    grid-template-columns: 5.5rem 6px 1fr auto;
     align-items: center;
     gap: 0;
-    padding: 1rem 0.75rem 1rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.055);
+    min-height: 88px;
+    padding: 1.1rem 0 1.1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     position: relative;
-    cursor: default;
-    opacity: 0;
-    transform: translateX(-12px);
-    transition: background 0.2s ease;
     overflow: hidden;
+    opacity: 0;
+    transform: translateX(-20px);
   }
 
-  .sw-row.entered {
-    animation: rowIn 0.4s cubic-bezier(0.22,1,0.36,1) var(--d, 0ms) both;
+  .sw-row:first-child { border-top: 1px solid rgba(255,255,255,0.05); }
+
+  .sw-row.live {
+    animation: rowSlide 0.45s cubic-bezier(0.22,1,0.36,1) calc(var(--i,0) * 50ms) both;
   }
 
-  @keyframes rowIn {
-    from { opacity: 0; transform: translateX(-12px); }
+  @keyframes rowSlide {
+    from { opacity: 0; transform: translateX(-20px); }
     to   { opacity: 1; transform: none; }
   }
 
-  .sw-row:first-child { border-top: 1px solid rgba(255,255,255,0.055); }
-
-  /* background fill (points %) */
+  /* fill sweep */
   .sw-row::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; bottom: 0;
+    inset: 0;
     width: var(--fill, 0%);
     background: var(--tc, transparent);
-    opacity: 0.04;
+    opacity: 0.045;
     pointer-events: none;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s;
   }
-
-  .sw-row:hover { background: rgba(255,255,255,0.03); }
   .sw-row:hover::after { opacity: 0.09; }
 
-  /* podium glow */
-  .sw-row[data-pos="1"]::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 100%;
-    background: linear-gradient(90deg, rgba(212,149,42,0.06), transparent 60%);
-    pointer-events: none;
+  /* P1 gold shimmer */
+  .sw-row[data-p="1"] {
+    background: linear-gradient(90deg, rgba(212,149,42,0.07), transparent 55%);
   }
 
-  /* ─── position ─── */
+  /* podium left accent */
+  .sw-row[data-p="1"] .sw-swatch,
+  .sw-row[data-p="2"] .sw-swatch,
+  .sw-row[data-p="3"] .sw-swatch {
+    opacity: 1;
+  }
+
+  /* ── position ── */
   .sw-pos {
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 800;
     text-align: center;
     line-height: 1;
-    letter-spacing: -0.02em;
-    /* color set inline */
+    letter-spacing: -0.04em;
     position: relative;
     z-index: 1;
-    padding-left: 0.25rem;
   }
 
-  /* ─── team swatch ─── */
+  /* ── swatch ── */
   .sw-swatch {
     width: 4px;
     align-self: stretch;
-    margin: 0.3rem 1rem 0.3rem 0.5rem;
+    margin: 0.4rem 1.1rem 0.4rem 0.5rem;
     border-radius: 2px;
-    flex-shrink: 0;
     position: relative;
     z-index: 1;
+    opacity: 0.7;
   }
 
-  /* ─── name block ─── */
+  /* ── body ── */
   .sw-body {
     display: flex;
     flex-direction: column;
-    gap: 0.18rem;
+    justify-content: center;
+    gap: 0.2rem;
     min-width: 0;
-    padding-right: 1rem;
+    padding-right: 1.25rem;
     position: relative;
     z-index: 1;
   }
 
   .sw-name {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #F3EDE1;
     letter-spacing: 0.01em;
-    line-height: 1.05;
+    line-height: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .sw-name strong {
     font-weight: 800;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
   }
 
-  .sw-team {
-    font-size: 0.8rem;
-    color: rgba(243,237,225,0.5);
+  .sw-sub {
+    font-size: 0.75rem;
+    color: rgba(243,237,225,0.4);
     font-weight: 300;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  /* ─── points block ─── */
+  /* gap bar */
+  .sw-gap-bar {
+    margin-top: 0.45rem;
+    height: 3px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 200px;
+  }
+  .sw-gap-fill {
+    height: 100%;
+    border-radius: 2px;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 1.1s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* ── pts block ── */
   .sw-pts-block {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.3rem;
-    min-width: 6rem;
+    gap: 0.2rem;
+    min-width: 7rem;
     position: relative;
     z-index: 1;
+    padding-right: 0.25rem;
   }
 
   .sw-pts {
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 2.25rem;
     font-weight: 800;
     color: #F3EDE1;
     line-height: 1;
+    letter-spacing: -0.02em;
     white-space: nowrap;
   }
-
-  .sw-pts-label {
+  .sw-pts-unit {
     font-size: 0.65rem;
     font-weight: 400;
-    color: rgba(243,237,225,0.4);
-    letter-spacing: 0.1em;
-    margin-left: 0.2rem;
+    color: rgba(243,237,225,0.35);
+    letter-spacing: 0.12em;
+    margin-left: 0.15rem;
     text-transform: uppercase;
   }
 
-  .sw-bar {
-    width: 100%;
-    height: 2px;
-    background: rgba(255,255,255,0.07);
-    border-radius: 1px;
-    overflow: hidden;
-  }
-
-  .sw-bar-fill {
-    height: 100%;
-    border-radius: 1px;
-    transform-origin: left;
-    transform: scaleX(0);
-    transition: transform 1s cubic-bezier(0.22,1,0.36,1);
-  }
-
-  .sw-gap {
+  .sw-delta {
     font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: rgba(243,237,225,0.3);
-    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: rgba(243,237,225,0.28);
     white-space: nowrap;
   }
+  .sw-delta.leader { color: #D4952A; }
 
-  .sw-gap.is-leader {
-    color: #D4952A;
-    letter-spacing: 0.08em;
-  }
-
-  /* ─── expand button ─── */
-  .sw-expand {
+  /* ── expand btn ── */
+  .sw-more {
     display: block;
     width: 100%;
-    margin-top: 1rem;
-    padding: 0.85rem;
+    margin: 1.25rem 0 0.5rem;
+    padding: 1rem;
     font-family: var(--font-display);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(243,237,225,0.45);
-    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(243,237,225,0.4);
+    border: 1px solid rgba(255,255,255,0.07);
     background: rgba(255,255,255,0.02);
     cursor: pointer;
-    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     border-radius: 2px;
-    margin-bottom: 0;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
   }
-
-  .sw-expand:hover {
+  .sw-more:hover {
     color: #F3EDE1;
     background: rgba(255,255,255,0.05);
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.14);
   }
 
-  /* ─── skeleton ─── */
-  .sk {
+  /* ── skeleton ── */
+  .sw-skeleton {
     opacity: 1 !important;
     transform: none !important;
-    animation: none !important;
   }
-
-  .sk-block {
+  .sk {
     display: block;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.05);
     border-radius: 3px;
-    animation: shimmer 1.5s ease-in-out infinite;
+    animation: skShimmer 1.6s ease-in-out infinite;
+    animation-delay: calc(var(--i,0) * 80ms);
   }
-
-  .sk-pos  { width: 2rem; height: 2rem; margin: 0 auto; }
-  .sk-name { width: 10rem; height: 1.1rem; }
-  .sk-pts  { width: 3.5rem; height: 1.4rem; margin-left: auto; }
-
-  @keyframes shimmer {
+  @keyframes skShimmer {
     0%, 100% { opacity: 0.2; }
-    50%       { opacity: 0.55; }
+    50%       { opacity: 0.5; }
   }
+  .sk-pos  { width: 2.5rem; height: 2.5rem; margin: 0 auto; border-radius: 50%; }
+  .sk-name { width: 11rem; height: 1.25rem; }
+  .sk-pts  { width: 4rem; height: 1.75rem; margin-left: auto; }
 
-  /* ─── error ─── */
-  .sw-error {
+  /* ── error ── */
+  .sw-err {
     max-width: 1100px;
     margin: 2rem auto;
     padding: 0 1.5rem;
+    color: rgba(243,237,225,0.35);
     font-size: 1rem;
-    color: rgba(243,237,225,0.4);
     font-style: italic;
     text-align: center;
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 600px) {
+    .sw-row { grid-template-columns: 4rem 5px 1fr auto; min-height: 72px; }
+    .sw-pos  { font-size: 2.25rem; }
+    .sw-name { font-size: 1.2rem; }
+    .sw-pts  { font-size: 1.75rem; }
+    .sw-pts-block { min-width: 5.5rem; }
+    .sw-gap-bar { max-width: 120px; }
   }
 </style>
 
 <script>
   const BASE = 'https://api.jolpi.ca/ergast/f1';
-  const TOP_N = 10;
+  const TOP = 10;
 
-  const COLORS: Record<string, string> = {
-    'McLaren':       '#FF8000',
-    'Red Bull':      '#1E41CB',
-    'Ferrari':       '#E8002D',
-    'Mercedes':      '#27F4D2',
-    'Aston Martin':  '#229971',
-    'Alpine':        '#FF87BC',
-    'Williams':      '#64C4FF',
-    'RB':            '#6692FF',
-    'Visa Cash App': '#6692FF',
-    'Kick Sauber':   '#52E252',
-    'Sauber':        '#52E252',
-    'Haas':          '#FFFFFF',
-    'Audi':          '#C0C0C0',
-    'Cadillac':      '#555555',
+  const COLORS: Record<string,string> = {
+    'McLaren':      '#FF8000',
+    'Red Bull':     '#1E41CB',
+    'Ferrari':      '#E8002D',
+    'Mercedes':     '#27F4D2',
+    'Aston Martin': '#229971',
+    'Alpine':       '#FF87BC',
+    'Williams':     '#64C4FF',
+    'RB':           '#6692FF',
+    'Visa Cash App':'#6692FF',
+    'Kick Sauber':  '#52E252',
+    'Sauber':       '#52E252',
+    'Haas':         '#E8E8E8',
+    'Audi':         '#C0C0C0',
+    'Cadillac':     '#888888',
   };
 
-  function tc(name: string) {
-    for (const [k, v] of Object.entries(COLORS)) {
+  function color(name: string) {
+    for (const [k,v] of Object.entries(COLORS)) {
       if (name.includes(k)) return v;
     }
-    return 'rgba(243,237,225,0.4)';
+    return '#888888';
   }
 
-  function animateBars() {
-    (document.querySelectorAll<HTMLElement>('.sw-bar-fill')).forEach(el => {
-      el.style.transform = `scaleX(${el.dataset.w ?? 0})`;
-    });
-  }
-
-  function animateRows() {
-    (document.querySelectorAll<HTMLElement>('.sw-row:not(.sk)')).forEach(el => {
-      el.classList.add('entered');
-    });
-  }
-
-  function driverRow(d: any, idx: number, maxPts: number) {
-    const color = tc(d.Constructors[0]?.name ?? '');
+  function driverRow(d: any, i: number, maxPts: number): string {
+    const tc = color(d.Constructors?.[0]?.name ?? '');
     const pts = parseFloat(d.points);
-    const pct = (pts / maxPts).toFixed(3);
-    const gap = idx === 0 ? '◆ leader' : `−${(maxPts - pts).toFixed(0)} pts`;
-    const fillPct = `${(pts / maxPts * 100).toFixed(1)}%`;
+    const ratio = maxPts > 0 ? pts / maxPts : 0;
+    const fillPct = (ratio * 100).toFixed(1) + '%';
+    const delta = i === 0 ? '◆ championship leader' : `−${(maxPts - pts).toFixed(0)} pts`;
     const last = d.Driver.familyName.toUpperCase();
-    const first = d.Driver.givenName;
-    return `<li class="sw-row" data-pos="${d.position}" style="--tc:${color};--fill:${fillPct};--d:${idx * 45}ms">
-      <span class="sw-pos" style="color:${color}">${d.position}</span>
-      <span class="sw-swatch" style="background:${color}"></span>
+    const first = d.Driver.givenName[0] + '.';
+    const team = d.Constructors?.[0]?.name ?? '';
+    return `<li class="sw-row" data-p="${d.position}" style="--tc:${tc};--fill:${fillPct};--i:${i}">
+      <span class="sw-pos" style="color:${tc}">${d.position}</span>
+      <span class="sw-swatch" style="background:${tc}"></span>
       <span class="sw-body">
         <span class="sw-name">${first} <strong>${last}</strong></span>
-        <span class="sw-team">${d.Constructors[0]?.name ?? ''}</span>
+        <span class="sw-sub">${team}</span>
+        <span class="sw-gap-bar"><span class="sw-gap-fill" data-r="${ratio.toFixed(4)}" style="background:${tc}"></span></span>
       </span>
       <span class="sw-pts-block">
-        <span class="sw-pts">${d.points}<span class="sw-pts-label">pts</span></span>
-        <span class="sw-bar"><span class="sw-bar-fill" data-w="${pct}" style="background:${color}"></span></span>
-        <span class="sw-gap ${idx === 0 ? 'is-leader' : ''}">${gap}</span>
+        <span class="sw-pts">${d.points}<span class="sw-pts-unit">pts</span></span>
+        <span class="sw-delta ${i===0?'leader':''}">${delta}</span>
       </span>
     </li>`;
   }
 
-  function constructorRow(c: any, idx: number, maxPts: number) {
-    const color = tc(c.Constructor.name);
+  function constructorRow(c: any, i: number, maxPts: number): string {
+    const tc = color(c.Constructor.name);
     const pts = parseFloat(c.points);
-    const pct = (pts / maxPts).toFixed(3);
-    const gap = idx === 0 ? '◆ leader' : `−${(maxPts - pts).toFixed(0)} pts`;
-    const fillPct = `${(pts / maxPts * 100).toFixed(1)}%`;
-    return `<li class="sw-row" data-pos="${c.position}" style="--tc:${color};--fill:${fillPct};--d:${idx * 45}ms">
-      <span class="sw-pos" style="color:${color}">${c.position}</span>
-      <span class="sw-swatch" style="background:${color}"></span>
+    const ratio = maxPts > 0 ? pts / maxPts : 0;
+    const fillPct = (ratio * 100).toFixed(1) + '%';
+    const delta = i === 0 ? '◆ championship leader' : `−${(maxPts - pts).toFixed(0)} pts`;
+    return `<li class="sw-row" data-p="${c.position}" style="--tc:${tc};--fill:${fillPct};--i:${i}">
+      <span class="sw-pos" style="color:${tc}">${c.position}</span>
+      <span class="sw-swatch" style="background:${tc}"></span>
       <span class="sw-body">
         <span class="sw-name"><strong>${c.Constructor.name.toUpperCase()}</strong></span>
-        <span class="sw-team">${c.Constructor.nationality}</span>
+        <span class="sw-sub">${c.Constructor.nationality}</span>
+        <span class="sw-gap-bar"><span class="sw-gap-fill" data-r="${ratio.toFixed(4)}" style="background:${tc}"></span></span>
       </span>
       <span class="sw-pts-block">
-        <span class="sw-pts">${c.points}<span class="sw-pts-label">pts</span></span>
-        <span class="sw-bar"><span class="sw-bar-fill" data-w="${pct}" style="background:${color}"></span></span>
-        <span class="sw-gap ${idx === 0 ? 'is-leader' : ''}">${gap}</span>
+        <span class="sw-pts">${c.points}<span class="sw-pts-unit">pts</span></span>
+        <span class="sw-delta ${i===0?'leader':''}">${delta}</span>
       </span>
     </li>`;
+  }
+
+  function animate(list: HTMLElement) {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      list.querySelectorAll<HTMLElement>('.sw-row').forEach(r => r.classList.add('live'));
+      list.querySelectorAll<HTMLElement>('.sw-gap-fill').forEach(el => {
+        el.style.transform = `scaleX(${el.dataset.r ?? 0})`;
+      });
+    }));
   }
 
   let allDrivers: any[] = [];
 
-  function renderDrivers(standings: any[], showAll = false) {
-    const list = document.getElementById('drivers-list');
-    const btn = document.getElementById('expand-drivers') as HTMLButtonElement | null;
-    const countEl = document.getElementById('expand-drivers-count');
+  function showDrivers(drivers: any[], all = false) {
+    const list = document.getElementById('drivers-list') as HTMLElement;
+    const btn  = document.getElementById('expand-drivers') as HTMLButtonElement;
+    const cnt  = document.getElementById('expand-count');
     if (!list) return;
-
-    const visible = showAll ? standings : standings.slice(0, TOP_N);
-    const maxPts = parseFloat(standings[0]?.points ?? 1);
-    list.innerHTML = visible.map((d, i) => driverRow(d, i, maxPts)).join('');
-
-    if (!showAll && standings.length > TOP_N && btn) {
+    const shown = all ? drivers : drivers.slice(0, TOP);
+    const max   = parseFloat(drivers[0]?.points ?? 1);
+    list.innerHTML = shown.map((d,i) => driverRow(d,i,max)).join('');
+    if (!all && drivers.length > TOP) {
       btn.hidden = false;
-      if (countEl) countEl.textContent = String(standings.length);
-    } else if (btn) {
+      if (cnt) cnt.textContent = String(drivers.length);
+    } else {
       btn.hidden = true;
     }
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        animateRows();
-        animateBars();
-      });
-    });
+    animate(list);
   }
 
-  function renderConstructors(standings: any[]) {
-    const list = document.getElementById('constructors-list');
+  function showConstructors(ctors: any[]) {
+    const list = document.getElementById('constructors-list') as HTMLElement;
     if (!list) return;
-    const maxPts = parseFloat(standings[0]?.points ?? 1);
-    list.innerHTML = standings.map((c, i) => constructorRow(c, i, maxPts)).join('');
-    requestAnimationFrame(() => requestAnimationFrame(() => { animateRows(); animateBars(); }));
+    const max = parseFloat(ctors[0]?.points ?? 1);
+    list.innerHTML = ctors.map((c,i) => constructorRow(c,i,max)).join('');
+    animate(list);
   }
 
-  // Tab switching
+  // tabs
   document.querySelectorAll<HTMLButtonElement>('.sw-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.sw-tab').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
-      const tab = btn.dataset.tab;
-      document.querySelectorAll('.sw-panel').forEach(p => p.classList.add('hidden'));
-      document.getElementById(`panel-${tab}`)?.classList.remove('hidden');
+      document.querySelectorAll('.sw-panel').forEach(p => p.classList.add('sw-hidden'));
+      document.getElementById(`panel-${btn.dataset.tab}`)?.classList.remove('sw-hidden');
     });
   });
 
-  // Expand button
+  // expand
   document.getElementById('expand-drivers')?.addEventListener('click', () => {
-    renderDrivers(allDrivers, true);
+    showDrivers(allDrivers, true);
   });
 
   async function load() {
     try {
-      const [dRes, cRes] = await Promise.all([
+      const [dr, cr] = await Promise.all([
         fetch(`${BASE}/current/driverStandings/`),
         fetch(`${BASE}/current/constructorStandings/`),
       ]);
-      if (!dRes.ok || !cRes.ok) throw new Error();
-
-      const [dData, cData] = await Promise.all([dRes.json(), cRes.json()]);
-      const dList = dData.MRData?.StandingsTable?.StandingsLists?.[0];
-      const cList = cData.MRData?.StandingsTable?.StandingsLists?.[0];
-
+      if (!dr.ok || !cr.ok) throw new Error('api error');
+      const [dd, cd] = await Promise.all([dr.json(), cr.json()]);
+      const dList = dd.MRData?.StandingsTable?.StandingsLists?.[0];
+      const cList = cd.MRData?.StandingsTable?.StandingsLists?.[0];
       if (dList) {
-        const el = document.getElementById('sw-round');
-        if (el) el.textContent = `${dList.season} season · round ${dList.round}`;
+        const el = document.getElementById('sw-season');
+        if (el) el.textContent = `${dList.season} · round ${dList.round}`;
         allDrivers = dList.DriverStandings;
-        renderDrivers(allDrivers);
+        showDrivers(allDrivers);
       }
-      if (cList) renderConstructors(cList.ConstructorStandings);
-
+      if (cList) showConstructors(cList.ConstructorStandings);
     } catch {
       const err = document.getElementById('sw-error');
       if (err) err.hidden = false;
-      document.getElementById('drivers-list')?.remove();
-      document.getElementById('constructors-list')?.remove();
     }
   }
 

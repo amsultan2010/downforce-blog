@@ -287,14 +287,6 @@ const [featuredPost, ...restPosts] = posts;
     to { width: 150%; }
   }
 
-  /* ── photo parallax var ── */
-  .photo-item img {
-    transform: scale(1.1) translateY(var(--py, 0px));
-  }
-  .photo-item:hover img {
-    transform: scale(1.14) translateY(var(--py, 0px));
-  }
-
   .hero-title {
     font-family: var(--font-display);
     font-size: clamp(3.5rem, 12vw, 8rem);
@@ -425,21 +417,25 @@ const [featuredPost, ...restPosts] = posts;
   .photo-strip {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    height: 560px;
+    grid-template-rows: 280px 280px;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 0;
   }
 
   @media (max-width: 600px) {
     .photo-strip {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      height: 340px;
+      grid-template-rows: 170px 170px;
     }
   }
 
   .photo-item {
     overflow: hidden;
     position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .photo-item img {
@@ -447,12 +443,11 @@ const [featuredPost, ...restPosts] = posts;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.6s var(--ease-out-quint), filter 0.4s ease;
     filter: brightness(0.85) saturate(0.85);
+    transition: filter 0.4s ease;
   }
 
   .photo-item:hover img {
-    transform: scale(1.04);
     filter: brightness(1) saturate(1);
   }
 

@@ -1,0 +1,263 @@
+#!/usr/bin/env node
+// Fetches latest F1 race data + Reddit context and generates a blog post via Claude.
+// Exits cleanly (code 0) if no race happened this weekend or a post already exists.
+
+import { execSync } from 'child_process';
+import { writeFileSync, existsSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const POSTS_DIR = join(__dirname, '..', 'src', 'content', 'posts');
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+
+if (!ANTHROPIC_API_KEY) {
+  console.error('Error: ANTHROPIC_API_KEY environment variable is not set.');
+  process.exit(1);
+}
+
+// ---------------------------------------------------------------------------
+// Fetch helpers
+// ---------------------------------------------------------------------------
+
+async function fetchJson(url, extraHeaders = {}) {
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'downforce-blog/1.0', ...extraHeaders },
+  });
+  if (!res.ok) throw new Error(`Fetch failed ${url} — HTTP ${res.status}`);
+  return res.json();
+}
+
+async function fetchRaceResults() {
+  console.log('Fetching last race results...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current/last/results/');
+  return data?.MRData?.RaceTable?.Races?.[0] ?? null;
+}
+
+async function fetchDriverStandings() {
+  console.log('Fetching driver standings...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current/driverStandings/');
+  return data?.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings ?? [];
+}
+
+async function fetchConstructorStandings() {
+  console.log('Fetching constructor standings...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current/constructorStandings/');
+  return data?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings ?? [];
+}
+
+async function fetchRedditPosts(subreddit) {
+  console.log(`Fetching r/${subreddit} hot posts...`);
+  const data = await fetchJson(
+    `https://www.reddit.com/r/${subreddit}/hot.json?limit=15`,
+    { 'User-Agent': 'downforce-blog/1.0 (by /u/downforce_blog)' }
+  );
+  return (data?.data?.children ?? []).map(p => ({
+    title: p.data.title,
+    score: p.data.score,
+    comments: p.data.num_comments,
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function isRaceFromThisWeekend(race) {
+  if (!race?.date) return false;
+  const raceDate = new Date(race.date);
+  const now = new Date();
+  const daysDiff = (now - raceDate) / (1000 * 60 * 60 * 24);
+  return daysDiff >= 0 && daysDiff <= 7;
+}
+
+function toKebabCase(str) {
+  return str
+    .toLowerCase()
+    .replace(/grand prix/gi, 'gp')
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
+
+function buildFilename(race) {
+  return `${toKebabCase(race.raceName)}-${race.date}.md`;
+}
+
+function formatResults(race) {
+  const top10 = (race.Results ?? []).slice(0, 10).map(r => {
+    const hasFastestLap = r.FastestLap?.rank === '1';
+    return `${r.position}. ${r.Driver?.givenName} ${r.Driver?.familyName} (${r.Constructor?.name}) — ${r.status}${hasFastestLap ? ' [FASTEST LAP]' : ''}`;
+  }).join('\n');
+
+  const dnfs = (race.Results ?? [])
+    .filter(r => r.status !== 'Finished' && !r.status.startsWith('+'))
+    .map(r => `  ${r.Driver?.givenName} ${r.Driver?.familyName} — ${r.status}`)
+    .join('\n');
+
+  return { top10, dnfs: dnfs || '  None' };
+}
+
+// ---------------------------------------------------------------------------
+// Claude API
+// ---------------------------------------------------------------------------
+
+const SYSTEM_PROMPT = `you are the writer behind "the downforce blog," an independently run f1 blog. you write race summaries and occasional hot takes. your job is to take raw race data and community context and turn it into a blog post that sounds like a real person with strong opinions wrote it (not an AI).
+
+voice and style rules:
+- everything lowercase. headers, body text, all of it. the only uppercase is driver names, team names, proper nouns, and acronyms (FIA, DRS, DNF, WDC, etc).
+- short paragraphs. 3-4 sentences max. lots of white space. this is a blog, not an essay.
+- posts should be 600-900 words. no more. people scroll, not study.
+- use parentheses constantly (for asides, humor, clarifications, hot takes within hot takes). this is a core part of the voice.
+- rhetorical questions are your bread and butter. "right?" and "did we expect anything less?" energy.
+- you have strong opinions and you state them directly. no hedging with "arguably" or "it could be said." just say it.
+- reference reddit memes and community narratives when relevant. you're tapped into the culture, not above it.
+- make predictions at the end of each post for the next race weekend. be bold. being wrong is fine (and kind of funny in hindsight).
+- casual sign-offs. vary them. "see you next weekend." or "anyway, that's the race." or something that fits.
+- no exclamation marks unless something genuinely insane happened. keep the energy confident, not hype-y.
+- use "since" instead of "because" when possible.
+- never use em dashes or double hyphens. use parentheses for asides instead.
+- do NOT sound like an AI. no "let's dive in," no "buckle up," no "what a race we witnessed," no "the stage was set." if it sounds like something a generic sports AI would write, don't write it.
+
+your f1 opinions and biases (use these to color the analysis):
+- fernando alonso is the GOAT and you will die on this hill
+- max verstappen is incredible but you acknowledge it begrudgingly when he's not racing against alonso
+- you think the FIA is wildly inconsistent with penalties and you're not afraid to say so
+- you enjoy chaos (red flags, rain, first-lap carnage)
+- you have a soft spot for rookies doing well
+- mclaren's strategy calls are historically suspect
+- you watch from riyadh so you sometimes reference the timezone or viewing experience
+
+post structure:
+- title should be catchy and specific with a subtitle after a colon. reference the main storyline and add flavor.
+- open with context (what was at stake going into this weekend). 2-3 sentences.
+- qualifying summary (brief, only noteworthy stuff)
+- race summary (chronological but skip the boring parts. focus on incidents, overtakes, strategy calls, and drama)
+- championship implications (standings math, who gained, who lost)
+- prediction/preview for next race
+- casual sign-off
+
+frontmatter format:
+---
+title: "[title here]"
+date: "[YYYY-MM-DD]"
+excerpt: "[one sentence hook]"
+tags: ["race-summary", relevant driver/team tags]
+category: "race-summaries"
+---`;
+
+async function callClaude(userMessage) {
+  console.log('Calling Claude API...');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4096,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: userMessage }],
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Claude API error (${res.status}): ${body}`);
+  }
+
+  const data = await res.json();
+  return data.content?.[0]?.text ?? '';
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
+async function main() {
+  const [race, driverStandings, constructorStandings, f1Posts, dankPosts] = await Promise.all([
+    fetchRaceResults(),
+    fetchDriverStandings(),
+    fetchConstructorStandings(),
+    fetchRedditPosts('formula1'),
+    fetchRedditPosts('formuladank'),
+  ]);
+
+  if (!race) {
+    console.log('No race data available. Exiting without creating a post.');
+    process.exit(0);
+  }
+
+  if (!isRaceFromThisWeekend(race)) {
+    console.log(`Last race (${race.raceName}) was on ${race.date}, more than 7 days ago. No post needed.`);
+    process.exit(0);
+  }
+
+  const filename = buildFilename(race);
+  const filepath = join(POSTS_DIR, filename);
+
+  if (existsSync(filepath)) {
+    console.log(`Post already exists at ${filename}. Skipping.`);
+    process.exit(0);
+  }
+
+  const { top10, dnfs } = formatResults(race);
+
+  const userMessage = `Here is the data for this weekend's race. Write the blog post.
+
+## Race: ${race.raceName} — Round ${race.round} (${race.date})
+Circuit: ${race.Circuit?.circuitName}, ${race.Circuit?.Location?.locality}, ${race.Circuit?.Location?.country}
+
+### Top 10 Finishers:
+${top10}
+
+### Notable Retirements:
+${dnfs}
+
+## Driver Championship Standings (Top 10):
+${driverStandings.slice(0, 10).map(d =>
+  `${d.position}. ${d.Driver?.givenName} ${d.Driver?.familyName} — ${d.points} pts`
+).join('\n')}
+
+## Constructor Standings:
+${constructorStandings.slice(0, 10).map(c =>
+  `${c.position}. ${c.Constructor?.name} — ${c.points} pts`
+).join('\n')}
+
+## Community Pulse — r/formula1 hot posts:
+${f1Posts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}
+
+## Community Pulse — r/formuladank hot posts:
+${dankPosts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}`;
+
+  const markdown = await callClaude(userMessage);
+
+  if (!markdown.startsWith('---')) {
+    console.error('Unexpected Claude response (does not begin with frontmatter):');
+    console.error(markdown.slice(0, 300));
+    process.exit(1);
+  }
+
+  writeFileSync(filepath, markdown, 'utf8');
+  console.log(`Post saved: ${filepath}`);
+
+  console.log('Committing and pushing to GitHub...');
+  execSync('git config user.email "bot@downforce.blog"', { stdio: 'inherit' });
+  execSync('git config user.name "Downforce Bot"', { stdio: 'inherit' });
+  execSync(`git add "${filepath}"`, { stdio: 'inherit' });
+  execSync(
+    `git commit -m "feat: auto-generate post — ${race.raceName} ${race.date}"`,
+    { stdio: 'inherit' }
+  );
+  execSync('git push', { stdio: 'inherit' });
+
+  console.log('Done.');
+}
+
+main().catch(err => {
+  console.error('Fatal:', err.message);
+  process.exit(1);
+});

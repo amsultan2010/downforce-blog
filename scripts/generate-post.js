@@ -48,15 +48,20 @@ async function fetchConstructorStandings() {
 
 async function fetchRedditPosts(subreddit) {
   console.log(`Fetching r/${subreddit} hot posts...`);
-  const data = await fetchJson(
-    `https://www.reddit.com/r/${subreddit}/hot.json?limit=15`,
-    { 'User-Agent': 'downforce-blog/1.0 (by /u/downforce_blog)' }
-  );
-  return (data?.data?.children ?? []).map(p => ({
-    title: p.data.title,
-    score: p.data.score,
-    comments: p.data.num_comments,
-  }));
+  try {
+    const data = await fetchJson(
+      `https://www.reddit.com/r/${subreddit}/hot.json?limit=15`,
+      { 'User-Agent': 'Mozilla/5.0 (compatible; downforce-blog/1.0)' }
+    );
+    return (data?.data?.children ?? []).map(p => ({
+      title: p.data.title,
+      score: p.data.score,
+      comments: p.data.num_comments,
+    }));
+  } catch (err) {
+    console.warn(`Warning: could not fetch r/${subreddit} (${err.message}). Skipping Reddit context.`);
+    return [];
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -227,11 +232,7 @@ ${constructorStandings.slice(0, 10).map(c =>
   `${c.position}. ${c.Constructor?.name} — ${c.points} pts`
 ).join('\n')}
 
-## Community Pulse — r/formula1 hot posts:
-${f1Posts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}
-
-## Community Pulse — r/formuladank hot posts:
-${dankPosts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}`;
+${f1Posts.length > 0 ? `\n## Community Pulse — r/formula1 hot posts:\n${f1Posts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}${dankPosts.length > 0 ? `\n\n## Community Pulse — r/formuladank hot posts:\n${dankPosts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}`;
 
   const markdown = await callClaude(userMessage);
 

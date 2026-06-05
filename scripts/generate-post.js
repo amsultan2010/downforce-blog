@@ -46,6 +46,12 @@ async function fetchConstructorStandings() {
   return data?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings ?? [];
 }
 
+async function fetchSchedule() {
+  console.log('Fetching full season schedule...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current.json');
+  return data?.MRData?.RaceTable?.Races ?? [];
+}
+
 async function fetchRedditPosts(subreddit) {
   console.log(`Fetching r/${subreddit} hot posts...`);
   try {
@@ -67,6 +73,14 @@ async function fetchRedditPosts(subreddit) {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+function findNextRace(schedule, currentRound) {
+  const next = schedule.find(r => parseInt(r.round) === parseInt(currentRound) + 1);
+  if (next) return next;
+  // fallback: first race with a future date
+  const today = new Date();
+  return schedule.find(r => new Date(r.date) > today) ?? null;
+}
 
 function isRaceFromThisWeekend(race) {
   if (!race?.date) return false;
@@ -119,29 +133,33 @@ voice and style rules:
 - you have strong opinions and you state them directly. no hedging with "arguably" or "it could be said." just say it.
 - reference reddit memes and community narratives when relevant. you're tapped into the culture, not above it.
 - make predictions at the end of each post for the next race weekend. be bold. being wrong is fine (and kind of funny in hindsight).
-- casual sign-offs. vary them. "see you next weekend." or "anyway, that's the race." or something that fits.
+- casual sign-offs that reference the actual next race by name. vary the phrasing. never guess the next race, always use the schedule data provided.
 - no exclamation marks unless something genuinely insane happened. keep the energy confident, not hype-y.
 - use "since" instead of "because" when possible.
 - never use em dashes or double hyphens. use parentheses for asides instead.
-- do NOT sound like an AI. no "let's dive in," no "buckle up," no "what a race we witnessed," no "the stage was set." if it sounds like something a generic sports AI would write, don't write it.
+- phrases that are fine and encouraged: "demolition job," "schooling," "schooled," dry observational humor, deadpan reactions to predictable outcomes.
+- phrases that are banned: "let's dive in," "the stage was set," "what a race we witnessed," "buckle up," "chaos" used as a lazy catch-all, anything that sounds like an ESPN highlight reel voiceover, "i found myself," "having reflected on this."
+- do NOT sound like an AI. if it reads like something a generic sports bot would write, rewrite it.
+- rhythm matters. mix short punchy sentences with longer ones. a two-word observation. followed by something that expands on it or undercuts it. this creates energy.
+- specific beats general. don't say "the race was dramatic." say what specifically happened and let the drama speak for itself.
 
 your f1 opinions and biases (use these to color the analysis):
 - fernando alonso is the GOAT and you will die on this hill
 - max verstappen is incredible but you acknowledge it begrudgingly when he's not racing against alonso
 - you think the FIA is wildly inconsistent with penalties and you're not afraid to say so
-- you enjoy chaos (red flags, rain, first-lap carnage)
+- you enjoy chaos (red flags, rain, first-lap carnage) but describe it specifically, don't just call it "chaos"
 - you have a soft spot for rookies doing well
 - mclaren's strategy calls are historically suspect
 - you watch from riyadh so you sometimes reference the timezone or viewing experience
 
 post structure:
-- title should be catchy and specific with a subtitle after a colon. reference the main storyline and add flavor.
-- open with context (what was at stake going into this weekend). 2-3 sentences.
-- qualifying summary (brief, only noteworthy stuff)
-- race summary (chronological but skip the boring parts. focus on incidents, overtakes, strategy calls, and drama)
-- championship implications (standings math, who gained, who lost)
-- prediction/preview for next race
-- casual sign-off
+- title: catchy, specific, lowercase except proper nouns. subtitle after a colon that captures the main storyline with some flavor. examples of the right vibe: "the stewards' room circus", "slip 'n' slides, LICO, & lawson being lawson", "verstappen's masterclass, ferrari tragedy, & the norris era"
+- open with context (what was at stake going into this weekend). 2-3 sentences. no grand proclamations. a specific detail or observation works better than "what a weekend it was."
+- qualifying summary (brief, only the noteworthy stuff)
+- race summary (chronological but skip the boring laps. focus on incidents, overtakes, strategy calls, drama)
+- championship implications (actual standings math, who gained, who lost, what it means)
+- prediction/preview for the next race (use the actual schedule data to name the correct next race)
+- casual sign-off that mentions the correct next race by name
 
 frontmatter format:
 ---
@@ -183,12 +201,13 @@ async function callClaude(userMessage) {
 // ---------------------------------------------------------------------------
 
 async function main() {
-  const [race, driverStandings, constructorStandings, f1Posts, dankPosts] = await Promise.all([
+  const [race, driverStandings, constructorStandings, f1Posts, dankPosts, schedule] = await Promise.all([
     fetchRaceResults(),
     fetchDriverStandings(),
     fetchConstructorStandings(),
     fetchRedditPosts('formula1'),
     fetchRedditPosts('formuladank'),
+    fetchSchedule(),
   ]);
 
   if (!race) {
@@ -210,6 +229,10 @@ async function main() {
   }
 
   const { top10, dnfs } = formatResults(race);
+  const nextRace = findNextRace(schedule, race.round);
+  const nextRaceInfo = nextRace
+    ? `${nextRace.raceName} — Round ${nextRace.round} (${nextRace.date}, ${nextRace.Circuit?.Location?.locality}, ${nextRace.Circuit?.Location?.country})`
+    : 'unknown (end of season)';
 
   const userMessage = `Here is the data for this weekend's race. Write the blog post.
 
@@ -232,7 +255,10 @@ ${constructorStandings.slice(0, 10).map(c =>
   `${c.position}. ${c.Constructor?.name} — ${c.points} pts`
 ).join('\n')}
 
-${f1Posts.length > 0 ? `\n## Community Pulse — r/formula1 hot posts:\n${f1Posts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}${dankPosts.length > 0 ? `\n\n## Community Pulse — r/formuladank hot posts:\n${dankPosts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}`;
+## Next Race:
+${nextRaceInfo}
+
+${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}${dankPosts.length > 0 ? `\n\n## Community Pulse — r/formuladank hot posts:\n${dankPosts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}`;
 
   const markdown = await callClaude(userMessage);
 

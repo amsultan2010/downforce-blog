@@ -24,6 +24,17 @@ const [featuredPost, ...restPosts] = recentPosts;
       {Array.from({length:10}).map((_,i) => <div class="hero-streak" style={`--i:${i}`}></div>)}
     </div>
 
+    <div class="hero-particles" aria-hidden="true">
+      {Array.from({length:12}).map((_,i) => {
+        const left = 5 + i * 8;
+        const dur  = 5 + (i % 4) * 1.1;
+        const del  = i * 0.55;
+        const sz   = 2 + (i % 3) * 2;
+        const col  = i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--amber)' : 'var(--blue)';
+        return <div class="hero-particle" style={`left:${left}%;animation-duration:${dur}s;animation-delay:${del}s;width:${sz}px;height:${sz}px;background:${col}`}></div>;
+      })}
+    </div>
+
     <div class="container hero-inner">
       <div class="hero-accent-line" aria-hidden="true"></div>
       <h1 class="hero-title" aria-label="the downforce blog">
@@ -107,12 +118,35 @@ const [featuredPost, ...restPosts] = recentPosts;
     </div>
   </section>
 
+  <!-- Stats band -->
+  <section class="stats-band" aria-label="Blog statistics">
+    <div class="container stats-inner">
+      <div class="stat-item reveal-scale" style="transition-delay:0s">
+        <span class="stat-num" data-target="23">0</span>
+        <span class="stat-unit">races</span>
+        <span class="stat-label">on the 2025 calendar</span>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item reveal-scale" style="transition-delay:0.12s">
+        <span class="stat-num" data-target="10">0</span>
+        <span class="stat-unit">teams</span>
+        <span class="stat-label">covered every race</span>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item reveal-scale" style="transition-delay:0.24s">
+        <span class="stat-num" data-target="100">0</span>
+        <span class="stat-unit">%</span>
+        <span class="stat-label">unfiltered takes</span>
+      </div>
+    </div>
+  </section>
+
   <!-- Posts grid -->
   <section class="posts-section" id="posts">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-label">latest</h2>
-        <a href="/posts" class="see-all">all posts →</a>
+        <h2 class="section-label"><span class="label-dot" aria-hidden="true"></span>latest</h2>
+        <a href="/posts" class="see-all reveal-right">all posts →</a>
       </div>
 
       {featuredPost && (
@@ -561,6 +595,111 @@ const [featuredPost, ...restPosts] = recentPosts;
     font-size: 1rem;
     font-style: italic;
   }
+
+  /* ─── hero particles ─── */
+  .hero-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .hero-particle {
+    position: absolute;
+    bottom: -8px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: floatUp linear infinite;
+    will-change: transform, opacity;
+  }
+
+  @media (max-width: 600px) {
+    .hero-particle { display: none; }
+  }
+
+  /* ─── stats band ─── */
+  .stats-band {
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(243,237,225,0.06);
+    border-bottom: 1px solid rgba(243,237,225,0.06);
+    padding: 3.5rem 0;
+    overflow: hidden;
+  }
+
+  .stats-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 140px;
+    padding: 1rem 2rem;
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--text-light);
+    display: flex;
+    align-items: baseline;
+  }
+
+  .stat-unit {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3vw, 1.75rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 0.1rem;
+  }
+
+  .stat-label {
+    font-size: 0.8125rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-light-muted);
+    text-align: center;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, rgba(243,237,225,0.15), transparent);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 560px) {
+    .stats-inner { gap: 0; }
+    .stat-divider { width: 80px; height: 1px; }
+    .stat-item { padding: 1.25rem 1rem; min-width: 100px; }
+  }
+
+  /* ─── section label pulse dot ─── */
+  .label-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    animation: pulseDot 2s ease-in-out infinite;
+    position: relative;
+    top: -1px;
+  }
 </style>
 
 <script>
@@ -583,6 +722,27 @@ const [featuredPost, ...restPosts] = recentPosts;
       (img as HTMLElement).style.setProperty('--py', (window.scrollY * (speeds[i] ?? 0.05)).toFixed(1) + 'px');
     });
   }, { passive: true });
+
+  // Count-up for stats
+  const countEls = document.querySelectorAll<HTMLElement>('.stat-num[data-target]');
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target as HTMLElement;
+      const target = parseInt(el.dataset.target ?? '0', 10);
+      const duration = 1200;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(eased * target).toString();
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      countObserver.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  countEls.forEach(el => countObserver.observe(el));
 
   // Magnetic CTA
   const cta = document.getElementById('hero-cta');

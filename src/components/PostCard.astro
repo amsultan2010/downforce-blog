@@ -18,6 +18,7 @@ const dateStr = date.toLocaleDateString('en-GB', {
 
 <article class:list={['post-card', { featured }]}>
   <a href={`/posts/${post.id}`} class="card-link" tabindex="-1" aria-hidden="true"></a>
+  <div class="shimmer-layer" aria-hidden="true"></div>
 
   <div class="card-meta">
     <time datetime={date.toISOString()} class="card-date">{dateStr}</time>
@@ -53,9 +54,27 @@ const dateStr = date.toLocaleDateString('en-GB', {
     transition: box-shadow 0.25s var(--ease-out-quint), transform 0.25s var(--ease-out-quint);
   }
 
-  /* shimmer sweep on hover */
+  /* gradient bottom border sweep */
   .post-card::after {
     content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--amber), var(--blue));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-out-quint);
+    pointer-events: none;
+  }
+
+  .post-card:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* shimmer sweep on top layer */
+  .post-card .shimmer-layer {
     position: absolute;
     inset: 0;
     background: linear-gradient(105deg, transparent 40%, rgba(243,237,225,0.07) 50%, transparent 60%);
@@ -63,7 +82,7 @@ const dateStr = date.toLocaleDateString('en-GB', {
     pointer-events: none;
   }
 
-  .post-card:hover::after {
+  .post-card:hover .shimmer-layer {
     animation: shimmer 0.6s var(--ease-out-quint) forwards;
   }
 
@@ -80,12 +99,23 @@ const dateStr = date.toLocaleDateString('en-GB', {
   }
 
   .post-card:hover {
-    box-shadow: 0 8px 32px rgba(27, 58, 38, 0.12);
-    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(232, 74, 37, 0.1), 0 2px 12px rgba(27, 58, 38, 0.08);
+    transform: translateY(-3px);
   }
 
   .post-card:hover::before {
     opacity: 1;
+  }
+
+  /* mobile: tap feedback instead of hover */
+  @media (hover: none) {
+    .post-card:active {
+      transform: scale(0.985);
+      box-shadow: 0 2px 12px rgba(232, 74, 37, 0.12);
+    }
+    .post-card:active::after {
+      transform: scaleX(1);
+    }
   }
 
   /* Featured card */

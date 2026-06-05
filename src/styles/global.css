@@ -250,6 +250,28 @@ h1, h2, h3, h4, h5, h6 {
   filter: blur(0);
 }
 
+.reveal-right {
+  opacity: 0;
+  transform: translateX(32px);
+  filter: blur(4px);
+  transition: opacity 0.65s var(--ease-out-quint), transform 0.65s var(--ease-out-quint), filter 0.65s var(--ease-out-quint);
+}
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.88);
+  transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint);
+}
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
 /* ─── reading progress bar ─── */
 #read-progress {
   position: fixed;
@@ -267,4 +289,34 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes shimmer {
   from { transform: translateX(-100%) skewX(-12deg); }
   to   { transform: translateX(220%) skewX(-12deg); }
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  8%   { opacity: 0.8; }
+  85%  { opacity: 0.4; }
+  100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.6); }
+}
+
+@keyframes borderSweep {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes statGlow {
+  0%, 100% { text-shadow: none; }
+  50%       { text-shadow: 0 0 24px currentColor; }
+}
+
+/* ─── reduced motion: kill all decorative animations ─── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1; transform: none; filter: none; transition: none;
+  }
+  .hero-particle { display: none; }
 }

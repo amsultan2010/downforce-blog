@@ -17,6 +17,7 @@
   --amber: #D4952A;
   --border: #CFC9BB;
   --border-strong: #B0A898;
+  --header-bg: rgba(243, 237, 225, 0.9);
 
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body: 'Jost', sans-serif;
@@ -31,6 +32,23 @@
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
+/* ─── dark mode ─── */
+[data-theme="dark"] {
+  --bg: #111C14;
+  --bg-card: #172018;
+  --bg-dark: #0A1310;
+  --bg-dark-mid: #0F1A12;
+  --text: #DDD8CC;
+  --text-muted: #7A9E82;
+  --text-light: #DDD8CC;
+  --text-light-muted: #4A7A55;
+  --green: #0A1310;
+  --green-mid: #1B3A26;
+  --border: #243528;
+  --border-strong: #3A5040;
+  --header-bg: rgba(17, 28, 20, 0.92);
+}
+
 /* ─── reset ─── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -39,10 +57,14 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 18px;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 600px) {
+  html { font-size: 16px; }
 }
 
 body {

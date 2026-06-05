@@ -60,6 +60,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       rel="stylesheet"
     />
     <slot name="head" />
+    <!-- dark mode: set before paint to prevent flash -->
+    <script is:inline>
+      (function() {
+        const t = localStorage.getItem('df-theme');
+        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      })();
+    </script>
   </head>
 
   <body>

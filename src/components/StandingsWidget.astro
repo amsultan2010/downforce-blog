@@ -1,0 +1,241 @@
+---
+// All data fetched client-side from Jolpica API
+---
+
+<section class="standings-section reveal-on-scroll" id="standings">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-label">2025 standings</h2>
+      <span class="standings-round" id="standings-round"></span>
+    </div>
+
+    <div class="standings-grid">
+      <div class="standings-panel">
+        <h3 class="standings-panel-title">drivers championship</h3>
+        <ol class="standings-list" id="drivers-list" aria-label="Driver standings">
+          {Array.from({ length: 10 }).map(() => (
+            <li class="standings-row skeleton">
+              <span class="s-pos"></span>
+              <span class="s-name"></span>
+              <span class="s-pts"></span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="standings-panel">
+        <h3 class="standings-panel-title">constructors championship</h3>
+        <ol class="standings-list" id="constructors-list" aria-label="Constructor standings">
+          {Array.from({ length: 10 }).map(() => (
+            <li class="standings-row skeleton">
+              <span class="s-pos"></span>
+              <span class="s-name"></span>
+              <span class="s-pts"></span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+
+    <p class="standings-error" id="standings-error" hidden>standings unavailable — api offline</p>
+  </div>
+</section>
+
+<style>
+  .standings-section {
+    padding: 4rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .standings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (max-width: 720px) {
+    .standings-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .standings-panel-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .standings-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .standings-row {
+    display: grid;
+    grid-template-columns: 2rem 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9375rem;
+    transition: background 0.15s ease, padding 0.15s ease, margin 0.15s ease;
+  }
+
+  .standings-row:first-child { border-top: 1px solid var(--border); }
+
+  .standings-row:hover {
+    background: var(--bg-card);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin: 0 -0.5rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .s-pos {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .standings-row:nth-child(1) .s-pos { color: var(--amber); }
+  .standings-row:nth-child(2) .s-pos,
+  .standings-row:nth-child(3) .s-pos { color: var(--text-muted); }
+
+  .s-name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .driver-full {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 0.9375rem;
+  }
+
+  .driver-team {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+
+  .s-pts {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .pts-label {
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-left: 0.2rem;
+    text-transform: uppercase;
+  }
+
+  .skeleton .s-pos,
+  .skeleton .s-name,
+  .skeleton .s-pts {
+    background: var(--border);
+    border-radius: 3px;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+
+  .skeleton .s-pos { width: 1.5rem; height: 1rem; display: block; }
+  .skeleton .s-name { width: 8rem; height: 1.2rem; display: block; }
+  .skeleton .s-pts { width: 3rem; height: 1rem; display: block; }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.7; }
+  }
+
+  .standings-round {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    font-style: italic;
+  }
+
+  .standings-error {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<script>
+  const BASE = 'https://api.jolpi.ca/ergast/f1';
+
+  function renderDrivers(standings: any[]) {
+    const list = document.getElementById('drivers-list');
+    if (!list) return;
+    list.innerHTML = standings.map((d: any) => `
+      <li class="standings-row">
+        <span class="s-pos">${d.position}</span>
+        <span class="s-name">
+          <span class="driver-full">${d.Driver.givenName} ${d.Driver.familyName}</span>
+          <span class="driver-team">${d.Constructors[0]?.name ?? ''}</span>
+        </span>
+        <span class="s-pts">${d.points}<span class="pts-label">pts</span></span>
+      </li>
+    `).join('');
+  }
+
+  function renderConstructors(standings: any[]) {
+    const list = document.getElementById('constructors-list');
+    if (!list) return;
+    list.innerHTML = standings.map((c: any) => `
+      <li class="standings-row">
+        <span class="s-pos">${c.position}</span>
+        <span class="s-name">
+          <span class="driver-full">${c.Constructor.name}</span>
+          <span class="driver-team">${c.Constructor.nationality}</span>
+        </span>
+        <span class="s-pts">${c.points}<span class="pts-label">pts</span></span>
+      </li>
+    `).join('');
+  }
+
+  async function loadStandings() {
+    try {
+      const [dRes, cRes] = await Promise.all([
+        fetch(`${BASE}/current/driverStandings/`),
+        fetch(`${BASE}/current/constructorStandings/`),
+      ]);
+      if (!dRes.ok || !cRes.ok) throw new Error('api error');
+
+      const dData = await dRes.json();
+      const cData = await cRes.json();
+
+      const dList = dData.MRData?.StandingsTable?.StandingsLists?.[0];
+      const cList = cData.MRData?.StandingsTable?.StandingsLists?.[0];
+
+      if (dList) {
+        const roundEl = document.getElementById('standings-round');
+        if (roundEl) roundEl.textContent = `after round ${dList.round}`;
+        renderDrivers(dList.DriverStandings.slice(0, 10));
+      }
+      if (cList) {
+        renderConstructors(cList.ConstructorStandings.slice(0, 10));
+      }
+    } catch {
+      const errEl = document.getElementById('standings-error');
+      if (errEl) errEl.hidden = false;
+      document.getElementById('drivers-list')?.remove();
+      document.getElementById('constructors-list')?.remove();
+    }
+  }
+
+  loadStandings();
+</script>

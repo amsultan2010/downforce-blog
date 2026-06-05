@@ -50,8 +50,8 @@ async function fetchRedditPosts(subreddit) {
   console.log(`Fetching r/${subreddit} hot posts...`);
   try {
     const data = await fetchJson(
-      `https://www.reddit.com/r/${subreddit}/hot.json?limit=15`,
-      { 'User-Agent': 'Mozilla/5.0 (compatible; downforce-blog/1.0)' }
+      `https://old.reddit.com/r/${subreddit}/hot.json?limit=15`,
+      { 'User-Agent': 'downforce-blog:v1.0 (by /u/yourusername)' }
     );
     return (data?.data?.children ?? []).map(p => ({
       title: p.data.title,
@@ -73,7 +73,7 @@ function isRaceFromThisWeekend(race) {
   const raceDate = new Date(race.date);
   const now = new Date();
   const daysDiff = (now - raceDate) / (1000 * 60 * 60 * 24);
-  return daysDiff >= 0 && daysDiff <= 7;
+  return daysDiff >= 0 && daysDiff <= 14;
 }
 
 function toKebabCase(str) {

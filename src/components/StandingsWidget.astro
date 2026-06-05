@@ -1,7 +1,7 @@
 ---
 ---
 
-<section class="sw" id="standings">
+<section id="standings">
 
   <div class="sw-head">
     <div class="sw-head-left">
@@ -17,7 +17,7 @@
   </div>
 
   <div class="sw-tabs" role="tablist">
-    <button class="sw-tab active" data-tab="drivers" role="tab">drivers</button>
+    <button class="sw-tab sw-tab-active" data-tab="drivers" role="tab">drivers</button>
     <button class="sw-tab" data-tab="constructors" role="tab">constructors</button>
   </div>
 
@@ -36,7 +36,7 @@
     </button>
   </div>
 
-  <div class="sw-panel sw-hidden" id="panel-constructors">
+  <div class="sw-panel sw-panel-hidden" id="panel-constructors">
     <ul class="sw-list" id="constructors-list" aria-label="Constructor standings">
       {Array.from({ length: 10 }).map((_, i) => (
         <li class="sw-row sw-skeleton" style={`--i:${i}`}>
@@ -52,41 +52,41 @@
 
 </section>
 
-<style>
+<!-- is:global so CSS applies to innerHTML-injected rows too -->
+<style is:global>
   /* ── shell ── */
-  .sw {
+  #standings {
     background: #080f09;
     padding: 5rem 0 3rem;
     position: relative;
     overflow: hidden;
+    font-size: 16px; /* reset so rem values inside widget use 16px */
   }
 
-  /* grid lines */
-  .sw::before {
+  #standings::before {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
     background-size: 80px 80px;
     pointer-events: none;
   }
 
-  /* orange ambient glow */
-  .sw::after {
+  #standings::after {
     content: '';
     position: absolute;
     bottom: -120px; left: -120px;
     width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(194,84,40,0.15) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(194,84,40,0.14) 0%, transparent 65%);
     pointer-events: none;
   }
 
-  .sw > * { position: relative; z-index: 1; }
+  #standings > * { position: relative; z-index: 1; }
 
   /* ── header ── */
-  .sw-head {
+  #standings .sw-head {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 1.5rem 2rem;
@@ -97,10 +97,10 @@
     border-bottom: 1px solid rgba(255,255,255,0.07);
   }
 
-  .sw-eyebrow {
+  #standings .sw-eyebrow {
     display: block;
-    font-family: var(--font-display);
-    font-size: 0.7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -108,9 +108,9 @@
     margin-bottom: 0.3rem;
   }
 
-  .sw-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 7vw, 5.5rem);
+  #standings .sw-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
     font-weight: 800;
     letter-spacing: -0.04em;
     color: #F3EDE1;
@@ -118,7 +118,7 @@
     text-transform: uppercase;
   }
 
-  .sw-head-right {
+  #standings .sw-head-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -126,19 +126,19 @@
     padding-bottom: 0.4rem;
   }
 
-  .sw-season {
-    font-family: var(--font-display);
+  #standings .sw-season {
+    font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.875rem;
     font-style: italic;
     color: rgba(243,237,225,0.4);
     letter-spacing: 0.04em;
   }
 
-  .sw-live-badge {
+  #standings .sw-live-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-family: var(--font-display);
+    font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -150,38 +150,37 @@
     border-radius: 100px;
   }
 
-  .sw-dot {
+  #standings .sw-dot {
     width: 5px; height: 5px;
     border-radius: 50%;
     background: #3ddc84;
     position: relative;
+    flex-shrink: 0;
   }
-  .sw-dot::after {
+  #standings .sw-dot::after {
     content: '';
     position: absolute;
     inset: -4px;
     border-radius: 50%;
     background: rgba(61,220,132,0.3);
-    animation: dotPulse 2s ease-out infinite;
+    animation: swDotPulse 2s ease-out infinite;
   }
-  @keyframes dotPulse {
-    0% { transform: scale(0.5); opacity: 1; }
+  @keyframes swDotPulse {
+    0%   { transform: scale(0.5); opacity: 1; }
     100% { transform: scale(2.8); opacity: 0; }
   }
 
   /* ── tabs ── */
-  .sw-tabs {
+  #standings .sw-tabs {
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 2.5rem auto 0;
     padding: 0 1.5rem;
     display: flex;
-    gap: 0;
     border-bottom: 1px solid rgba(255,255,255,0.07);
-    margin-top: 2.5rem;
   }
 
-  .sw-tab {
-    font-family: var(--font-display);
+  #standings .sw-tab {
+    font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -191,149 +190,170 @@
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     cursor: pointer;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
     transition: color 0.2s, border-color 0.2s;
   }
-  .sw-tab:hover { color: rgba(243,237,225,0.65); }
-  .sw-tab.active {
+  #standings .sw-tab:hover { color: rgba(243,237,225,0.65); }
+  #standings .sw-tab.sw-tab-active {
     color: #F3EDE1;
     border-bottom-color: #C25428;
   }
 
   /* ── panel ── */
-  .sw-panel {
+  #standings .sw-panel {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 1.5rem;
   }
-  .sw-hidden { display: none; }
+  #standings .sw-panel-hidden { display: none; }
 
   /* ── list ── */
-  .sw-list {
+  #standings .sw-list {
     list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
   }
 
   /* ── row ── */
-  .sw-row {
+  #standings .sw-row {
     display: grid;
-    grid-template-columns: 5.5rem 6px 1fr auto;
+    grid-template-columns: 64px 5px 1fr auto;
     align-items: center;
     gap: 0;
-    min-height: 88px;
-    padding: 1.1rem 0 1.1rem 0;
+    min-height: 80px;
+    padding: 1rem 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     position: relative;
     overflow: hidden;
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateX(-16px);
+    cursor: default;
   }
+  #standings .sw-row:first-child { border-top: 1px solid rgba(255,255,255,0.05); }
 
-  .sw-row:first-child { border-top: 1px solid rgba(255,255,255,0.05); }
-
-  .sw-row.live {
-    animation: rowSlide 0.45s cubic-bezier(0.22,1,0.36,1) calc(var(--i,0) * 50ms) both;
+  /* row enter */
+  #standings .sw-row.sw-live {
+    animation: swRowIn 0.45s cubic-bezier(0.22,1,0.36,1) calc(var(--i,0) * 50ms) both;
   }
-
-  @keyframes rowSlide {
-    from { opacity: 0; transform: translateX(-20px); }
+  @keyframes swRowIn {
+    from { opacity: 0; transform: translateX(-16px); }
     to   { opacity: 1; transform: none; }
   }
 
-  /* fill sweep */
-  .sw-row::after {
+  /* background fill sweep */
+  #standings .sw-row::after {
     content: '';
     position: absolute;
     inset: 0;
     width: var(--fill, 0%);
     background: var(--tc, transparent);
-    opacity: 0.045;
+    opacity: 0.04;
     pointer-events: none;
     transition: opacity 0.2s;
   }
-  .sw-row:hover::after { opacity: 0.09; }
+  #standings .sw-row:hover::after { opacity: 0.09; }
 
-  /* P1 gold shimmer */
-  .sw-row[data-p="1"] {
-    background: linear-gradient(90deg, rgba(212,149,42,0.07), transparent 55%);
+  /* P1 gold tint */
+  #standings .sw-row[data-p="1"] {
+    background: linear-gradient(90deg, rgba(212,149,42,0.07), transparent 50%);
   }
 
-  /* podium left accent */
-  .sw-row[data-p="1"] .sw-swatch,
-  .sw-row[data-p="2"] .sw-swatch,
-  .sw-row[data-p="3"] .sw-swatch {
-    opacity: 1;
+  /* ── skeleton override ── */
+  #standings .sw-skeleton {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    grid-template-columns: 64px 5px 1fr auto;
   }
+  #standings .sk {
+    display: block;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    animation: swShimmer 1.6s ease-in-out calc(var(--i,0) * 80ms) infinite;
+  }
+  @keyframes swShimmer {
+    0%, 100% { opacity: 0.18; }
+    50%       { opacity: 0.45; }
+  }
+  #standings .sk-pos  { width: 36px; height: 36px; margin: 0 auto; border-radius: 50%; }
+  #standings .sk-name { width: 140px; height: 18px; }
+  #standings .sk-pts  { width: 52px;  height: 26px; margin-left: auto; }
 
-  /* ── position ── */
-  .sw-pos {
-    font-family: var(--font-display);
-    font-size: 3rem;
+  /* ── position number ── */
+  #standings .sw-pos {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.5rem;
     font-weight: 800;
     text-align: center;
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
     position: relative;
     z-index: 1;
   }
 
-  /* ── swatch ── */
-  .sw-swatch {
+  /* ── team swatch ── */
+  #standings .sw-swatch {
     width: 4px;
     align-self: stretch;
-    margin: 0.4rem 1.1rem 0.4rem 0.5rem;
+    margin: 0.35rem 14px 0.35rem 6px;
     border-radius: 2px;
+    opacity: 0.75;
     position: relative;
     z-index: 1;
-    opacity: 0.7;
+    flex-shrink: 0;
   }
 
   /* ── body ── */
-  .sw-body {
+  #standings .sw-body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.2rem;
+    gap: 0.18rem;
     min-width: 0;
-    padding-right: 1.25rem;
+    padding-right: 1rem;
     position: relative;
     z-index: 1;
   }
 
-  .sw-name {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
+  #standings .sw-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.35rem;
     font-weight: 700;
     color: #F3EDE1;
     letter-spacing: 0.01em;
-    line-height: 1;
+    line-height: 1.05;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .sw-name strong {
+  #standings .sw-name strong {
     font-weight: 800;
     letter-spacing: 0.04em;
   }
 
-  .sw-sub {
-    font-size: 0.75rem;
-    color: rgba(243,237,225,0.4);
+  #standings .sw-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    color: rgba(243,237,225,0.38);
     font-weight: 300;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.06em;
     white-space: nowrap;
   }
 
-  /* gap bar */
-  .sw-gap-bar {
-    margin-top: 0.45rem;
+  #standings .sw-gap-bar {
+    margin-top: 0.4rem;
     height: 3px;
     background: rgba(255,255,255,0.07);
     border-radius: 2px;
     overflow: hidden;
-    max-width: 200px;
+    max-width: 180px;
   }
-  .sw-gap-fill {
+  #standings .sw-gap-fill {
     height: 100%;
     border-radius: 2px;
     transform-origin: left;
@@ -341,92 +361,72 @@
     transition: transform 1.1s cubic-bezier(0.22,1,0.36,1);
   }
 
-  /* ── pts block ── */
-  .sw-pts-block {
+  /* ── points block ── */
+  #standings .sw-pts-block {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 0.2rem;
-    min-width: 7rem;
+    min-width: 90px;
     position: relative;
     z-index: 1;
-    padding-right: 0.25rem;
+    padding-right: 4px;
   }
 
-  .sw-pts {
-    font-family: var(--font-display);
-    font-size: 2.25rem;
+  #standings .sw-pts {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
     font-weight: 800;
     color: #F3EDE1;
     line-height: 1;
     letter-spacing: -0.02em;
     white-space: nowrap;
   }
-  .sw-pts-unit {
-    font-size: 0.65rem;
+  #standings .sw-pts-unit {
+    font-size: 0.6rem;
     font-weight: 400;
-    color: rgba(243,237,225,0.35);
+    color: rgba(243,237,225,0.32);
     letter-spacing: 0.12em;
-    margin-left: 0.15rem;
+    margin-left: 2px;
     text-transform: uppercase;
   }
 
-  .sw-delta {
-    font-family: var(--font-display);
-    font-size: 0.72rem;
+  #standings .sw-delta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    color: rgba(243,237,225,0.28);
+    letter-spacing: 0.04em;
+    color: rgba(243,237,225,0.25);
     white-space: nowrap;
   }
-  .sw-delta.leader { color: #D4952A; }
+  #standings .sw-delta.sw-leader { color: #D4952A; }
 
-  /* ── expand btn ── */
-  .sw-more {
+  /* ── expand button ── */
+  #standings .sw-more {
     display: block;
     width: 100%;
     margin: 1.25rem 0 0.5rem;
-    padding: 1rem;
-    font-family: var(--font-display);
-    font-size: 0.8rem;
+    padding: 0.9rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(243,237,225,0.4);
+    color: rgba(243,237,225,0.38);
     border: 1px solid rgba(255,255,255,0.07);
     background: rgba(255,255,255,0.02);
     cursor: pointer;
     border-radius: 2px;
     transition: color 0.2s, background 0.2s, border-color 0.2s;
   }
-  .sw-more:hover {
+  #standings .sw-more:hover {
     color: #F3EDE1;
     background: rgba(255,255,255,0.05);
     border-color: rgba(255,255,255,0.14);
   }
 
-  /* ── skeleton ── */
-  .sw-skeleton {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .sk {
-    display: block;
-    background: rgba(255,255,255,0.05);
-    border-radius: 3px;
-    animation: skShimmer 1.6s ease-in-out infinite;
-    animation-delay: calc(var(--i,0) * 80ms);
-  }
-  @keyframes skShimmer {
-    0%, 100% { opacity: 0.2; }
-    50%       { opacity: 0.5; }
-  }
-  .sk-pos  { width: 2.5rem; height: 2.5rem; margin: 0 auto; border-radius: 50%; }
-  .sk-name { width: 11rem; height: 1.25rem; }
-  .sk-pts  { width: 4rem; height: 1.75rem; margin-left: auto; }
-
   /* ── error ── */
-  .sw-err {
+  #standings .sw-err {
     max-width: 1100px;
     margin: 2rem auto;
     padding: 0 1.5rem;
@@ -438,12 +438,12 @@
 
   /* ── responsive ── */
   @media (max-width: 600px) {
-    .sw-row { grid-template-columns: 4rem 5px 1fr auto; min-height: 72px; }
-    .sw-pos  { font-size: 2.25rem; }
-    .sw-name { font-size: 1.2rem; }
-    .sw-pts  { font-size: 1.75rem; }
-    .sw-pts-block { min-width: 5.5rem; }
-    .sw-gap-bar { max-width: 120px; }
+    #standings .sw-row { grid-template-columns: 52px 4px 1fr auto; min-height: 68px; }
+    #standings .sw-pos  { font-size: 1.9rem; }
+    #standings .sw-name { font-size: 1.1rem; }
+    #standings .sw-pts  { font-size: 1.6rem; }
+    #standings .sw-pts-block { min-width: 72px; }
+    #standings .sw-gap-bar { max-width: 110px; }
   }
 </style>
 
@@ -452,39 +452,40 @@
   const TOP = 10;
 
   const COLORS: Record<string,string> = {
-    'McLaren':      '#FF8000',
-    'Red Bull':     '#1E41CB',
-    'Ferrari':      '#E8002D',
-    'Mercedes':     '#27F4D2',
-    'Aston Martin': '#229971',
-    'Alpine':       '#FF87BC',
-    'Williams':     '#64C4FF',
-    'RB':           '#6692FF',
-    'Visa Cash App':'#6692FF',
-    'Kick Sauber':  '#52E252',
-    'Sauber':       '#52E252',
-    'Haas':         '#E8E8E8',
-    'Audi':         '#C0C0C0',
-    'Cadillac':     '#888888',
+    'McLaren':       '#FF8000',
+    'Red Bull':      '#1E41CB',
+    'Ferrari':       '#E8002D',
+    'Mercedes':      '#27F4D2',
+    'Aston Martin':  '#229971',
+    'Alpine':        '#FF87BC',
+    'Williams':      '#64C4FF',
+    'RB':            '#6692FF',
+    'Visa Cash App': '#6692FF',
+    'Kick Sauber':   '#52E252',
+    'Sauber':        '#52E252',
+    'Haas':          '#E8E8E8',
+    'Audi':          '#C0C0C0',
+    'Cadillac':      '#888888',
   };
 
   function color(name: string) {
-    for (const [k,v] of Object.entries(COLORS)) {
+    for (const [k, v] of Object.entries(COLORS)) {
       if (name.includes(k)) return v;
     }
     return '#888888';
   }
 
   function driverRow(d: any, i: number, maxPts: number): string {
-    const tc = color(d.Constructors?.[0]?.name ?? '');
-    const pts = parseFloat(d.points);
+    const tc   = color(d.Constructors?.[0]?.name ?? '');
+    const pts  = parseFloat(d.points);
     const ratio = maxPts > 0 ? pts / maxPts : 0;
-    const fillPct = (ratio * 100).toFixed(1) + '%';
-    const delta = i === 0 ? '◆ championship leader' : `−${(maxPts - pts).toFixed(0)} pts`;
-    const last = d.Driver.familyName.toUpperCase();
+    const fill  = (ratio * 100).toFixed(1) + '%';
+    const delta = i === 0 ? '◆ leader' : `−${(maxPts - pts).toFixed(0)} pts`;
+    const leaderCls = i === 0 ? ' sw-leader' : '';
+    const last  = d.Driver.familyName.toUpperCase();
     const first = d.Driver.givenName[0] + '.';
-    const team = d.Constructors?.[0]?.name ?? '';
-    return `<li class="sw-row" data-p="${d.position}" style="--tc:${tc};--fill:${fillPct};--i:${i}">
+    const team  = d.Constructors?.[0]?.name ?? '';
+    return `<li class="sw-row" data-p="${d.position}" style="--tc:${tc};--fill:${fill};--i:${i}">
       <span class="sw-pos" style="color:${tc}">${d.position}</span>
       <span class="sw-swatch" style="background:${tc}"></span>
       <span class="sw-body">
@@ -494,18 +495,19 @@
       </span>
       <span class="sw-pts-block">
         <span class="sw-pts">${d.points}<span class="sw-pts-unit">pts</span></span>
-        <span class="sw-delta ${i===0?'leader':''}">${delta}</span>
+        <span class="sw-delta${leaderCls}">${delta}</span>
       </span>
     </li>`;
   }
 
   function constructorRow(c: any, i: number, maxPts: number): string {
-    const tc = color(c.Constructor.name);
-    const pts = parseFloat(c.points);
+    const tc   = color(c.Constructor.name);
+    const pts  = parseFloat(c.points);
     const ratio = maxPts > 0 ? pts / maxPts : 0;
-    const fillPct = (ratio * 100).toFixed(1) + '%';
-    const delta = i === 0 ? '◆ championship leader' : `−${(maxPts - pts).toFixed(0)} pts`;
-    return `<li class="sw-row" data-p="${c.position}" style="--tc:${tc};--fill:${fillPct};--i:${i}">
+    const fill  = (ratio * 100).toFixed(1) + '%';
+    const delta = i === 0 ? '◆ leader' : `−${(maxPts - pts).toFixed(0)} pts`;
+    const leaderCls = i === 0 ? ' sw-leader' : '';
+    return `<li class="sw-row" data-p="${c.position}" style="--tc:${tc};--fill:${fill};--i:${i}">
       <span class="sw-pos" style="color:${tc}">${c.position}</span>
       <span class="sw-swatch" style="background:${tc}"></span>
       <span class="sw-body">
@@ -515,14 +517,14 @@
       </span>
       <span class="sw-pts-block">
         <span class="sw-pts">${c.points}<span class="sw-pts-unit">pts</span></span>
-        <span class="sw-delta ${i===0?'leader':''}">${delta}</span>
+        <span class="sw-delta${leaderCls}">${delta}</span>
       </span>
     </li>`;
   }
 
   function animate(list: HTMLElement) {
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      list.querySelectorAll<HTMLElement>('.sw-row').forEach(r => r.classList.add('live'));
+      list.querySelectorAll<HTMLElement>('.sw-row').forEach(r => r.classList.add('sw-live'));
       list.querySelectorAll<HTMLElement>('.sw-gap-fill').forEach(el => {
         el.style.transform = `scaleX(${el.dataset.r ?? 0})`;
       });
@@ -532,37 +534,37 @@
   let allDrivers: any[] = [];
 
   function showDrivers(drivers: any[], all = false) {
-    const list = document.getElementById('drivers-list') as HTMLElement;
-    const btn  = document.getElementById('expand-drivers') as HTMLButtonElement;
-    const cnt  = document.getElementById('expand-count');
+    const list = document.getElementById('drivers-list') as HTMLElement | null;
+    const btn  = document.getElementById('expand-drivers') as HTMLButtonElement | null;
+    const cnt  = document.getElementById('expand-count') as HTMLElement | null;
     if (!list) return;
-    const shown = all ? drivers : drivers.slice(0, TOP);
-    const max   = parseFloat(drivers[0]?.points ?? 1);
-    list.innerHTML = shown.map((d,i) => driverRow(d,i,max)).join('');
-    if (!all && drivers.length > TOP) {
+    const shown  = all ? drivers : drivers.slice(0, TOP);
+    const maxPts = parseFloat(drivers[0]?.points ?? '1');
+    list.innerHTML = shown.map((d, i) => driverRow(d, i, maxPts)).join('');
+    if (!all && drivers.length > TOP && btn) {
       btn.hidden = false;
       if (cnt) cnt.textContent = String(drivers.length);
-    } else {
+    } else if (btn) {
       btn.hidden = true;
     }
     animate(list);
   }
 
   function showConstructors(ctors: any[]) {
-    const list = document.getElementById('constructors-list') as HTMLElement;
+    const list = document.getElementById('constructors-list') as HTMLElement | null;
     if (!list) return;
-    const max = parseFloat(ctors[0]?.points ?? 1);
-    list.innerHTML = ctors.map((c,i) => constructorRow(c,i,max)).join('');
+    const maxPts = parseFloat(ctors[0]?.points ?? '1');
+    list.innerHTML = ctors.map((c, i) => constructorRow(c, i, maxPts)).join('');
     animate(list);
   }
 
-  // tabs
+  // tab switching
   document.querySelectorAll<HTMLButtonElement>('.sw-tab').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.sw-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.sw-panel').forEach(p => p.classList.add('sw-hidden'));
-      document.getElementById(`panel-${btn.dataset.tab}`)?.classList.remove('sw-hidden');
+      document.querySelectorAll('.sw-tab').forEach(t => t.classList.remove('sw-tab-active'));
+      btn.classList.add('sw-tab-active');
+      document.querySelectorAll('.sw-panel').forEach(p => p.classList.add('sw-panel-hidden'));
+      document.getElementById(`panel-${btn.dataset.tab}`)?.classList.remove('sw-panel-hidden');
     });
   });
 

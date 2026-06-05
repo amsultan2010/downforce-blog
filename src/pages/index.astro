@@ -7,7 +7,8 @@ import StandingsWidget from '../components/StandingsWidget.astro';
 const allPosts = await getCollection('posts');
 const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const [featuredPost, ...restPosts] = posts;
+const recentPosts = posts.slice(0, 3);
+const [featuredPost, ...restPosts] = recentPosts;
 ---
 
 <BaseLayout

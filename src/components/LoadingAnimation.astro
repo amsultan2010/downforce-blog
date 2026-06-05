@@ -1,5 +1,4 @@
 ---
-// F1 start-lights sequence. Shown once per session (sessionStorage guard).
 ---
 
 <div id="page-loader" aria-hidden="true">
@@ -295,25 +294,17 @@
 <script>
   const loader = document.getElementById('page-loader');
 
-  if (!loader) {
-    // already removed
-  } else if (sessionStorage.getItem('df-loaded')) {
-    loader.remove();
-  } else {
-    sessionStorage.setItem('df-loaded', '1');
-
+  if (loader) {
     const pods = loader.querySelectorAll<HTMLElement>('.light-pod');
     const gantry = loader.querySelector<HTMLElement>('.lights-gantry');
     const wordmark = loader.querySelector<HTMLElement>('.loader-wordmark');
     const underline = loader.querySelector<HTMLElement>('.loader-underline');
     const tagline = loader.querySelector<HTMLElement>('.loader-tagline');
 
-    // Light each pod shortly after it bounces in
     pods.forEach((pod, i) => {
       setTimeout(() => pod.classList.add('lit'), 350 + i * 180);
     });
 
-    // Last pod lit at ~350 + 4*180 = 1070ms. Pause 300ms → 1370ms
     setTimeout(() => {
       gantry?.classList.add('lights-out');
       wordmark?.classList.add('slam');

@@ -1,282 +1,333 @@
 ---
-// All data fetched client-side from Jolpica API — shows all drivers/constructors
+// Client-side only — Jolpica API. Shows top 10 by default, expandable.
 ---
 
-<section class="standings-section reveal-on-scroll" id="standings">
-  <div class="container">
-    <div class="standings-header">
-      <div>
-        <h2 class="standings-title">championship standings</h2>
-        <span class="standings-round" id="standings-round">loading…</span>
-      </div>
-      <div class="live-badge">
-        <span class="live-dot"></span>
-        <span class="live-label">live</span>
+<section class="sw-section reveal-on-scroll" id="standings">
+
+  <!-- Header -->
+  <div class="sw-header">
+    <div class="sw-header-left">
+      <span class="sw-eyebrow">championship</span>
+      <h2 class="sw-title">standings</h2>
+    </div>
+    <div class="sw-header-right">
+      <span class="sw-round" id="sw-round">loading…</span>
+      <div class="sw-live">
+        <span class="sw-live-dot"></span>
+        <span>live</span>
       </div>
     </div>
-
-    <div class="standings-grid">
-      <div class="standings-panel">
-        <div class="panel-header">
-          <span class="panel-label">drivers</span>
-          <span class="panel-rule"></span>
-          <span class="panel-count" id="driver-count"></span>
-        </div>
-        <ol class="standings-list" id="drivers-list" aria-label="Driver standings">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <li class="standings-row skeleton" style={`animation-delay:${i*0.04}s`}>
-              <span class="sk-pos"></span>
-              <span class="sk-mid">
-                <span class="sk-name"></span>
-                <span class="sk-sub"></span>
-              </span>
-              <span class="sk-pts"></span>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <div class="standings-panel">
-        <div class="panel-header">
-          <span class="panel-label">constructors</span>
-          <span class="panel-rule"></span>
-          <span class="panel-count" id="constructor-count"></span>
-        </div>
-        <ol class="standings-list" id="constructors-list" aria-label="Constructor standings">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <li class="standings-row skeleton" style={`animation-delay:${i*0.05}s`}>
-              <span class="sk-pos"></span>
-              <span class="sk-mid">
-                <span class="sk-name"></span>
-                <span class="sk-sub"></span>
-              </span>
-              <span class="sk-pts"></span>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>
-
-    <p class="standings-error" id="standings-error" hidden>
-      standings unavailable — api offline
-    </p>
   </div>
+
+  <!-- Tabs -->
+  <div class="sw-tabs">
+    <button class="sw-tab active" data-tab="drivers">drivers</button>
+    <button class="sw-tab" data-tab="constructors">constructors</button>
+  </div>
+
+  <!-- Panels -->
+  <div class="sw-panel" id="panel-drivers">
+    <ol class="sw-list" id="drivers-list">
+      {Array.from({ length: 10 }).map((_, i) => (
+        <li class="sw-row sk" style={`--d:${i * 40}ms`}>
+          <span class="sk-block sk-pos"></span>
+          <span class="sk-block sk-name"></span>
+          <span class="sk-block sk-pts"></span>
+        </li>
+      ))}
+    </ol>
+    <button class="sw-expand" id="expand-drivers" hidden>
+      show all <span id="expand-drivers-count"></span> drivers ↓
+    </button>
+  </div>
+
+  <div class="sw-panel hidden" id="panel-constructors">
+    <ol class="sw-list" id="constructors-list">
+      {Array.from({ length: 10 }).map((_, i) => (
+        <li class="sw-row sk" style={`--d:${i * 40}ms`}>
+          <span class="sk-block sk-pos"></span>
+          <span class="sk-block sk-name"></span>
+          <span class="sk-block sk-pts"></span>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <p class="sw-error" id="sw-error" hidden>standings unavailable — api offline</p>
 </section>
 
 <style>
-  .standings-section {
-    background: var(--bg-dark);
-    padding: 5rem 0 5.5rem;
+  /* ─── section ─── */
+  .sw-section {
+    background: #0e1a10;
+    padding: 4.5rem 0;
     position: relative;
     overflow: hidden;
   }
 
-  /* subtle diagonal texture */
-  .standings-section::before {
+  /* halftone dot texture */
+  .sw-section::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: repeating-linear-gradient(
-      -45deg,
-      rgba(243,237,225,0.015) 0px,
-      rgba(243,237,225,0.015) 1px,
-      transparent 1px,
-      transparent 28px
-    );
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 22px 22px;
     pointer-events: none;
   }
 
-  /* ── header ── */
-  .standings-header {
+  /* accent glow top-right */
+  .sw-section::after {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(194,84,40,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .sw-section > * { position: relative; z-index: 1; }
+
+  /* ─── header ─── */
+  .sw-header {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 3rem;
-    gap: 1.5rem;
-    position: relative;
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
-  .standings-title {
+  .sw-eyebrow {
+    display: block;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C25428;
+    margin-bottom: 0.2rem;
+  }
+
+  .sw-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 800;
-    letter-spacing: -0.025em;
-    color: var(--text-light);
+    letter-spacing: -0.03em;
+    color: #F3EDE1;
     text-transform: lowercase;
-    line-height: 1;
-    margin-bottom: 0.45rem;
+    line-height: 0.95;
   }
 
-  .standings-round {
-    font-size: 1rem;
-    color: var(--text-light-muted);
-    font-style: italic;
-    letter-spacing: 0.02em;
-  }
-
-  .live-badge {
+  .sw-header-right {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     gap: 0.5rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .sw-round {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: rgba(243,237,225,0.45);
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
+
+  .sw-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #3ddc84;
     background: rgba(61,220,132,0.1);
     border: 1px solid rgba(61,220,132,0.2);
-    padding: 0.35rem 0.75rem;
+    padding: 0.25rem 0.6rem;
     border-radius: 2rem;
-    flex-shrink: 0;
-    margin-top: 0.25rem;
   }
 
-  .live-dot {
-    width: 7px;
-    height: 7px;
+  .sw-live-dot {
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: #3ddc84;
-    display: block;
     position: relative;
   }
 
-  .live-dot::after {
+  .sw-live-dot::after {
     content: '';
     position: absolute;
     inset: -4px;
     border-radius: 50%;
     background: rgba(61,220,132,0.3);
-    animation: livePulse 2s ease-out infinite;
+    animation: pulse 2s ease-out infinite;
   }
 
-  @keyframes livePulse {
+  @keyframes pulse {
     0% { transform: scale(0.5); opacity: 1; }
-    100% { transform: scale(2.2); opacity: 0; }
+    100% { transform: scale(2.5); opacity: 0; }
   }
 
-  .live-label {
+  /* ─── tabs ─── */
+  .sw-tabs {
+    display: flex;
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-top: 2rem;
+  }
+
+  .sw-tab {
     font-family: var(--font-display);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #3ddc84;
+    color: rgba(243,237,225,0.35);
+    padding: 0.75rem 1.5rem;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
   }
 
-  /* ── two-column grid ── */
-  .standings-grid {
+  .sw-tab:hover { color: rgba(243,237,225,0.7); }
+
+  .sw-tab.active {
+    color: #F3EDE1;
+    border-bottom-color: #C25428;
+  }
+
+  /* ─── panel ─── */
+  .sw-panel {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  .sw-panel.hidden { display: none; }
+
+  /* ─── list ─── */
+  .sw-list { display: flex; flex-direction: column; gap: 0; }
+
+  /* ─── row ─── */
+  .sw-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3.5rem;
-    position: relative;
-  }
-
-  @media (max-width: 860px) {
-    .standings-grid { grid-template-columns: 1fr; gap: 3rem; }
-  }
-
-  /* ── panel header ── */
-  .panel-header {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(243,237,225,0.12);
-  }
-
-  .panel-label {
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-light-muted);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .panel-rule {
-    flex: 1;
-    height: 1px;
-    background: rgba(243,237,225,0.08);
-  }
-
-  .panel-count {
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: rgba(243,237,225,0.25);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  /* ── rows ── */
-  .standings-list { display: flex; flex-direction: column; }
-
-  .standings-row {
-    display: grid;
-    grid-template-columns: 3rem 6px 1fr auto;
+    grid-template-columns: 4rem 8px 1fr auto;
     align-items: center;
     gap: 0;
-    padding: 0.6rem 0.5rem 0.6rem 0;
-    border-bottom: 1px solid rgba(243,237,225,0.05);
+    padding: 1rem 0.75rem 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.055);
     position: relative;
     cursor: default;
-    transition: background 0.18s ease, padding-left 0.18s ease;
-    border-radius: 2px;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: background 0.2s ease;
+    overflow: hidden;
   }
 
-  .standings-row:hover {
-    background: rgba(243,237,225,0.05);
-    padding-left: 0.4rem;
+  .sw-row.entered {
+    animation: rowIn 0.4s cubic-bezier(0.22,1,0.36,1) var(--d, 0ms) both;
   }
 
-  /* ── position number — color set inline by JS ── */
-  .s-pos {
+  @keyframes rowIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .sw-row:first-child { border-top: 1px solid rgba(255,255,255,0.055); }
+
+  /* background fill (points %) */
+  .sw-row::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: var(--fill, 0%);
+    background: var(--tc, transparent);
+    opacity: 0.04;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .sw-row:hover { background: rgba(255,255,255,0.03); }
+  .sw-row:hover::after { opacity: 0.09; }
+
+  /* podium glow */
+  .sw-row[data-pos="1"]::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(212,149,42,0.06), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ─── position ─── */
+  .sw-pos {
     font-family: var(--font-display);
-    font-size: 1.4rem;
+    font-size: 2rem;
     font-weight: 800;
     text-align: center;
     line-height: 1;
-    /* color injected as inline style */
+    letter-spacing: -0.02em;
+    /* color set inline */
+    position: relative;
+    z-index: 1;
+    padding-left: 0.25rem;
   }
 
-  /* ── color swatch bar ── */
-  .s-swatch {
-    width: 3px;
+  /* ─── team swatch ─── */
+  .sw-swatch {
+    width: 4px;
     align-self: stretch;
-    margin: 0.2rem 0.85rem 0.2rem 0.4rem;
+    margin: 0.3rem 1rem 0.3rem 0.5rem;
     border-radius: 2px;
     flex-shrink: 0;
-    /* background injected as inline style */
+    position: relative;
+    z-index: 1;
   }
 
-  /* ── name block ── */
-  .s-body {
+  /* ─── name block ─── */
+  .sw-body {
     display: flex;
     flex-direction: column;
-    gap: 0.12rem;
+    gap: 0.18rem;
     min-width: 0;
-    padding-right: 0.5rem;
+    padding-right: 1rem;
+    position: relative;
+    z-index: 1;
   }
 
-  .s-driver {
+  .sw-name {
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    color: var(--text-light);
+    color: #F3EDE1;
     letter-spacing: 0.01em;
-    line-height: 1.1;
+    line-height: 1.05;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .s-driver strong {
+  .sw-name strong {
     font-weight: 800;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
   }
 
-  .s-team {
-    font-size: 0.78rem;
-    color: var(--text-light-muted);
+  .sw-team {
+    font-size: 0.8rem;
+    color: rgba(243,237,225,0.5);
     font-weight: 300;
     letter-spacing: 0.06em;
     white-space: nowrap;
@@ -284,51 +335,52 @@
     text-overflow: ellipsis;
   }
 
-  /* ── points column ── */
-  .s-pts-block {
+  /* ─── points block ─── */
+  .sw-pts-block {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.25rem;
-    min-width: 5rem;
+    gap: 0.3rem;
+    min-width: 6rem;
+    position: relative;
+    z-index: 1;
   }
 
-  .s-pts {
+  .sw-pts {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: 1.6rem;
     font-weight: 800;
-    color: var(--text-light);
+    color: #F3EDE1;
     line-height: 1;
     white-space: nowrap;
   }
 
-  .pts-label {
+  .sw-pts-label {
     font-size: 0.65rem;
     font-weight: 400;
-    color: var(--text-light-muted);
-    letter-spacing: 0.08em;
-    margin-left: 0.15rem;
+    color: rgba(243,237,225,0.4);
+    letter-spacing: 0.1em;
+    margin-left: 0.2rem;
     text-transform: uppercase;
   }
 
-  .s-bar-track {
+  .sw-bar {
     width: 100%;
     height: 2px;
-    background: rgba(243,237,225,0.07);
+    background: rgba(255,255,255,0.07);
     border-radius: 1px;
     overflow: hidden;
   }
 
-  .s-bar-fill {
+  .sw-bar-fill {
     height: 100%;
     border-radius: 1px;
     transform-origin: left;
     transform: scaleX(0);
-    transition: transform 0.9s var(--ease-out-quint);
+    transition: transform 1s cubic-bezier(0.22,1,0.36,1);
   }
 
-  /* gap-to-leader badge */
-  .s-gap {
+  .sw-gap {
     font-family: var(--font-display);
     font-size: 0.7rem;
     font-weight: 600;
@@ -337,193 +389,234 @@
     white-space: nowrap;
   }
 
-  /* leader badge */
-  .s-gap.leader {
-    color: var(--amber);
-    letter-spacing: 0.06em;
+  .sw-gap.is-leader {
+    color: #D4952A;
+    letter-spacing: 0.08em;
   }
 
-  /* ── wins pill ── */
-  .s-wins {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.2rem;
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: rgba(243,237,225,0.35);
-  }
-
-  .s-wins.has-wins { color: var(--amber); }
-
-  /* ── skeleton ── */
-  .skeleton {
-    animation: skIn 0.4s ease both;
-  }
-
-  @keyframes skIn {
-    from { opacity: 0; transform: translateX(-6px); }
-    to { opacity: 1; transform: none; }
-  }
-
-  .sk-pos, .sk-name, .sk-sub, .sk-pts {
+  /* ─── expand button ─── */
+  .sw-expand {
     display: block;
-    background: rgba(243,237,225,0.07);
-    border-radius: 3px;
-    animation: shimmer 1.6s ease-in-out infinite;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.85rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(243,237,225,0.45);
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    border-radius: 2px;
+    margin-bottom: 0;
   }
 
-  .sk-pos   { width: 1.5rem; height: 1.5rem; margin: 0 auto; }
-  .sk-mid   { display: flex; flex-direction: column; gap: 0.3rem; padding: 0 1rem; }
-  .sk-name  { width: 9rem; height: 1rem; }
-  .sk-sub   { width: 5.5rem; height: 0.7rem; }
-  .sk-pts   { width: 3rem; height: 1.2rem; margin-left: auto; }
+  .sw-expand:hover {
+    color: #F3EDE1;
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  /* ─── skeleton ─── */
+  .sk {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .sk-block {
+    display: block;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  .sk-pos  { width: 2rem; height: 2rem; margin: 0 auto; }
+  .sk-name { width: 10rem; height: 1.1rem; }
+  .sk-pts  { width: 3.5rem; height: 1.4rem; margin-left: auto; }
 
   @keyframes shimmer {
-    0%, 100% { opacity: 0.25; }
-    50% { opacity: 0.6; }
+    0%, 100% { opacity: 0.2; }
+    50%       { opacity: 0.55; }
   }
 
-  .standings-error {
+  /* ─── error ─── */
+  .sw-error {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
     font-size: 1rem;
-    color: var(--text-light-muted);
+    color: rgba(243,237,225,0.4);
     font-style: italic;
-    margin-top: 2rem;
     text-align: center;
   }
 </style>
 
 <script>
   const BASE = 'https://api.jolpi.ca/ergast/f1';
+  const TOP_N = 10;
 
-  const TEAM_COLORS: Record<string, string> = {
-    'McLaren':        '#FF8000',
-    'Red Bull':       '#1E41CB',
-    'Ferrari':        '#E8002D',
-    'Mercedes':       '#27F4D2',
-    'Aston Martin':   '#229971',
-    'Alpine':         '#FF87BC',
-    'Williams':       '#64C4FF',
-    'RB':             '#6692FF',
-    'Visa Cash App':  '#6692FF',
-    'Kick Sauber':    '#52E252',
-    'Sauber':         '#52E252',
-    'Haas':           '#FFFFFF',
-    'Haas F1 Team':   '#FFFFFF',
-    'Audi':           '#C0C0C0',
-    'Cadillac':       '#333333',
+  const COLORS: Record<string, string> = {
+    'McLaren':       '#FF8000',
+    'Red Bull':      '#1E41CB',
+    'Ferrari':       '#E8002D',
+    'Mercedes':      '#27F4D2',
+    'Aston Martin':  '#229971',
+    'Alpine':        '#FF87BC',
+    'Williams':      '#64C4FF',
+    'RB':            '#6692FF',
+    'Visa Cash App': '#6692FF',
+    'Kick Sauber':   '#52E252',
+    'Sauber':        '#52E252',
+    'Haas':          '#FFFFFF',
+    'Audi':          '#C0C0C0',
+    'Cadillac':      '#555555',
   };
 
-  function teamColor(name: string): string {
-    for (const [key, color] of Object.entries(TEAM_COLORS)) {
-      if (name.includes(key)) return color;
+  function tc(name: string) {
+    for (const [k, v] of Object.entries(COLORS)) {
+      if (name.includes(k)) return v;
     }
-    return 'rgba(243,237,225,0.35)';
+    return 'rgba(243,237,225,0.4)';
   }
 
   function animateBars() {
-    document.querySelectorAll<HTMLElement>('.s-bar-fill').forEach(el => {
-      el.style.transform = `scaleX(${el.dataset.width ?? 0})`;
+    (document.querySelectorAll<HTMLElement>('.sw-bar-fill')).forEach(el => {
+      el.style.transform = `scaleX(${el.dataset.w ?? 0})`;
     });
   }
 
-  function renderDrivers(standings: any[]) {
+  function animateRows() {
+    (document.querySelectorAll<HTMLElement>('.sw-row:not(.sk)')).forEach(el => {
+      el.classList.add('entered');
+    });
+  }
+
+  function driverRow(d: any, idx: number, maxPts: number) {
+    const color = tc(d.Constructors[0]?.name ?? '');
+    const pts = parseFloat(d.points);
+    const pct = (pts / maxPts).toFixed(3);
+    const gap = idx === 0 ? '◆ leader' : `−${(maxPts - pts).toFixed(0)} pts`;
+    const fillPct = `${(pts / maxPts * 100).toFixed(1)}%`;
+    const last = d.Driver.familyName.toUpperCase();
+    const first = d.Driver.givenName;
+    return `<li class="sw-row" data-pos="${d.position}" style="--tc:${color};--fill:${fillPct};--d:${idx * 45}ms">
+      <span class="sw-pos" style="color:${color}">${d.position}</span>
+      <span class="sw-swatch" style="background:${color}"></span>
+      <span class="sw-body">
+        <span class="sw-name">${first} <strong>${last}</strong></span>
+        <span class="sw-team">${d.Constructors[0]?.name ?? ''}</span>
+      </span>
+      <span class="sw-pts-block">
+        <span class="sw-pts">${d.points}<span class="sw-pts-label">pts</span></span>
+        <span class="sw-bar"><span class="sw-bar-fill" data-w="${pct}" style="background:${color}"></span></span>
+        <span class="sw-gap ${idx === 0 ? 'is-leader' : ''}">${gap}</span>
+      </span>
+    </li>`;
+  }
+
+  function constructorRow(c: any, idx: number, maxPts: number) {
+    const color = tc(c.Constructor.name);
+    const pts = parseFloat(c.points);
+    const pct = (pts / maxPts).toFixed(3);
+    const gap = idx === 0 ? '◆ leader' : `−${(maxPts - pts).toFixed(0)} pts`;
+    const fillPct = `${(pts / maxPts * 100).toFixed(1)}%`;
+    return `<li class="sw-row" data-pos="${c.position}" style="--tc:${color};--fill:${fillPct};--d:${idx * 45}ms">
+      <span class="sw-pos" style="color:${color}">${c.position}</span>
+      <span class="sw-swatch" style="background:${color}"></span>
+      <span class="sw-body">
+        <span class="sw-name"><strong>${c.Constructor.name.toUpperCase()}</strong></span>
+        <span class="sw-team">${c.Constructor.nationality}</span>
+      </span>
+      <span class="sw-pts-block">
+        <span class="sw-pts">${c.points}<span class="sw-pts-label">pts</span></span>
+        <span class="sw-bar"><span class="sw-bar-fill" data-w="${pct}" style="background:${color}"></span></span>
+        <span class="sw-gap ${idx === 0 ? 'is-leader' : ''}">${gap}</span>
+      </span>
+    </li>`;
+  }
+
+  let allDrivers: any[] = [];
+
+  function renderDrivers(standings: any[], showAll = false) {
     const list = document.getElementById('drivers-list');
-    const countEl = document.getElementById('driver-count');
+    const btn = document.getElementById('expand-drivers') as HTMLButtonElement | null;
+    const countEl = document.getElementById('expand-drivers-count');
     if (!list) return;
-    if (countEl) countEl.textContent = `${standings.length} drivers`;
 
+    const visible = showAll ? standings : standings.slice(0, TOP_N);
     const maxPts = parseFloat(standings[0]?.points ?? 1);
+    list.innerHTML = visible.map((d, i) => driverRow(d, i, maxPts)).join('');
 
-    list.innerHTML = standings.map((d: any, idx: number) => {
-      const color = teamColor(d.Constructors[0]?.name ?? '');
-      const pts = parseFloat(d.points);
-      const pct = (pts / maxPts).toFixed(3);
-      const gap = idx === 0 ? 'leader' : `-${(maxPts - pts).toFixed(0)}`;
-      const lastName = d.Driver.familyName.toUpperCase();
-      const firstName = d.Driver.givenName;
-      return `
-        <li class="standings-row" data-pos="${d.position}">
-          <span class="s-pos" style="color:${color}">${d.position}</span>
-          <span class="s-swatch" style="background:${color}" aria-hidden="true"></span>
-          <span class="s-body">
-            <span class="s-driver">${firstName} <strong>${lastName}</strong></span>
-            <span class="s-team">${d.Constructors[0]?.name ?? ''}</span>
-          </span>
-          <span class="s-pts-block">
-            <span class="s-pts">${d.points}<span class="pts-label">pts</span></span>
-            <span class="s-bar-track">
-              <span class="s-bar-fill" data-width="${pct}" style="background:${color}"></span>
-            </span>
-            <span class="s-gap ${idx === 0 ? 'leader' : ''}">${idx === 0 ? '◆ leader' : gap + ' pts'}</span>
-          </span>
-        </li>`;
-    }).join('');
-    requestAnimationFrame(() => requestAnimationFrame(animateBars));
+    if (!showAll && standings.length > TOP_N && btn) {
+      btn.hidden = false;
+      if (countEl) countEl.textContent = String(standings.length);
+    } else if (btn) {
+      btn.hidden = true;
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        animateRows();
+        animateBars();
+      });
+    });
   }
 
   function renderConstructors(standings: any[]) {
     const list = document.getElementById('constructors-list');
-    const countEl = document.getElementById('constructor-count');
     if (!list) return;
-    if (countEl) countEl.textContent = `${standings.length} teams`;
-
     const maxPts = parseFloat(standings[0]?.points ?? 1);
-
-    list.innerHTML = standings.map((c: any, idx: number) => {
-      const color = teamColor(c.Constructor.name);
-      const pts = parseFloat(c.points);
-      const pct = (pts / maxPts).toFixed(3);
-      const gap = idx === 0 ? 'leader' : `-${(maxPts - pts).toFixed(0)}`;
-      return `
-        <li class="standings-row" data-pos="${c.position}">
-          <span class="s-pos" style="color:${color}">${c.position}</span>
-          <span class="s-swatch" style="background:${color}" aria-hidden="true"></span>
-          <span class="s-body">
-            <span class="s-driver"><strong>${c.Constructor.name.toUpperCase()}</strong></span>
-            <span class="s-team">${c.Constructor.nationality}</span>
-          </span>
-          <span class="s-pts-block">
-            <span class="s-pts">${c.points}<span class="pts-label">pts</span></span>
-            <span class="s-bar-track">
-              <span class="s-bar-fill" data-width="${pct}" style="background:${color}"></span>
-            </span>
-            <span class="s-gap ${idx === 0 ? 'leader' : ''}">${idx === 0 ? '◆ leader' : gap + ' pts'}</span>
-          </span>
-        </li>`;
-    }).join('');
-    requestAnimationFrame(() => requestAnimationFrame(animateBars));
+    list.innerHTML = standings.map((c, i) => constructorRow(c, i, maxPts)).join('');
+    requestAnimationFrame(() => requestAnimationFrame(() => { animateRows(); animateBars(); }));
   }
 
-  async function loadStandings() {
+  // Tab switching
+  document.querySelectorAll<HTMLButtonElement>('.sw-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sw-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.sw-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`panel-${tab}`)?.classList.remove('hidden');
+    });
+  });
+
+  // Expand button
+  document.getElementById('expand-drivers')?.addEventListener('click', () => {
+    renderDrivers(allDrivers, true);
+  });
+
+  async function load() {
     try {
       const [dRes, cRes] = await Promise.all([
         fetch(`${BASE}/current/driverStandings/`),
         fetch(`${BASE}/current/constructorStandings/`),
       ]);
-      if (!dRes.ok || !cRes.ok) throw new Error('api error');
+      if (!dRes.ok || !cRes.ok) throw new Error();
 
       const [dData, cData] = await Promise.all([dRes.json(), cRes.json()]);
-
       const dList = dData.MRData?.StandingsTable?.StandingsLists?.[0];
       const cList = cData.MRData?.StandingsTable?.StandingsLists?.[0];
 
       if (dList) {
-        const roundEl = document.getElementById('standings-round');
-        if (roundEl) roundEl.textContent = `${dList.season} season · after round ${dList.round}`;
-        renderDrivers(dList.DriverStandings);
+        const el = document.getElementById('sw-round');
+        if (el) el.textContent = `${dList.season} season · round ${dList.round}`;
+        allDrivers = dList.DriverStandings;
+        renderDrivers(allDrivers);
       }
-      if (cList) {
-        renderConstructors(cList.ConstructorStandings);
-      }
+      if (cList) renderConstructors(cList.ConstructorStandings);
+
     } catch {
-      const errEl = document.getElementById('standings-error');
-      if (errEl) errEl.hidden = false;
+      const err = document.getElementById('sw-error');
+      if (err) err.hidden = false;
       document.getElementById('drivers-list')?.remove();
       document.getElementById('constructors-list')?.remove();
     }
   }
 
-  loadStandings();
+  load();
 </script>

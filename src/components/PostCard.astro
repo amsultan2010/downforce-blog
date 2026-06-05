@@ -60,18 +60,17 @@ const dateStr = date.toLocaleDateString('en-GB', {
     bottom: 0;
     width: 3px;
     background: var(--accent);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.3s var(--ease-out-quint);
+    opacity: 0.2;
+    transition: opacity 0.3s var(--ease-out-quint);
   }
 
   .post-card:hover {
-    box-shadow: 0 8px 32px rgba(27, 58, 38, 0.1);
+    box-shadow: 0 8px 32px rgba(27, 58, 38, 0.12);
     transform: translateY(-2px);
   }
 
   .post-card:hover::before {
-    transform: scaleY(1);
+    opacity: 1;
   }
 
   /* Featured card */
@@ -136,7 +135,7 @@ const dateStr = date.toLocaleDateString('en-GB', {
   }
 
   .post-card:hover .card-title a {
-    color: var(--green-mid);
+    color: var(--accent);
   }
 
   .card-excerpt {
@@ -169,10 +168,21 @@ const dateStr = date.toLocaleDateString('en-GB', {
     font-weight: 400;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--text-muted);
-    border: 1px solid var(--border-strong);
+    color: var(--accent);
+    background: var(--accent-tint);
+    border: 1px solid transparent;
     padding: 0.2em 0.6em;
     border-radius: var(--radius-sm);
+  }
+
+  .card-tag:nth-child(3n+2) {
+    color: var(--blue);
+    background: var(--blue-tint);
+  }
+
+  .card-tag:nth-child(3n+3) {
+    color: var(--amber);
+    background: var(--amber-tint);
   }
 
   .card-arrow {

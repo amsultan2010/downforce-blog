@@ -12,9 +12,13 @@
   --text-light-muted: #A8C4AE;
   --green: #1B3A26;
   --green-mid: #2B5237;
-  --accent: #C25428;
-  --accent-hover: #D4652E;
-  --amber: #D4952A;
+  --accent: #E84A25;
+  --accent-hover: #F05A30;
+  --accent-tint: rgba(232, 74, 37, 0.1);
+  --amber: #ECA020;
+  --amber-tint: rgba(236, 160, 32, 0.12);
+  --blue: #1D7EF0;
+  --blue-tint: rgba(29, 126, 240, 0.1);
   --border: #CFC9BB;
   --border-strong: #B0A898;
   --header-bg: rgba(243, 237, 225, 0.9);
@@ -44,6 +48,12 @@
   --text-light-muted: #4A7A55;
   --green: #0A1310;
   --green-mid: #1B3A26;
+  --accent: #F05A30;
+  --amber: #F0B030;
+  --blue: #3D8EF5;
+  --accent-tint: rgba(240, 90, 48, 0.12);
+  --amber-tint: rgba(240, 176, 48, 0.1);
+  --blue-tint: rgba(61, 142, 245, 0.12);
   --border: #243528;
   --border-strong: #3A5040;
   --header-bg: rgba(17, 28, 20, 0.92);
@@ -118,6 +128,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
+  color: var(--accent);
 }
 
 .prose h3 {
@@ -125,6 +136,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 0.6rem;
+  color: var(--text);
+  border-left: 2px solid var(--amber);
+  padding-left: 0.75rem;
 }
 
 .prose p { margin-bottom: 1.4rem; }

@@ -111,10 +111,25 @@ const schemaJson = JSON.stringify({
     padding: 2.5rem 0 3rem;
     border-bottom: 1px solid var(--border);
     margin-bottom: 3rem;
+    background: var(--bg-dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .post-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 80% at 90% 50%, rgba(232, 74, 37, 0.15) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 0% 100%, rgba(29, 126, 240, 0.08) 0%, transparent 55%);
+    pointer-events: none;
   }
 
   .post-header-inner {
     max-width: var(--content-width);
+    position: relative;
+    z-index: 1;
   }
 
   .post-meta-top {
@@ -136,7 +151,7 @@ const schemaJson = JSON.stringify({
 
   .post-date {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--text-light-muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
@@ -147,13 +162,13 @@ const schemaJson = JSON.stringify({
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.02em;
-    color: var(--text);
+    color: var(--text-light);
     margin-bottom: 1.25rem;
   }
 
   .post-excerpt {
     font-size: 1.0625rem;
-    color: var(--text-muted);
+    color: var(--text-light-muted);
     line-height: 1.7;
     margin-bottom: 1.5rem;
     max-width: 56ch;
@@ -170,9 +185,20 @@ const schemaJson = JSON.stringify({
     font-weight: 400;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--text-muted);
-    border: 1px solid var(--border-strong);
+    color: var(--accent);
+    background: var(--accent-tint);
+    border: 1px solid transparent;
     padding: 0.2em 0.6em;
+  }
+
+  .post-tag:nth-child(3n+2) {
+    color: var(--blue);
+    background: var(--blue-tint);
+  }
+
+  .post-tag:nth-child(3n+3) {
+    color: var(--amber);
+    background: var(--amber-tint);
   }
 
   .post-body {

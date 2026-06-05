@@ -149,9 +149,19 @@ const [featuredPost, ...restPosts] = posts;
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(243,237,225,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(243,237,225,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(243,237,225,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243,237,225,0.05) 1px, transparent 1px);
     background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(232, 74, 37, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(29, 126, 240, 0.08) 0%, transparent 60%);
     pointer-events: none;
   }
 
@@ -372,9 +382,12 @@ const [featuredPost, ...restPosts] = posts;
   }
 
   .pillar-icon {
-    color: var(--accent);
     font-size: 0.6rem;
   }
+
+  .pillar:nth-child(1) .pillar-icon { color: var(--accent); }
+  .pillar:nth-child(2) .pillar-icon { color: var(--amber); }
+  .pillar:nth-child(3) .pillar-icon { color: var(--blue); }
 
   .pillar-label {
     font-family: var(--font-display);
@@ -410,7 +423,7 @@ const [featuredPost, ...restPosts] = posts;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--accent);
   }
 
   .see-all {

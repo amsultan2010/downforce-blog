@@ -1,34 +1,34 @@
 ---
-// All data fetched client-side from Jolpica API
+// All data fetched client-side from Jolpica API — shows all drivers/constructors
 ---
 
 <section class="standings-section reveal-on-scroll" id="standings">
   <div class="container">
     <div class="standings-header">
-      <div class="standings-header-left">
+      <div>
         <h2 class="standings-title">championship standings</h2>
         <span class="standings-round" id="standings-round">loading…</span>
       </div>
-      <div class="standings-live-dot" aria-label="Live data">
-        <span class="live-pulse"></span>
+      <div class="live-badge">
+        <span class="live-dot"></span>
         <span class="live-label">live</span>
       </div>
     </div>
 
     <div class="standings-grid">
-      <!-- Drivers -->
       <div class="standings-panel">
-        <div class="panel-tab">
-          <span class="tab-label">drivers</span>
-          <span class="tab-line"></span>
+        <div class="panel-header">
+          <span class="panel-label">drivers</span>
+          <span class="panel-rule"></span>
+          <span class="panel-count" id="driver-count"></span>
         </div>
         <ol class="standings-list" id="drivers-list" aria-label="Driver standings">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <li class="standings-row skeleton" style={`animation-delay: ${i * 0.06}s`}>
+          {Array.from({ length: 20 }).map((_, i) => (
+            <li class="standings-row skeleton" style={`animation-delay:${i*0.04}s`}>
               <span class="sk-pos"></span>
-              <span class="sk-body">
+              <span class="sk-mid">
                 <span class="sk-name"></span>
-                <span class="sk-team"></span>
+                <span class="sk-sub"></span>
               </span>
               <span class="sk-pts"></span>
             </li>
@@ -36,19 +36,19 @@
         </ol>
       </div>
 
-      <!-- Constructors -->
       <div class="standings-panel">
-        <div class="panel-tab">
-          <span class="tab-label">constructors</span>
-          <span class="tab-line"></span>
+        <div class="panel-header">
+          <span class="panel-label">constructors</span>
+          <span class="panel-rule"></span>
+          <span class="panel-count" id="constructor-count"></span>
         </div>
         <ol class="standings-list" id="constructors-list" aria-label="Constructor standings">
           {Array.from({ length: 10 }).map((_, i) => (
-            <li class="standings-row skeleton" style={`animation-delay: ${i * 0.06}s`}>
+            <li class="standings-row skeleton" style={`animation-delay:${i*0.05}s`}>
               <span class="sk-pos"></span>
-              <span class="sk-body">
+              <span class="sk-mid">
                 <span class="sk-name"></span>
-                <span class="sk-team"></span>
+                <span class="sk-sub"></span>
               </span>
               <span class="sk-pts"></span>
             </li>
@@ -57,14 +57,33 @@
       </div>
     </div>
 
-    <p class="standings-error" id="standings-error" hidden>standings unavailable — api offline</p>
+    <p class="standings-error" id="standings-error" hidden>
+      standings unavailable — api offline
+    </p>
   </div>
 </section>
 
 <style>
   .standings-section {
     background: var(--bg-dark);
-    padding: 4rem 0 4.5rem;
+    padding: 5rem 0 5.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* subtle diagonal texture */
+  .standings-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(243,237,225,0.015) 0px,
+      rgba(243,237,225,0.015) 1px,
+      transparent 1px,
+      transparent 28px
+    );
+    pointer-events: none;
   }
 
   /* ── header ── */
@@ -72,186 +91,175 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 2.5rem;
-    gap: 1rem;
+    margin-bottom: 3rem;
+    gap: 1.5rem;
+    position: relative;
   }
 
   .standings-title {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: var(--text-light);
     text-transform: lowercase;
     line-height: 1;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.45rem;
   }
 
   .standings-round {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--text-light-muted);
     font-style: italic;
     letter-spacing: 0.02em;
   }
 
-  .standings-live-dot {
+  .live-badge {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
-    padding-top: 0.3rem;
+    gap: 0.5rem;
+    background: rgba(61,220,132,0.1);
+    border: 1px solid rgba(61,220,132,0.2);
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
     flex-shrink: 0;
+    margin-top: 0.25rem;
   }
 
-  .live-pulse {
-    width: 8px;
-    height: 8px;
+  .live-dot {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #3ddc84;
     display: block;
     position: relative;
   }
 
-  .live-pulse::after {
+  .live-dot::after {
     content: '';
     position: absolute;
     inset: -4px;
     border-radius: 50%;
-    background: rgba(61, 220, 132, 0.25);
+    background: rgba(61,220,132,0.3);
     animation: livePulse 2s ease-out infinite;
   }
 
   @keyframes livePulse {
-    0% { transform: scale(0.6); opacity: 1; }
-    100% { transform: scale(2); opacity: 0; }
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(2.2); opacity: 0; }
   }
 
   .live-label {
     font-family: var(--font-display);
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #3ddc84;
   }
 
-  /* ── grid ── */
+  /* ── two-column grid ── */
   .standings-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    gap: 3.5rem;
+    position: relative;
   }
 
-  @media (max-width: 800px) {
-    .standings-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (max-width: 860px) {
+    .standings-grid { grid-template-columns: 1fr; gap: 3rem; }
   }
 
-  /* ── panel tab ── */
-  .panel-tab {
+  /* ── panel header ── */
+  .panel-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
+    gap: 0.85rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(243,237,225,0.12);
   }
 
-  .tab-label {
+  .panel-label {
     font-family: var(--font-display);
-    font-size: 0.8125rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--text-light-muted);
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
-  .tab-line {
+  .panel-rule {
     flex: 1;
     height: 1px;
-    background: rgba(243, 237, 225, 0.1);
+    background: rgba(243,237,225,0.08);
+  }
+
+  .panel-count {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgba(243,237,225,0.25);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   /* ── rows ── */
-  .standings-list {
-    display: flex;
-    flex-direction: column;
-  }
+  .standings-list { display: flex; flex-direction: column; }
 
   .standings-row {
     display: grid;
-    grid-template-columns: 2.5rem auto 1fr auto;
+    grid-template-columns: 3rem 6px 1fr auto;
     align-items: center;
     gap: 0;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid rgba(243, 237, 225, 0.06);
+    padding: 0.6rem 0.5rem 0.6rem 0;
+    border-bottom: 1px solid rgba(243,237,225,0.05);
     position: relative;
-    overflow: hidden;
     cursor: default;
-    transition: background 0.2s ease;
-  }
-
-  .standings-row:first-child {
-    border-top: 1px solid rgba(243, 237, 225, 0.06);
+    transition: background 0.18s ease, padding-left 0.18s ease;
+    border-radius: 2px;
   }
 
   .standings-row:hover {
-    background: rgba(243, 237, 225, 0.04);
+    background: rgba(243,237,225,0.05);
+    padding-left: 0.4rem;
   }
 
-  /* team color bar — populated by JS */
-  .standings-row::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: var(--team-color, transparent);
-    opacity: 0.85;
-    transition: width 0.2s ease, opacity 0.2s ease;
-  }
-
-  .standings-row:hover::before {
-    width: 5px;
-    opacity: 1;
-  }
-
-  /* position */
+  /* ── position number — color set inline by JS ── */
   .s-pos {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 800;
-    color: rgba(243, 237, 225, 0.25);
     text-align: center;
     line-height: 1;
-    padding-left: 0.5rem;
+    /* color injected as inline style */
   }
 
-  .standings-row[data-pos="1"] .s-pos { color: var(--amber); }
-  .standings-row[data-pos="2"] .s-pos { color: rgba(243, 237, 225, 0.6); }
-  .standings-row[data-pos="3"] .s-pos { color: #C27C28; }
-
-  /* team color swatch */
+  /* ── color swatch bar ── */
   .s-swatch {
-    width: 4px;
+    width: 3px;
     align-self: stretch;
-    margin: 0.25rem 0.75rem 0.25rem 0.5rem;
+    margin: 0.2rem 0.85rem 0.2rem 0.4rem;
     border-radius: 2px;
-    background: var(--team-color, rgba(243,237,225,0.15));
     flex-shrink: 0;
-    display: block;
+    /* background injected as inline style */
   }
 
-  /* name block */
+  /* ── name block ── */
   .s-body {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
-    padding-right: 0.75rem;
+    gap: 0.12rem;
     min-width: 0;
+    padding-right: 0.5rem;
   }
 
   .s-driver {
     font-family: var(--font-display);
-    font-size: 1.125rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--text-light);
     letter-spacing: 0.01em;
@@ -261,28 +269,33 @@
     text-overflow: ellipsis;
   }
 
+  .s-driver strong {
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
   .s-team {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: var(--text-light-muted);
     font-weight: 300;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  /* points + bar */
+  /* ── points column ── */
   .s-pts-block {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.3rem;
-    min-width: 4.5rem;
+    gap: 0.25rem;
+    min-width: 5rem;
   }
 
   .s-pts {
     font-family: var(--font-display);
-    font-size: 1.375rem;
+    font-size: 1.35rem;
     font-weight: 800;
     color: var(--text-light);
     line-height: 1;
@@ -290,18 +303,18 @@
   }
 
   .pts-label {
-    font-size: 0.6875rem;
+    font-size: 0.65rem;
     font-weight: 400;
     color: var(--text-light-muted);
-    letter-spacing: 0.06em;
-    margin-left: 0.2rem;
+    letter-spacing: 0.08em;
+    margin-left: 0.15rem;
     text-transform: uppercase;
   }
 
   .s-bar-track {
     width: 100%;
     height: 2px;
-    background: rgba(243, 237, 225, 0.08);
+    background: rgba(243,237,225,0.07);
     border-radius: 1px;
     overflow: hidden;
   }
@@ -309,41 +322,69 @@
   .s-bar-fill {
     height: 100%;
     border-radius: 1px;
-    background: var(--team-color, rgba(243, 237, 225, 0.3));
     transform-origin: left;
     transform: scaleX(0);
-    transition: transform 0.8s var(--ease-out-quint);
+    transition: transform 0.9s var(--ease-out-quint);
   }
+
+  /* gap-to-leader badge */
+  .s-gap {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(243,237,225,0.3);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* leader badge */
+  .s-gap.leader {
+    color: var(--amber);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── wins pill ── */
+  .s-wins {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: rgba(243,237,225,0.35);
+  }
+
+  .s-wins.has-wins { color: var(--amber); }
 
   /* ── skeleton ── */
   .skeleton {
-    animation: skFade 0.5s ease both;
+    animation: skIn 0.4s ease both;
   }
 
-  @keyframes skFade {
-    from { opacity: 0; transform: translateX(-8px); }
+  @keyframes skIn {
+    from { opacity: 0; transform: translateX(-6px); }
     to { opacity: 1; transform: none; }
   }
 
-  .sk-pos, .sk-body, .sk-name, .sk-team, .sk-pts {
+  .sk-pos, .sk-name, .sk-sub, .sk-pts {
     display: block;
-    background: rgba(243, 237, 225, 0.08);
+    background: rgba(243,237,225,0.07);
     border-radius: 3px;
     animation: shimmer 1.6s ease-in-out infinite;
   }
 
-  .sk-pos { width: 1.5rem; height: 1.5rem; margin: 0 auto; }
-  .sk-body { display: flex; flex-direction: column; gap: 0.35rem; padding: 0 0.75rem; }
-  .sk-name { width: 8rem; height: 1rem; }
-  .sk-team { width: 5rem; height: 0.7rem; }
-  .sk-pts { width: 3rem; height: 1.2rem; margin-left: auto; }
+  .sk-pos   { width: 1.5rem; height: 1.5rem; margin: 0 auto; }
+  .sk-mid   { display: flex; flex-direction: column; gap: 0.3rem; padding: 0 1rem; }
+  .sk-name  { width: 9rem; height: 1rem; }
+  .sk-sub   { width: 5.5rem; height: 0.7rem; }
+  .sk-pts   { width: 3rem; height: 1.2rem; margin-left: auto; }
 
   @keyframes shimmer {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.65; }
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 0.6; }
   }
 
-  /* ── error ── */
   .standings-error {
     font-size: 1rem;
     color: var(--text-light-muted);
@@ -357,46 +398,54 @@
   const BASE = 'https://api.jolpi.ca/ergast/f1';
 
   const TEAM_COLORS: Record<string, string> = {
-    'McLaren':      '#FF8000',
-    'Red Bull':     '#3671C6',
-    'Ferrari':      '#E8002D',
-    'Mercedes':     '#27F4D2',
-    'Aston Martin': '#229971',
-    'Alpine':       '#FF87BC',
-    'Williams':     '#64C4FF',
-    'RB':           '#6692FF',
-    'Sauber':       '#52E252',
-    'Kick Sauber':  '#52E252',
-    'Haas':         '#B6BABD',
-    'Haas F1 Team': '#B6BABD',
+    'McLaren':        '#FF8000',
+    'Red Bull':       '#1E41CB',
+    'Ferrari':        '#E8002D',
+    'Mercedes':       '#27F4D2',
+    'Aston Martin':   '#229971',
+    'Alpine':         '#FF87BC',
+    'Williams':       '#64C4FF',
+    'RB':             '#6692FF',
+    'Visa Cash App':  '#6692FF',
+    'Kick Sauber':    '#52E252',
+    'Sauber':         '#52E252',
+    'Haas':           '#FFFFFF',
+    'Haas F1 Team':   '#FFFFFF',
+    'Audi':           '#C0C0C0',
+    'Cadillac':       '#333333',
   };
 
   function teamColor(name: string): string {
     for (const [key, color] of Object.entries(TEAM_COLORS)) {
       if (name.includes(key)) return color;
     }
-    return 'rgba(243,237,225,0.3)';
+    return 'rgba(243,237,225,0.35)';
   }
 
   function animateBars() {
     document.querySelectorAll<HTMLElement>('.s-bar-fill').forEach(el => {
-      const w = el.dataset.width ?? '0';
-      el.style.transform = `scaleX(${w})`;
+      el.style.transform = `scaleX(${el.dataset.width ?? 0})`;
     });
   }
 
   function renderDrivers(standings: any[]) {
     const list = document.getElementById('drivers-list');
+    const countEl = document.getElementById('driver-count');
     if (!list) return;
+    if (countEl) countEl.textContent = `${standings.length} drivers`;
+
     const maxPts = parseFloat(standings[0]?.points ?? 1);
-    list.innerHTML = standings.map((d: any) => {
+
+    list.innerHTML = standings.map((d: any, idx: number) => {
       const color = teamColor(d.Constructors[0]?.name ?? '');
-      const pct = (parseFloat(d.points) / maxPts).toFixed(3);
+      const pts = parseFloat(d.points);
+      const pct = (pts / maxPts).toFixed(3);
+      const gap = idx === 0 ? 'leader' : `-${(maxPts - pts).toFixed(0)}`;
       const lastName = d.Driver.familyName.toUpperCase();
       const firstName = d.Driver.givenName;
       return `
-        <li class="standings-row" data-pos="${d.position}" style="--team-color:${color}">
-          <span class="s-pos">${d.position}</span>
+        <li class="standings-row" data-pos="${d.position}">
+          <span class="s-pos" style="color:${color}">${d.position}</span>
           <span class="s-swatch" style="background:${color}" aria-hidden="true"></span>
           <span class="s-body">
             <span class="s-driver">${firstName} <strong>${lastName}</strong></span>
@@ -407,23 +456,29 @@
             <span class="s-bar-track">
               <span class="s-bar-fill" data-width="${pct}" style="background:${color}"></span>
             </span>
+            <span class="s-gap ${idx === 0 ? 'leader' : ''}">${idx === 0 ? '◆ leader' : gap + ' pts'}</span>
           </span>
-        </li>
-      `;
+        </li>`;
     }).join('');
     requestAnimationFrame(() => requestAnimationFrame(animateBars));
   }
 
   function renderConstructors(standings: any[]) {
     const list = document.getElementById('constructors-list');
+    const countEl = document.getElementById('constructor-count');
     if (!list) return;
+    if (countEl) countEl.textContent = `${standings.length} teams`;
+
     const maxPts = parseFloat(standings[0]?.points ?? 1);
-    list.innerHTML = standings.map((c: any) => {
+
+    list.innerHTML = standings.map((c: any, idx: number) => {
       const color = teamColor(c.Constructor.name);
-      const pct = (parseFloat(c.points) / maxPts).toFixed(3);
+      const pts = parseFloat(c.points);
+      const pct = (pts / maxPts).toFixed(3);
+      const gap = idx === 0 ? 'leader' : `-${(maxPts - pts).toFixed(0)}`;
       return `
-        <li class="standings-row" data-pos="${c.position}" style="--team-color:${color}">
-          <span class="s-pos">${c.position}</span>
+        <li class="standings-row" data-pos="${c.position}">
+          <span class="s-pos" style="color:${color}">${c.position}</span>
           <span class="s-swatch" style="background:${color}" aria-hidden="true"></span>
           <span class="s-body">
             <span class="s-driver"><strong>${c.Constructor.name.toUpperCase()}</strong></span>
@@ -434,9 +489,9 @@
             <span class="s-bar-track">
               <span class="s-bar-fill" data-width="${pct}" style="background:${color}"></span>
             </span>
+            <span class="s-gap ${idx === 0 ? 'leader' : ''}">${idx === 0 ? '◆ leader' : gap + ' pts'}</span>
           </span>
-        </li>
-      `;
+        </li>`;
     }).join('');
     requestAnimationFrame(() => requestAnimationFrame(animateBars));
   }
@@ -449,19 +504,18 @@
       ]);
       if (!dRes.ok || !cRes.ok) throw new Error('api error');
 
-      const dData = await dRes.json();
-      const cData = await cRes.json();
+      const [dData, cData] = await Promise.all([dRes.json(), cRes.json()]);
 
       const dList = dData.MRData?.StandingsTable?.StandingsLists?.[0];
       const cList = cData.MRData?.StandingsTable?.StandingsLists?.[0];
 
       if (dList) {
         const roundEl = document.getElementById('standings-round');
-        if (roundEl) roundEl.textContent = `after round ${dList.round} · ${dList.season} season`;
-        renderDrivers(dList.DriverStandings.slice(0, 10));
+        if (roundEl) roundEl.textContent = `${dList.season} season · after round ${dList.round}`;
+        renderDrivers(dList.DriverStandings);
       }
       if (cList) {
-        renderConstructors(cList.ConstructorStandings.slice(0, 10));
+        renderConstructors(cList.ConstructorStandings);
       }
     } catch {
       const errEl = document.getElementById('standings-error');

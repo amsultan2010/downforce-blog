@@ -34,6 +34,26 @@ const [featuredPost, ...restPosts] = posts;
     </div>
   </section>
 
+  <!-- Racing ticker -->
+  <div class="race-ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {[1,2].map(() => (
+        <span class="ticker-inner">
+          <span class="t-item">formula one</span><span class="t-sep">·</span>
+          <span class="t-item">race analysis</span><span class="t-sep">·</span>
+          <span class="t-item">no corporate hedging</span><span class="t-sep">·</span>
+          <span class="t-item">actual opinions</span><span class="t-sep">·</span>
+          <span class="t-item">f1 2025</span><span class="t-sep">·</span>
+          <span class="t-item">driver standings</span><span class="t-sep">·</span>
+          <span class="t-item">strategy calls</span><span class="t-sep">·</span>
+          <span class="t-item">race reports</span><span class="t-sep">·</span>
+          <span class="t-item">team dynamics</span><span class="t-sep">·</span>
+          <span class="t-item">hot takes</span><span class="t-sep">·</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
   <!-- Race photos strip (2×2) -->
   <section class="photo-strip" aria-label="Race photography">
     <div class="photo-item">
@@ -230,6 +250,49 @@ const [featuredPost, ...restPosts] = posts;
   @keyframes scrollPulse {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 1; }
+  }
+
+  /* ─── ticker ─── */
+  .race-ticker {
+    background: var(--accent);
+    overflow: hidden;
+    padding: 0.55rem 0;
+    white-space: nowrap;
+  }
+
+  .ticker-track {
+    display: inline-flex;
+    animation: ticker 28s linear infinite;
+  }
+
+  .race-ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+
+  .ticker-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+
+  .t-item {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(243,237,225,0.95);
+  }
+
+  .t-sep {
+    color: rgba(243,237,225,0.4);
+    font-size: 0.6rem;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 
   /* ─── photo strip ─── */

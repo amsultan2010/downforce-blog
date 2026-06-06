@@ -19,6 +19,8 @@ sortedAsc.forEach((post, i) => {
   const key = `article${i + 1}`;
   if (thumbByName[key]) thumbMap[post.id] = thumbByName[key];
 });
+
+const slugs = posts.map(p => p.id);
 ---
 
 <BaseLayout
@@ -29,11 +31,24 @@ sortedAsc.forEach((post, i) => {
     <div class="container">
       <div class="posts-header reveal-on-scroll">
         <div class="posts-accent-line" aria-hidden="true"></div>
-        <h1 class="posts-title">posts</h1>
-        <p class="posts-count">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+        <div class="posts-title-row">
+          <div class="posts-title-left">
+            <h1 class="posts-title">posts</h1>
+            <p class="posts-count">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+          </div>
+          <button
+            class="random-btn"
+            id="random-btn"
+            data-slugs={JSON.stringify(slugs)}
+            aria-label="go to a random post"
+          >
+            <span class="random-btn-shine" aria-hidden="true"></span>
+            <span class="random-btn-text">i'm feeling random</span>
+          </button>
+        </div>
       </div>
 
-      <div class="posts-list">
+      <div class="posts-grid">
         {posts.map((post, i) => (
           <div class="reveal-on-scroll" style={`transition-delay: ${i * 0.06}s`}>
             <PostCard post={post} autoThumb={thumbMap[post.id]} />
@@ -64,6 +79,20 @@ sortedAsc.forEach((post, i) => {
     margin-bottom: 1.5rem;
   }
 
+  .posts-title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .posts-title-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
   .posts-title {
     font-family: var(--font-display);
     font-size: clamp(3rem, 8vw, 5.5rem);
@@ -71,28 +100,124 @@ sortedAsc.forEach((post, i) => {
     letter-spacing: -0.03em;
     line-height: 0.95;
     color: var(--text);
-    margin-bottom: 0.75rem;
+    margin: 0;
   }
 
   .posts-count {
     font-size: 0.875rem;
     color: var(--text-muted);
     letter-spacing: 0.04em;
+    margin: 0;
   }
 
-  .posts-list {
-    columns: 2 480px;
-    column-gap: 1.5rem;
+  /* ── Random button ── */
+  .random-btn {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65rem 1.25rem;
+    border: none;
+    border-radius: var(--radius-sm, 4px);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: #fff;
+    background: linear-gradient(135deg, #e84a25 0%, #c44020 40%, #a83618 100%);
+    box-shadow: 0 2px 12px rgba(232, 74, 37, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0;
+    align-self: flex-end;
+    margin-bottom: 0.1rem;
+    white-space: nowrap;
   }
 
-  .posts-list > div {
-    break-inside: avoid;
-    margin-bottom: 1.5rem;
+  .random-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(232, 74, 37, 0.5), 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .random-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(232, 74, 37, 0.3);
+  }
+
+  /* Animated shine sweep */
+  .random-btn-shine {
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      105deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 80%
+    );
+    transform: skewX(-15deg);
+    animation: btn-shine 2.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes btn-shine {
+    0%   { left: -120%; }
+    60%  { left: 130%; }
+    100% { left: 130%; }
+  }
+
+  .random-btn-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Grid layout — row-by-row ── */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .posts-grid > div {
+    min-width: 0;
+  }
+
+  /* Single column on mobile */
+  @media (max-width: 620px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .posts-title-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .random-btn {
+      align-self: flex-start;
+      margin-bottom: 0;
+    }
   }
 
   .no-posts {
     color: var(--text-muted);
     font-size: 0.9375rem;
     font-style: italic;
+    grid-column: 1 / -1;
   }
 </style>
+
+<script>
+  const btn = document.getElementById('random-btn') as HTMLButtonElement | null;
+  if (btn) {
+    const slugs: string[] = JSON.parse(btn.dataset.slugs ?? '[]');
+    btn.addEventListener('click', () => {
+      if (!slugs.length) return;
+      const slug = slugs[Math.floor(Math.random() * slugs.length)];
+      window.location.href = `/posts/${slug}`;
+    });
+  }
+</script>

@@ -16,6 +16,26 @@ const [featuredPost, ...restPosts] = recentPosts;
   description="race analysis with actual opinions. f1 coverage that says something."
   showLoader
 >
+  <!-- Racing ticker -->
+  <div class="race-ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {[1,2].map(() => (
+        <span class="ticker-inner">
+          <span class="t-item">formula one</span><span class="t-sep">·</span>
+          <span class="t-item">race analysis</span><span class="t-sep">·</span>
+          <span class="t-item">no corporate hedging</span><span class="t-sep">·</span>
+          <span class="t-item">actual opinions</span><span class="t-sep">·</span>
+          <span class="t-item">f1 2025</span><span class="t-sep">·</span>
+          <span class="t-item">driver standings</span><span class="t-sep">·</span>
+          <span class="t-item">strategy calls</span><span class="t-sep">·</span>
+          <span class="t-item">race reports</span><span class="t-sep">·</span>
+          <span class="t-item">team dynamics</span><span class="t-sep">·</span>
+          <span class="t-item">hot takes</span><span class="t-sep">·</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
   <!-- Hero -->
   <section class="hero" id="hero">
     <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
@@ -57,26 +77,6 @@ const [featuredPost, ...restPosts] = recentPosts;
       <div class="scroll-line"></div>
     </div>
   </section>
-
-  <!-- Racing ticker -->
-  <div class="race-ticker" aria-hidden="true">
-    <div class="ticker-track">
-      {[1,2].map(() => (
-        <span class="ticker-inner">
-          <span class="t-item">formula one</span><span class="t-sep">·</span>
-          <span class="t-item">race analysis</span><span class="t-sep">·</span>
-          <span class="t-item">no corporate hedging</span><span class="t-sep">·</span>
-          <span class="t-item">actual opinions</span><span class="t-sep">·</span>
-          <span class="t-item">f1 2025</span><span class="t-sep">·</span>
-          <span class="t-item">driver standings</span><span class="t-sep">·</span>
-          <span class="t-item">strategy calls</span><span class="t-sep">·</span>
-          <span class="t-item">race reports</span><span class="t-sep">·</span>
-          <span class="t-item">team dynamics</span><span class="t-sep">·</span>
-          <span class="t-item">hot takes</span><span class="t-sep">·</span>
-        </span>
-      ))}
-    </div>
-  </div>
 
   <!-- Race photos strip (2×2) -->
   <section class="photo-strip" aria-label="Race photography">
@@ -207,8 +207,8 @@ const [featuredPost, ...restPosts] = recentPosts;
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to bottom, rgba(27,58,38,0.72) 0%, rgba(27,58,38,0.55) 60%, rgba(27,58,38,0.8) 100%),
-      linear-gradient(to right, rgba(27,58,38,0.5) 0%, transparent 60%);
+      linear-gradient(to bottom, rgba(27,58,38,0.45) 0%, rgba(27,58,38,0.3) 60%, rgba(27,58,38,0.55) 100%),
+      linear-gradient(to right, rgba(27,58,38,0.35) 0%, transparent 60%);
     z-index: 0;
   }
 
@@ -217,8 +217,8 @@ const [featuredPost, ...restPosts] = recentPosts;
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(243,237,225,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(243,237,225,0.04) 1px, transparent 1px);
+      linear-gradient(rgba(243,237,225,0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243,237,225,0.12) 1px, transparent 1px);
     background-size: 48px 48px;
     pointer-events: none;
     z-index: 1;
@@ -436,7 +436,7 @@ const [featuredPost, ...restPosts] = recentPosts;
 
   /* ─── ticker ─── */
   .race-ticker {
-    background: var(--accent);
+    background: var(--amber);
     overflow: hidden;
     padding: 0.55rem 0;
     white-space: nowrap;

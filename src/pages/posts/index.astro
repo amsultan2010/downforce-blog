@@ -81,9 +81,13 @@ sortedAsc.forEach((post, i) => {
   }
 
   .posts-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
-    gap: 1.5rem;
+    columns: 2 480px;
+    column-gap: 1.5rem;
+  }
+
+  .posts-list > div {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
   }
 
   .no-posts {

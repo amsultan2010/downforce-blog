@@ -132,7 +132,13 @@ async function fetchThumbnail(query) {
   console.log(`Fetching image thumbnail for: "${query}"...`);
   try {
     const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_CX}&q=${encodeURIComponent(query)}&searchType=image&num=1`;
-    const data = await fetchJson(url);
+    const res = await fetch(url, { headers: { 'User-Agent': 'downforce-blog/1.0' } });
+    if (!res.ok) {
+      const body = await res.text();
+      console.warn(`Google image search HTTP ${res.status}: ${body}`);
+      return '';
+    }
+    const data = await res.json();
     return data?.items?.[0]?.link ?? '';
   } catch (err) {
     console.warn(`Google image search failed: ${err.message}`);

@@ -18,6 +18,8 @@ const [featuredPost, ...restPosts] = recentPosts;
 >
   <!-- Hero -->
   <section class="hero" id="hero">
+    <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+    <div class="hero-bg-overlay" aria-hidden="true"></div>
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-cursor-glow" id="hero-glow" aria-hidden="true"></div>
     <div class="hero-streaks" aria-hidden="true">
@@ -95,7 +97,7 @@ const [featuredPost, ...restPosts] = recentPosts;
   <!-- Editorial statement -->
   <section class="editorial-band">
     <div class="container editorial-inner">
-      <p class="editorial-quote">
+      <p class="editorial-quote reveal-fade">
         "this isn't a press release. it's a race report with a point of view."
       </p>
       <div class="editorial-pillars">
@@ -144,9 +146,9 @@ const [featuredPost, ...restPosts] = recentPosts;
   <!-- Posts grid -->
   <section class="posts-section" id="posts">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal-fade">
         <h2 class="section-label"><span class="label-dot" aria-hidden="true"></span>latest</h2>
-        <a href="/posts" class="see-all reveal-right">all posts →</a>
+        <a href="/posts" class="see-all">all posts →</a>
       </div>
 
       {featuredPost && (
@@ -172,7 +174,9 @@ const [featuredPost, ...restPosts] = recentPosts;
   </section>
 
   <!-- Live standings -->
-  <StandingsWidget />
+  <div class="reveal-on-scroll">
+    <StandingsWidget />
+  </div>
 
 </BaseLayout>
 
@@ -189,15 +193,35 @@ const [featuredPost, ...restPosts] = recentPosts;
     overflow: hidden;
   }
 
+  .hero-bg {
+    position: absolute;
+    inset: -30% 0;
+    background-image: url('/images/hero.jpg');
+    background-size: cover;
+    background-position: center 50%;
+    will-change: transform;
+    z-index: 0;
+  }
+
+  .hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(27,58,38,0.72) 0%, rgba(27,58,38,0.55) 60%, rgba(27,58,38,0.8) 100%),
+      linear-gradient(to right, rgba(27,58,38,0.5) 0%, transparent 60%);
+    z-index: 0;
+  }
+
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(243,237,225,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(243,237,225,0.05) 1px, transparent 1px);
+      linear-gradient(rgba(243,237,225,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243,237,225,0.04) 1px, transparent 1px);
     background-size: 48px 48px;
     pointer-events: none;
+    z-index: 1;
   }
 
   .hero::after {
@@ -205,14 +229,15 @@ const [featuredPost, ...restPosts] = recentPosts;
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(232, 74, 37, 0.12) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(29, 126, 240, 0.08) 0%, transparent 60%);
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(232, 74, 37, 0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(29, 126, 240, 0.06) 0%, transparent 60%);
     pointer-events: none;
+    z-index: 1;
   }
 
   .hero-inner {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     padding-top: 4rem;
     padding-bottom: 5rem;
   }
@@ -275,6 +300,7 @@ const [featuredPost, ...restPosts] = recentPosts;
     position: absolute;
     inset: -20%;
     opacity: 0.028;
+    z-index: 2;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 180px 180px;
     pointer-events: none;
@@ -300,6 +326,7 @@ const [featuredPost, ...restPosts] = recentPosts;
     left: 80%;
     transition: top 0.18s ease, left 0.18s ease;
     will-change: top, left;
+    z-index: 2;
   }
 
   /* ── racing streaks ── */
@@ -308,6 +335,7 @@ const [featuredPost, ...restPosts] = recentPosts;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    z-index: 2;
   }
   .hero-streak {
     position: absolute;
@@ -383,6 +411,7 @@ const [featuredPost, ...restPosts] = recentPosts;
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -602,6 +631,7 @@ const [featuredPost, ...restPosts] = recentPosts;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    z-index: 2;
   }
 
   .hero-particle {
@@ -703,6 +733,15 @@ const [featuredPost, ...restPosts] = recentPosts;
 </style>
 
 <script>
+  // Hero parallax — bg moves at 0.5x scroll speed, disabled for reduced-motion users
+  const heroBg = document.getElementById('hero-bg');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (heroBg && !prefersReduced) {
+    window.addEventListener('scroll', () => {
+      heroBg.style.transform = `translateY(${(window.scrollY * 0.5).toFixed(1)}px)`;
+    }, { passive: true });
+  }
+
   // Cursor spotlight in hero
   const hero = document.getElementById('hero');
   const glow = document.getElementById('hero-glow');

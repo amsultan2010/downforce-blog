@@ -97,7 +97,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     },
     { threshold: 0.08 }
   );
-  document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale').forEach((el) => revealObserver.observe(el));
+  document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade').forEach((el) => revealObserver.observe(el));
 
   // Reading progress bar — only active on post pages
   const bar = document.getElementById('read-progress');

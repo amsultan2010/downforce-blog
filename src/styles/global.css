@@ -228,14 +228,20 @@ h1, h2, h3, h4, h5, h6 {
 /* ─── scroll reveal ─── */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(28px);
-  filter: blur(4px);
-  transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint), filter 0.7s var(--ease-out-quint);
+  transform: translateY(30px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 .reveal-on-scroll.revealed {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.reveal-fade.revealed {
+  opacity: 1;
 }
 
 .reveal-left {
@@ -315,8 +321,9 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── reduced motion: kill all decorative animations ─── */
 @media (prefers-reduced-motion: reduce) {
-  .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+  .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade {
     opacity: 1; transform: none; filter: none; transition: none;
   }
   .hero-particle { display: none; }
+  .hero-parallax-bg { background-attachment: scroll !important; }
 }

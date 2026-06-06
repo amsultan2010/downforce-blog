@@ -63,12 +63,16 @@ async function fetchThumbnail(query) {
     const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_CX}&q=${encodeURIComponent(query)}&searchType=image&num=1`;
     const res = await fetch(url, { headers: { 'User-Agent': 'downforce-blog/1.0' } });
     if (!res.ok) {
-      const body = await res.text();
-      console.warn(`Google image search HTTP ${res.status}: ${body}`);
+      const body = await res.json().catch(() => ({}));
+      const msg = body?.error?.message ?? body?.error?.status ?? res.status;
+      const reason = body?.error?.errors?.[0]?.reason ?? '';
+      console.warn(`Google image search failed — status=${res.status} message="${msg}" reason="${reason}"`);
       return '';
     }
     const data = await res.json();
-    return data?.items?.[0]?.link ?? '';
+    const link = data?.items?.[0]?.link ?? '';
+    console.log(`Thumbnail: ${link || '(no results)'}`);
+    return link;
   } catch (err) {
     console.warn(`Google image search failed: ${err.message}`);
     return '';

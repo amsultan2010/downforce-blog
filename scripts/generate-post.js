@@ -10,7 +10,8 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(__dirname, '..', 'src', 'content', 'posts');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+const GOOGLE_SEARCH_CX = process.env.GOOGLE_SEARCH_CX;
 
 if (!ANTHROPIC_API_KEY) {
   console.error('Error: ANTHROPIC_API_KEY environment variable is not set.');
@@ -123,20 +124,18 @@ function formatResults(race) {
 // Unsplash
 // ---------------------------------------------------------------------------
 
-async function fetchUnsplashThumbnail(query) {
-  if (!UNSPLASH_ACCESS_KEY) {
-    console.warn('UNSPLASH_ACCESS_KEY not set — skipping thumbnail.');
+async function fetchThumbnail(query) {
+  if (!GOOGLE_API_KEY || !GOOGLE_SEARCH_CX) {
+    console.warn('GOOGLE_API_KEY or GOOGLE_SEARCH_CX not set — skipping thumbnail.');
     return '';
   }
-  console.log(`Fetching Unsplash thumbnail for: "${query}"...`);
+  console.log(`Fetching image thumbnail for: "${query}"...`);
   try {
-    const data = await fetchJson(
-      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`,
-      { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` }
-    );
-    return data?.results?.[0]?.urls?.regular ?? '';
+    const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_CX}&q=${encodeURIComponent(query)}&searchType=image&num=1`;
+    const data = await fetchJson(url);
+    return data?.items?.[0]?.link ?? '';
   } catch (err) {
-    console.warn(`Unsplash fetch failed: ${err.message}`);
+    console.warn(`Google image search failed: ${err.message}`);
     return '';
   }
 }
@@ -302,7 +301,7 @@ ${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.
   const thumbQuery = topDriver
     ? `${topDriver.Driver?.familyName} formula 1 ${race.Circuit?.Location?.country}`
     : `${race.raceName} formula 1`;
-  const thumbnailUrl = await fetchUnsplashThumbnail(thumbQuery);
+  const thumbnailUrl = await fetchThumbnail(thumbQuery);
   markdown = injectThumbnailIntoFrontmatter(markdown, thumbnailUrl);
 
   writeFileSync(filepath, markdown, 'utf8');

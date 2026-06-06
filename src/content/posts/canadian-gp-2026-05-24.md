@@ -12,26 +12,26 @@ the canadian grand prix delivered exactly what montreal always delivers (chaos, 
 
 qualifying was straightforward. the usual suspects fought for pole, nothing too dramatic, and the grid sorted itself out for sunday.
 
-lights out and antonelli immediately started building a gap that would define the entire afternoon. this wasn't just a win. it was complete domination. by lap 20, he was already pulling away from Hamilton in P2 like the Ferrari driver was stuck in traffic.
+lights out and antonelli immediately started building a gap that would define the entire afternoon. this wasn't just a win. it was complete domination. by lap 20, he was already pulling away from hamilton in p2 like the ferrari driver was stuck in traffic.
 
-speaking of Hamilton, what a drive from the seven-time champion. finishing P2 and actually making the Ferrari look raceable around montreal? that's the Lewis we know. the man was extracting pace from that red car that probably shouldn't exist (classic Hamilton, honestly).
+speaking of hamilton, what a drive from the seven-time champion. finishing p2 and actually making the ferrari look raceable around montreal? that's the lewis we know. the man was extracting pace from that red car that probably shouldn't exist (classic hamilton, honestly).
 
-Verstappen rounded out the podium in third, and while Max being on the podium isn't exactly breaking news, seeing him 43 points behind antonelli in the championship definitely is. remember when we thought Red Bull would walk this season? good times.
+verstappen rounded out the podium in third, and while max being on the podium isn't exactly breaking news, seeing him 43 points behind antonelli in the championship definitely is. remember when we thought red bull would walk this season? good times.
 
-Leclerc brought the second Ferrari home in fourth, which is pretty much exactly where you'd expect a Ferrari to finish (solid but not spectacular). meanwhile, Hadjar managed fifth for Red Bull before getting lapped, which tells you everything about how dominant the top four were today.
+leclerc brought the second ferrari home in fourth, which is pretty much exactly where you'd expect a ferrari to finish (solid but not spectacular). meanwhile, hadjar managed fifth for red bull before getting lapped, which tells you everything about how dominant the top four were today.
 
-the real story though? half the bloody grid got lapped. Colapinto, Lawson, Gasly, Sainz, Bearman (all lapped). then you had the retirements: Perez, Norris, Russell, and the one that hurt to watch, Fernando Alonso DNF-ing out of what could have been a points-paying position.
+the real story though? half the bloody grid got lapped. colapinto, lawson, gasly, sainz, bearman (all lapped). then you had the retirements: perez, norris, russell, and the one that hurt to watch, fernando alonso dnf-ing out of what could have been a points-paying position.
 
-here's where things get spicy. antonelli now sits on 131 points, extending his lead over Russell (who retired today) to 43 points. Hamilton's P2 finish moves him up to 72 points, just three behind Leclerc.
+here's where things get spicy. antonelli now sits on 131 points, extending his lead over russell (who retired today) to 43 points. hamilton's p2 finish moves him up to 72 points, just three behind leclerc.
 
-but can we talk about Verstappen for a second? the three-time world champion is sitting in seventh place with 43 points. seventh. that Red Bull is genuinely struggling this year and it's wild to see Max having to fight tooth and nail for every point.
+but can we talk about verstappen for a second? the three-time world champion is sitting in seventh place with 43 points. seventh. that red bull is genuinely struggling this year and it's wild to see max having to fight tooth and nail for every point.
 
-Mercedes are absolutely flying in the constructors' with 219 points (Russell's DNF didn't help but antonelli's wins are carrying the team). Ferrari are hanging in there at 147, while McLaren's 106 points feel a bit hollow since both their drivers are underperforming relative to expectations.
+mercedes are absolutely flying in the constructors' with 219 points (russell's dnf didn't help but antonelli's wins are carrying the team). ferrari are hanging in there at 147, while mclaren's 106 points feel a bit hollow since both their drivers are underperforming relative to expectations.
 
 next weekend we're off to barcelona, and honestly? if antonelli keeps driving like this, we might be watching the coronation of the youngest champion in f1 history. the kid has three wins already and shows zero signs of slowing down.
 
-will Red Bull finally get their act together on european soil? can Hamilton keep extracting miracles from that Ferrari? and will we see Fernando back in the points where he belongs?
+will red bull finally get their act together on european soil? can hamilton keep extracting miracles from that ferrari? and will we see fernando back in the points where he belongs?
 
-barcelona usually rewards the best package, and right now that's clearly Mercedes. don't be surprised if antonelli makes it four wins from six races.
+barcelona usually rewards the best package, and right now that's clearly mercedes. don't be surprised if antonelli makes it four wins from six races.
 
 anyway, that's montreal. see you in spain.

@@ -16,19 +16,19 @@ media day. drivers and team people sit down for interviews. the social media adm
 
 **friday: practice, which is exactly as boring as it sounds**
 
-two one-hour sessions. FP1 (first free practice) and FP2 (second free practice). teams are just getting the cars running, testing setups, collecting data. occasionally you'll see a rookie or a Formula 2 driver in FP1 to see what they can do, but that's about it.
+two one-hour sessions. fp1 (first free practice) and fp2 (second free practice). teams are just getting the cars running, testing setups, collecting data. occasionally you'll see a rookie or a formula 2 driver in fp1 to see what they can do, but that's about it.
 
-(on sprint weekends, which happen six times a year, this changes. FP2 gets replaced by sprint qualifying. more on that later if you care.)
+(on sprint weekends, which happen six times a year, this changes. fp2 gets replaced by sprint qualifying. more on that later if you care.)
 
 **saturday: the day that matters**
 
-one more practice session (FP3), then qualifying. this is where the grid for sunday gets decided.
+one more practice session (fp3), then qualifying. this is where the grid for sunday gets decided.
 
-qualifying works like this: it's split into three parts. Q1 eliminates the 5 slowest drivers. Q2 eliminates another 5 (out of the 15 remaining). Q3 is just the 10 fastest drivers throwing down one more lap to arrange themselves 1st to 10th.
+qualifying works like this: it's split into three parts. q1 eliminates the 5 slowest drivers. q2 eliminates another 5 (out of the 15 remaining). q3 is just the 10 fastest drivers throwing down one more lap to arrange themselves 1st to 10th.
 
-"pole position" is 1st. it's the best spot on the grid. no points for getting it (which honestly should change, but the FIA won't listen to me), but it matters tremendously the next day.
+"pole position" is 1st. it's the best spot on the grid. no points for getting it (which honestly should change, but the fia won't listen to me), but it matters tremendously the next day.
 
-you might see fernando alonso in an AMR25 here, and he'll probably be somewhere he shouldn't be based on pure pace alone, because that's what fernando does.
+you might see fernando alonso in an amr25 here, and he'll probably be somewhere he shouldn't be based on pure pace alone, because that's what fernando does.
 
 **sunday: the actual race**
 
@@ -52,7 +52,7 @@ every track has its own optimal strategy. what works at monaco (short, slow, low
 
 races are 50-70 laps depending on track length. almost always around 2 hours start to finish.
 
-factor in tire deg, pit stops, safety cars, whether the FIA decides to be consistent with penalties (spoiler: they won't), and you've got a race.
+factor in tire deg, pit stops, safety cars, whether the fia decides to be consistent with penalties (spoiler: they won't), and you've got a race.
 
 **after it's over**
 

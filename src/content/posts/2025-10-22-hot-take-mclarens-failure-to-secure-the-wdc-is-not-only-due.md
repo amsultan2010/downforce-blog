@@ -16,7 +16,7 @@ first 15 races, the narrative was obvious: piastri and norris would fight it out
 
 then monza happened. max took pole and won (as he does). suddenly, the papaya rules and team orders between oscar and lando started looking less dominant and more like management theater. the real story wasn't the mclaren battle being "intruded upon"—it was that max was just outdriving both of them when it mattered.
 
-here's the actual breakdown. max finished 2nd at melbourne, jeddah, montreal, zandvoort, and marina bay. he won at suzuka, imola, monza, baku, and austin. he has more pole positions than both mclaren drivers and is now tied with lando on wins. meanwhile, lando collected three dnfs (montreal, zandvoort, austin sprint) and oscar grabbed two (baku, austin sprint). those aren't strategic losses or bad luck—those are execution failures that cost them everything.
+here's the actual breakdown. max finished 2nd at melbourne, jeddah, montreal, zandvoort, and marina bay. he won at suzuka, imola, monza, baku, and austin. he has more pole positions than both mclaren drivers and is now tied with lando on wins. meanwhile, lando collected three dnfs (montreal, zandvoort, austin sprint) and oscar grabbed two (baku, austin sprint). those aren't strategic losses or bad luck. those are execution failures that cost them everything.
 
 a 104-point gap doesn't close to 40 because one driver suddenly became incredible (max was always incredible, since adrian newey left). it closes because the other two couldn't finish races or nail strategy calls when they had the quicker car. mclaren had the championship gift-wrapped and handed it to max.
 

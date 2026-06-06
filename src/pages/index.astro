@@ -23,7 +23,6 @@ const [featuredPost, ...restPosts] = recentPosts;
         <span class="ticker-inner">
           <span class="t-item">formula one</span><span class="t-sep">·</span>
           <span class="t-item">race analysis</span><span class="t-sep">·</span>
-          <span class="t-item">no corporate hedging</span><span class="t-sep">·</span>
           <span class="t-item">actual opinions</span><span class="t-sep">·</span>
           <span class="t-item">f1 2025</span><span class="t-sep">·</span>
           <span class="t-item">driver standings</span><span class="t-sep">·</span>
@@ -66,9 +65,7 @@ const [featuredPost, ...restPosts] = recentPosts;
       </h1>
       <p class="hero-tagline hero-anim" style="--d:0.7s">race analysis.<br class="mobile-break" /> actual opinions.</p>
       <div class="hero-sub hero-anim" style="--d:0.82s">
-        <span>formula one &amp; beyond</span>
-        <span class="dot" aria-hidden="true">·</span>
-        <span>no corporate hedging</span>
+        <span>formula one sports blog</span>
       </div>
       <a href="#posts" class="hero-cta hero-anim" id="hero-cta" style="--d:0.92s">read the latest →</a>
     </div>
@@ -98,7 +95,7 @@ const [featuredPost, ...restPosts] = recentPosts;
   <section class="editorial-band">
     <div class="container editorial-inner">
       <p class="editorial-quote reveal-fade">
-        "this isn't a press release. it's a race report with a point of view."
+        "race reports with a point of view from an avid fan who covers everything."
       </p>
       <div class="editorial-pillars">
         <div class="pillar reveal-left" style="transition-delay:0s">
@@ -217,8 +214,8 @@ const [featuredPost, ...restPosts] = recentPosts;
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(243,237,225,0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(243,237,225,0.07) 1px, transparent 1px);
+      linear-gradient(rgba(243,237,225,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243,237,225,0.035) 1px, transparent 1px);
     background-size: 48px 48px;
     pointer-events: none;
     z-index: 1;
@@ -378,11 +375,11 @@ const [featuredPost, ...restPosts] = recentPosts;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    font-size: 0.9rem;
-    color: rgba(243, 237, 225, 0.35);
-    letter-spacing: 0.08em;
+    font-size: 1.05rem;
+    color: rgba(243, 237, 225, 0.85);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    font-weight: 300;
+    font-weight: 600;
     margin-bottom: 2.5rem;
   }
 
@@ -520,13 +517,13 @@ const [featuredPost, ...restPosts] = recentPosts;
   .editorial-band {
     background: var(--bg-dark);
     color: var(--text-light);
-    padding: 2.25rem 0;
+    padding: 1.5rem 0;
   }
 
   .editorial-inner {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .editorial-quote {
@@ -653,7 +650,7 @@ const [featuredPost, ...restPosts] = recentPosts;
     background: var(--bg-dark);
     border-top: 1px solid rgba(243,237,225,0.06);
     border-bottom: 1px solid rgba(243,237,225,0.06);
-    padding: 2rem 0;
+    padding: 1.25rem 0;
     overflow: hidden;
   }
 

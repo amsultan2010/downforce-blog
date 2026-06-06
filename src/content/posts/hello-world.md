@@ -1,24 +1,21 @@
 ---
 title: "welcome to the downforce blog"
 date: 2025-06-05
-excerpt: "race analysis with actual opinions. no corporate hedging, no both-sides diplomacy. just what we think happened and why it matters."
+excerpt: "race reports with a point of view from a high schooler in riyadh who has loved f1 for years."
 tags: ["meta", "welcome"]
 ---
 
-this blog exists because f1 coverage has a problem: too much of it sounds like it was written by someone who's afraid of being wrong.
+this blog exists since i wanted somewhere to put my actual thoughts on formula one. not summaries. not recaps. actual opinions from someone who watches every race, rewinds the strategy calls, and has very strong feelings about Fernando Alonso.
 
-the **downforce blog** is not that.
-
-we'll cover race weekends, technical developments, driver moves, and the occasional longer piece about what's actually happening in the sport beneath the pr layer. we'll have opinions. some of them will turn out to be wrong. that's fine (being wrong in public is how you get better at analysis).
+the **downforce blog** covers race weekends, driver storylines, team dynamics, championship battles, and whatever else in the paddock is worth reacting to. posts go up after every grand prix and on friday mornings when there's something worth saying mid-week.
 
 a few things you can expect here:
 
-- **race reviews** that actually say something, not summaries of what you already watched
-- **technical takes** that try to explain *why* something happened, not just *what* happened
-- **opinion pieces** on the bigger questions: dominance, regulation cycles, the future of the sport
+- **race reports** after every grand prix, written the same weekend
+- **driver and team analysis** across the full grid
+- **hot takes** on strategy calls, steward decisions, and season narratives
+- **friday editorials** on the bigger questions in f1
 
-posts go up when there's something worth saying. usually that means the day after a race, or when something happens that demands a response.
-
-if you disagree with something you read here, good. that's what the internet is for.
+i'm a huge Aston Martin and Fernando Alonso fan. that shows up in the writing. so does watching every race from riyadh, which means late nights and a lot of opinions formed by 2am.
 
 see you in the pitlane.

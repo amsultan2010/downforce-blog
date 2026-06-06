@@ -1,7 +1,7 @@
 ---
 title: "austin sprint: when everything goes wrong at once"
 date: "2025-10-19"
-excerpt: "Hulkenberg takes out half the grid, Russell and Verstappen collide, and McLaren's celebration gets derailed by a demolition job."
+excerpt: "hulkenberg takes out half the grid, russell and verstappen collide, and mclaren's celebration gets derailed by a demolition job."
 tags: ["race-summary", "max-verstappen", "mclaren", "fernando-alonso", "nico-hulkenberg", "george-russell"]
 category: "race-summaries"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "the 2023 encore: verstappen reminds us how good he actually is"
 date: "2025-10-20"
-excerpt: "Max Verstappen dominated Austin like it was 2023, pole to flag, while the championship fight suddenly got very tight."
+excerpt: "max verstappen dominated austin like it was 2023, pole to flag, while the championship fight suddenly got very tight."
 tags: ["race-summary", "Max Verstappen", "Oscar Piastri", "Lando Norris", "Austin", "WDC-battle"]
 category: "race-summaries"
 ---

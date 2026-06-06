@@ -165,7 +165,7 @@ post structure:
 lowercase rules (CRITICAL — follow these exactly):
 - ALL body text must be lowercase. no sentence-starting capitals. no random capitalization.
 - the ONLY uppercase allowed: driver names (e.g. Max Verstappen), team names (e.g. Ferrari, Red Bull, McLaren), and acronyms (FIA, DRS, DNF, WDC, WCC, VSC, etc).
-- frontmatter title and excerpt must also be lowercase except for proper nouns and acronyms as above.
+- frontmatter title and excerpt must be fully lowercase — no capitals at all, including proper nouns and acronyms.
 - tags must be all lowercase.
 - no grammar mistakes. no missing punctuation. questions must end with "?". sentences must end with "." or other correct punctuation.
 

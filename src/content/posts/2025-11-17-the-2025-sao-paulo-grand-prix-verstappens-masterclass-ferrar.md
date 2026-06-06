@@ -1,7 +1,7 @@
 ---
 title: "verstappen's pitlane masterclass, ferrari's parade curse, and norris pulling away"
 date: "2025-11-17"
-excerpt: "Max started dead last and still podiumed. both Ferraris DNF'd. the Norris era is officially here."
+excerpt: "max started dead last and still podiumed. both ferraris DNF'd. the norris era is officially here."
 tags: ["race-summary", "Max Verstappen", "Lando Norris", "Ferrari", "McLaren", "Kimi Antonelli"]
 category: "race-summaries"
 ---

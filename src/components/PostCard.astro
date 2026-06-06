@@ -22,7 +22,8 @@ const dateStr = date.toLocaleDateString('en-GB', {
 
   {thumbnail && (
     <div class="card-thumb">
-      <img src={thumbnail} alt={title} loading="lazy" width="800" height="450" />
+      <img src={thumbnail} alt={title} loading="lazy" width="800" height="450"
+        onerror="this.closest('.card-thumb').style.display='none'" />
     </div>
   )}
 

@@ -4,7 +4,6 @@ date: "2026-06-06"
 excerpt: "Andrea Kimi Antonelli has 43 points on Max Verstappen and we're only halfway through June. how did we get here."
 tags: ["editorial", "Andrea Kimi Antonelli", "Mercedes", "rookie season", "championship"]
 category: "editorial"
-thumbnail: "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=1200&h=630&fit=crop"
 ---
 
 remember when everyone was worried about andrea kimi antonelli getting crushed as a mercedes rookie.

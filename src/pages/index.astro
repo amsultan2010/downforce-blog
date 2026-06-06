@@ -10,14 +10,20 @@ const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueO
 const recentPosts = posts.slice(0, 3);
 const [featuredPost, ...restPosts] = recentPosts;
 
-// Auto-detect thumbnails: drop {post-id}.jpg/.png/.webp in public/images/posts/
+// Auto-detect thumbnails by article number (oldest post = article1, next = article2, etc.)
 const thumbGlob = import.meta.glob('/public/images/posts/*.*', { eager: true });
-const thumbMap: Record<string, string> = {};
+const thumbByName: Record<string, string> = {};
 for (const path of Object.keys(thumbGlob)) {
   const file = path.split('/').pop()!;
-  const slug = file.replace(/\.[^.]+$/, '');
-  thumbMap[slug] = path.replace('/public', '');
+  const name = file.replace(/\.[^.]+$/, '');
+  thumbByName[name] = path.replace('/public', '');
 }
+const sortedAsc = [...allPosts].sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const thumbMap: Record<string, string> = {};
+sortedAsc.forEach((post, i) => {
+  const key = `article${i + 1}`;
+  if (thumbByName[key]) thumbMap[post.id] = thumbByName[key];
+});
 ---
 
 <BaseLayout

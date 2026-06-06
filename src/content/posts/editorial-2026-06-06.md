@@ -1,7 +1,7 @@
 ---
 title: "the antonelli moment we didn't see coming"
 date: "2026-06-06"
-excerpt: "Andrea Kimi Antonelli has 43 points on Max Verstappen and we're only halfway through June. how did we get here."
+excerpt: "Andrea Kimi Antonelli has 43 points on Max Verstappen and we're only halfway through June. how did we get here?"
 tags: ["editorial", "Andrea Kimi Antonelli", "Mercedes", "rookie season", "championship"]
 category: "editorial"
 ---

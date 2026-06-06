@@ -14,7 +14,7 @@ then George Russell, channeling full Mercedes mercenary energy, dive-bombs Max V
 
 and because apparently one apocalypse wasn't enough, Lance Stroll tried a risky move on Esteban Ocon late race and took both of them out. at least Stroll had the grace to own it afterward, which is something. most drivers would blame the other guy.
 
-here's the thing though. Max just got a free 8 points on both McLaren drivers with one incident. remember when everyone (including me) joked that Verstappen would somehow win his fifth title even though both McLarens were clearly faster? turns out that wasn't as funny as we thought. suddenly it's not guaranteed McLaren wins the WDC anymore. a double DNF right after clinching the constructor's championship has to hurt in ways the stats don't fully capture.
+here's the thing though. Max just got a free 8 points on both McLaren drivers with one incident. remember when everyone (including me) joked that Verstappen would somehow win his fifth title even though both McLarens were clearly faster? turns out that wasn't as funny as we thought. suddenly it's not guaranteed McLaren wins the WDC anymore. a double DNF right after clinching the constructors' championship has to hurt in ways the stats don't fully capture.
 
 David Crofty said it best during the broadcast, comparing Max to a T. rex chasing Lando and Oscar in a jeep through Jurassic Park. and you know what makes that worse (better) for Verstappen? he's got more sprint wins and sprint poles than literally every other driver combined. alone. not the grid. him versus everyone else. and he's winning that comparison.
 

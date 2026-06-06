@@ -4,10 +4,12 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   post: CollectionEntry<'posts'>;
   featured?: boolean;
+  autoThumb?: string;
 }
 
-const { post, featured = false } = Astro.props;
+const { post, featured = false, autoThumb } = Astro.props;
 const { title, date, excerpt, tags, race, thumbnail } = post.data;
+const thumbSrc = thumbnail || autoThumb || null;
 
 const dateStr = date.toLocaleDateString('en-GB', {
   day: 'numeric',
@@ -20,9 +22,9 @@ const dateStr = date.toLocaleDateString('en-GB', {
   <a href={`/posts/${post.id}`} class="card-link" tabindex="-1" aria-hidden="true"></a>
   <div class="shimmer-layer" aria-hidden="true"></div>
 
-  {thumbnail && (
+  {thumbSrc && (
     <div class="card-thumb">
-      <img src={thumbnail} alt={title} loading="lazy" width="800" height="450"
+      <img src={thumbSrc} alt={title} loading="lazy" width="800" height="450"
         onerror="this.closest('.card-thumb').style.display='none'" />
     </div>
   )}

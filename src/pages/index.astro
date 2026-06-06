@@ -9,6 +9,15 @@ const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueO
 
 const recentPosts = posts.slice(0, 3);
 const [featuredPost, ...restPosts] = recentPosts;
+
+// Auto-detect thumbnails: drop {post-id}.jpg/.png/.webp in public/images/posts/
+const thumbGlob = import.meta.glob('/public/images/posts/*.*', { eager: true });
+const thumbMap: Record<string, string> = {};
+for (const path of Object.keys(thumbGlob)) {
+  const file = path.split('/').pop()!;
+  const slug = file.replace(/\.[^.]+$/, '');
+  thumbMap[slug] = path.replace('/public', '');
+}
 ---
 
 <BaseLayout
@@ -150,7 +159,7 @@ const [featuredPost, ...restPosts] = recentPosts;
 
       {featuredPost && (
         <div class="featured-post reveal-on-scroll">
-          <PostCard post={featuredPost} featured />
+          <PostCard post={featuredPost} featured autoThumb={thumbMap[featuredPost.id]} />
         </div>
       )}
 
@@ -158,7 +167,7 @@ const [featuredPost, ...restPosts] = recentPosts;
         <div class="posts-grid">
           {restPosts.map((post, i) => (
             <div class="reveal-on-scroll" style={`transition-delay: ${i * 0.08}s`}>
-              <PostCard post={post} />
+              <PostCard post={post} autoThumb={thumbMap[post.id]} />
             </div>
           ))}
         </div>

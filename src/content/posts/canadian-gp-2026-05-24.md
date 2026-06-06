@@ -20,7 +20,7 @@ Verstappen rounded out the podium in third, and while Max being on the podium is
 
 Leclerc brought the second Ferrari home in fourth, which is pretty much exactly where you'd expect a Ferrari to finish (solid but not spectacular). meanwhile, Hadjar managed fifth for Red Bull before getting lapped, which tells you everything about how dominant the top four were today.
 
-the real story though? half the bloody grid got lapped. Colapinto, Lawson, Gasly, Sainz, Bearman — all lapped. then you had the retirements: Perez, Norris, Russell, and the one that hurt to watch, Fernando Alonso DNF-ing out of what could have been a points-paying position.
+the real story though? half the bloody grid got lapped. Colapinto, Lawson, Gasly, Sainz, Bearman (all lapped). then you had the retirements: Perez, Norris, Russell, and the one that hurt to watch, Fernando Alonso DNF-ing out of what could have been a points-paying position.
 
 here's where things get spicy. antonelli now sits on 131 points, extending his lead over Russell (who retired today) to 43 points. Hamilton's P2 finish moves him up to 72 points, just three behind Leclerc.
 

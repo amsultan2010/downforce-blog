@@ -167,7 +167,13 @@ lowercase rules (CRITICAL — follow these exactly):
 - the ONLY uppercase allowed: driver names (e.g. Max Verstappen), team names (e.g. Ferrari, Red Bull, McLaren), and acronyms (FIA, DRS, DNF, WDC, WCC, VSC, etc).
 - frontmatter title and excerpt must be fully lowercase — no capitals at all, including proper nouns and acronyms.
 - tags must be all lowercase.
-- no grammar mistakes. no missing punctuation. questions must end with "?". sentences must end with "." or other correct punctuation.
+- no grammar or punctuation mistakes of any kind.
+- questions must always end with "?". never end a question with ".".
+- sentences must end with ".", "?", or "!".
+- never use em dashes (—) or double hyphens (--). use parentheses for asides instead.
+- acronyms (VSC, DRS, FIA, DNF, WDC, WCC, etc.) must always be fully uppercase.
+- commas required after introductory clauses (e.g. "from riyadh at 3am, watching...").
+- no missing commas in lists of three or more items.
 
 frontmatter format:
 ---

@@ -10,7 +10,7 @@ so i missed this one. was watching the 6 Kings Slam instead (Jannik Sinner vs Ca
 
 turn 1, lap 1. Nico Hulkenberg just decides he's going to solve three problems at once by diving to the inside and yeeting himself, Lando Norris, and Oscar Piastri out of the race in one beautiful demolition job. three cars gone. but wait, there's more. Fernando Alonso, who has had the statistical worst luck this entire season (no, seriously, the man might actually be the unluckiest driver alive), gets caught in the wreckage and limps it home with damage before retiring. the guy started P6 and didn't even get to race. this is peak Alonso's 2025 in one incident.
 
-then George Russell, channeling full Mercedes mercenary energy, dive-bombs Max Verstappen into turn 1 later in the sprint. sound familiar? basically the Mexico 2024 Norris/Verstappen bit all over again. they both go off. the FIA will definitely have thoughts about that, though honestly at this point does anyone trust them to be consistent on contact calls (they won't be).
+then George Russell, channeling full Mercedes mercenary energy, dive-bombs Max Verstappen into turn 1 later in the sprint. sound familiar? basically the Mexico 2024 Norris/Verstappen bit all over again. they both go off. the FIA will definitely have thoughts about that, though honestly at this point does anyone trust them to be consistent on contact calls (they won't be)?
 
 and because apparently one apocalypse wasn't enough, Lance Stroll tried a risky move on Esteban Ocon late race and took both of them out. at least Stroll had the grace to own it afterward, which is something. most drivers would blame the other guy.
 

@@ -18,11 +18,11 @@ that 10-second stop ruined what could've been his first podium in red. instead, 
 
 max worked his way through to P3 while norris cruised to the win, finishing 38 seconds clear of leclerc in P2. piastri limped home P5, which meant norris actually took the championship lead for the first time since april. one point ahead. that's dramatic.
 
-but here's the thing that actually infuriated everyone at the watch party (yes, i was up watching at an ungodly hour from riyadh). with a handful of laps to go, max was genuinely hunting charles down. verstappen got within drs range. this was the race within the race. it was happening.
+but here's the thing that actually infuriated everyone at the watch party (yes, i was up watching at an ungodly hour from riyadh). with a handful of laps to go, max was genuinely hunting charles down. verstappen got within DRS range. this was the race within the race. it was happening.
 
-then carlos sainz spun out in the stadium section and parked his car off track. the FIA called a vsc.
+then carlos sainz spun out in the stadium section and parked his car off track. the FIA called a VSC.
 
-a vsc. for a car that was already off track.
+a VSC. for a car that was already off track.
 
 that completely neutered the verstappen-leclerc fight that was about to get properly spicy. it's the kind of decision that makes you wonder if anyone in the stewards' room actually watched the previous lap. neutralize the race, kill the drama, declare victory for consistency (except there was no consistency with the lewis penalty, so where's that logic coming from).
 

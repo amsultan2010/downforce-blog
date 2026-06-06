@@ -24,6 +24,6 @@ monaco tomorrow is where this gets interesting because antonelli's form has been
 
 the craziest part. he looks bored doing it. not arrogant. just bored. like he's already solved the puzzle and is just executing the solution over and over. that's the kind of mentality that actually wins championships. not the aggressive desperate energy. just calm, surgical precision.
 
-from riyadh at 3am watching his radio messages it's clear he doesn't need motivation. he needs competition at his level and right now nobody at f1 is operating there. russell's close. hamilton on good days is close. but antonelli keeps lapping faster.
+from riyadh at 3am, watching his radio messages, it's clear he doesn't need motivation. he needs competition at his level and right now nobody at f1 is operating there. russell's close. hamilton on good days is close. but antonelli keeps lapping faster.
 
 tomorrow we'll see if monaco changes anything. it probably won't.

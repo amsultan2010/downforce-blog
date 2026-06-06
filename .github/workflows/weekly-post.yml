@@ -1,8 +1,8 @@
-name: Generate Race Post
+name: Generate Weekly Editorial
 
 on:
   schedule:
-    - cron: '0 20 * * 0'  # Every Sunday at 20:00 UTC
+    - cron: '0 10 * * 5'  # Every Friday at 10:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -22,8 +22,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch race data and generate post
+      - name: Generate editorial post
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-        run: node scripts/generate-post.js
+        run: node scripts/generate-editorial.js

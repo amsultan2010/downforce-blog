@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { post, featured = false } = Astro.props;
-const { title, date, excerpt, tags, race } = post.data;
+const { title, date, excerpt, tags, race, thumbnail } = post.data;
 
 const dateStr = date.toLocaleDateString('en-GB', {
   day: 'numeric',
@@ -19,6 +19,12 @@ const dateStr = date.toLocaleDateString('en-GB', {
 <article class:list={['post-card', { featured }]}>
   <a href={`/posts/${post.id}`} class="card-link" tabindex="-1" aria-hidden="true"></a>
   <div class="shimmer-layer" aria-hidden="true"></div>
+
+  {thumbnail && (
+    <div class="card-thumb">
+      <img src={thumbnail} alt={title} loading="lazy" width="800" height="450" />
+    </div>
+  )}
 
   <div class="card-meta">
     <time datetime={date.toISOString()} class="card-date">{dateStr}</time>
@@ -118,9 +124,36 @@ const dateStr = date.toLocaleDateString('en-GB', {
     }
   }
 
+  /* Thumbnail */
+  .card-thumb {
+    margin: -1.75rem -2rem 0;
+    height: 200px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.9) saturate(0.9);
+    transition: filter 0.35s ease, transform 0.35s ease;
+  }
+
+  .post-card:hover .card-thumb img {
+    filter: brightness(1) saturate(1);
+    transform: scale(1.03);
+  }
+
   /* Featured card */
   .post-card.featured {
     padding: 2.25rem 2.5rem;
+  }
+
+  .post-card.featured .card-thumb {
+    height: 280px;
+    margin: -2.25rem -2.5rem 0;
   }
 
   .post-card.featured .card-title {

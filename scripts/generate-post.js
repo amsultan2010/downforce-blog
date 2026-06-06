@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(__dirname, '..', 'src', 'content', 'posts');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
 if (!ANTHROPIC_API_KEY) {
   console.error('Error: ANTHROPIC_API_KEY environment variable is not set.');
@@ -116,6 +117,34 @@ function formatResults(race) {
     .join('\n');
 
   return { top10, dnfs: dnfs || '  None' };
+}
+
+// ---------------------------------------------------------------------------
+// Unsplash
+// ---------------------------------------------------------------------------
+
+async function fetchUnsplashThumbnail(query) {
+  if (!UNSPLASH_ACCESS_KEY) {
+    console.warn('UNSPLASH_ACCESS_KEY not set — skipping thumbnail.');
+    return '';
+  }
+  console.log(`Fetching Unsplash thumbnail for: "${query}"...`);
+  try {
+    const data = await fetchJson(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape`,
+      { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` }
+    );
+    return data?.results?.[0]?.urls?.regular ?? '';
+  } catch (err) {
+    console.warn(`Unsplash fetch failed: ${err.message}`);
+    return '';
+  }
+}
+
+function injectThumbnailIntoFrontmatter(markdown, thumbnailUrl) {
+  if (!thumbnailUrl) return markdown;
+  // Insert thumbnail field before the closing --- of the frontmatter block
+  return markdown.replace(/^(---\n[\s\S]*?)(---)/m, `$1thumbnail: "${thumbnailUrl}"\n$2`);
 }
 
 // ---------------------------------------------------------------------------
@@ -260,13 +289,21 @@ ${nextRaceInfo}
 
 ${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}${dankPosts.length > 0 ? `\n\n## Community Pulse — r/formuladank hot posts:\n${dankPosts.map(p => `- "${p.title}" (${p.score} upvotes, ${p.comments} comments)`).join('\n')}` : ''}`;
 
-  const markdown = await callClaude(userMessage);
+  let markdown = await callClaude(userMessage);
 
   if (!markdown.startsWith('---')) {
     console.error('Unexpected Claude response (does not begin with frontmatter):');
     console.error(markdown.slice(0, 300));
     process.exit(1);
   }
+
+  // Fetch thumbnail using top finisher name + race country as search query
+  const topDriver = race.Results?.[0];
+  const thumbQuery = topDriver
+    ? `${topDriver.Driver?.familyName} formula 1 ${race.Circuit?.Location?.country}`
+    : `${race.raceName} formula 1`;
+  const thumbnailUrl = await fetchUnsplashThumbnail(thumbQuery);
+  markdown = injectThumbnailIntoFrontmatter(markdown, thumbnailUrl);
 
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);

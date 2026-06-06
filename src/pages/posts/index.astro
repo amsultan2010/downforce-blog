@@ -5,6 +5,20 @@ import PostCard from '../../components/PostCard.astro';
 
 const allPosts = await getCollection('posts');
 const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const thumbGlob = import.meta.glob('/public/images/posts/*.*', { eager: true });
+const thumbByName: Record<string, string> = {};
+for (const path of Object.keys(thumbGlob)) {
+  const file = path.split('/').pop()!;
+  const name = file.replace(/\.[^.]+$/, '');
+  thumbByName[name] = path.replace('/public', '');
+}
+const sortedAsc = [...allPosts].sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const thumbMap: Record<string, string> = {};
+sortedAsc.forEach((post, i) => {
+  const key = `article${i + 1}`;
+  if (thumbByName[key]) thumbMap[post.id] = thumbByName[key];
+});
 ---
 
 <BaseLayout
@@ -22,7 +36,7 @@ const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueO
       <div class="posts-list">
         {posts.map((post, i) => (
           <div class="reveal-on-scroll" style={`transition-delay: ${i * 0.06}s`}>
-            <PostCard post={post} />
+            <PostCard post={post} autoThumb={thumbMap[post.id]} />
           </div>
         ))}
         {posts.length === 0 && (

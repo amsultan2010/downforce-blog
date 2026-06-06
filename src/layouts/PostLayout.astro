@@ -75,6 +75,14 @@ const schemaJson = JSON.stringify({
       </div>
     </header>
 
+    <!-- Post thumbnail -->
+    {thumbnail && (
+      <div class="post-thumb container">
+        <img src={thumbnail} alt={title} width="1200" height="630" loading="eager"
+          onerror="this.closest('.post-thumb').style.display='none'" />
+      </div>
+    )}
+
     <!-- Post body -->
     <div class="post-body container">
       <div class="prose">
@@ -210,6 +218,21 @@ const schemaJson = JSON.stringify({
   .post-tag:nth-child(3n+3) {
     color: var(--amber);
     background: var(--amber-tint);
+  }
+
+  .post-thumb {
+    max-width: var(--content-width);
+    margin-bottom: 2.5rem;
+    border-radius: var(--radius, 4px);
+    overflow: hidden;
+  }
+
+  .post-thumb img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 480px;
   }
 
   .post-body {

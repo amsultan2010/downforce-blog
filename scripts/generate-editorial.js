@@ -11,8 +11,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(__dirname, '..', 'src', 'content', 'posts');
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
-const GOOGLE_SEARCH_CX = process.env.GOOGLE_SEARCH_CX;
 
 if (!ANTHROPIC_API_KEY) {
   console.error('Error: ANTHROPIC_API_KEY is not set.');
@@ -50,36 +48,6 @@ async function fetchSchedule() {
 }
 
 // ---------------------------------------------------------------------------
-// Unsplash
-// ---------------------------------------------------------------------------
-
-async function fetchThumbnail(query) {
-  if (!GOOGLE_API_KEY || !GOOGLE_SEARCH_CX) {
-    console.warn('GOOGLE_API_KEY or GOOGLE_SEARCH_CX not set — skipping thumbnail.');
-    return '';
-  }
-  console.log(`Fetching image thumbnail for: "${query}"...`);
-  try {
-    const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_CX}&q=${encodeURIComponent(query)}&searchType=image&num=1`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'downforce-blog/1.0' } });
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      const msg = body?.error?.message ?? body?.error?.status ?? res.status;
-      const reason = body?.error?.errors?.[0]?.reason ?? '';
-      console.warn(`Google image search failed — status=${res.status} message="${msg}" reason="${reason}"`);
-      return '';
-    }
-    const data = await res.json();
-    const link = data?.items?.[0]?.link ?? '';
-    console.log(`Thumbnail: ${link || '(no results)'}`);
-    return link;
-  } catch (err) {
-    console.warn(`Google image search failed: ${err.message}`);
-    return '';
-  }
-}
-
-// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -90,26 +58,6 @@ function todayDate() {
 function findUpcomingRace(schedule) {
   const now = new Date();
   return schedule.find(r => new Date(r.date) > now) ?? null;
-}
-
-function extractSearchQuery(markdown) {
-  const tagsMatch = markdown.match(/tags:\s*\[([^\]]+)\]/);
-  if (tagsMatch) {
-    const tags = tagsMatch[1]
-      .split(',')
-      .map(t => t.trim().replace(/['"]/g, ''))
-      .filter(t => t && t !== 'editorial');
-    if (tags.length > 0) return `${tags[0]} formula 1`;
-  }
-  return 'formula 1 racing';
-}
-
-function injectThumbnail(markdown, thumbnailUrl) {
-  if (!thumbnailUrl) return markdown;
-  return markdown.replace(
-    /thumbnail:\s*"\[unsplash image url goes here\]"/i,
-    `thumbnail: "${thumbnailUrl}"`
-  );
 }
 
 // ---------------------------------------------------------------------------
@@ -154,7 +102,6 @@ date: "[YYYY-MM-DD]"
 excerpt: "[one sentence hook]"
 tags: ["editorial", relevant driver/team/topic tags]
 category: "editorial"
-thumbnail: "[unsplash image url goes here]"
 ---`;
 
 async function callClaude(userMessage) {
@@ -232,10 +179,6 @@ Pick the most interesting editorial angle given this context and write the post.
     console.error(markdown.slice(0, 300));
     process.exit(1);
   }
-
-  const searchQuery = extractSearchQuery(markdown);
-  const thumbnailUrl = await fetchThumbnail(searchQuery);
-  markdown = injectThumbnail(markdown, thumbnailUrl);
 
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);

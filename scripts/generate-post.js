@@ -10,8 +10,6 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(__dirname, '..', 'src', 'content', 'posts');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
-const GOOGLE_SEARCH_CX = process.env.GOOGLE_SEARCH_CX;
 
 if (!ANTHROPIC_API_KEY) {
   console.error('Error: ANTHROPIC_API_KEY environment variable is not set.');
@@ -120,37 +118,6 @@ function formatResults(race) {
   return { top10, dnfs: dnfs || '  None' };
 }
 
-// ---------------------------------------------------------------------------
-// Unsplash
-// ---------------------------------------------------------------------------
-
-async function fetchThumbnail(query) {
-  if (!GOOGLE_API_KEY || !GOOGLE_SEARCH_CX) {
-    console.warn('GOOGLE_API_KEY or GOOGLE_SEARCH_CX not set — skipping thumbnail.');
-    return '';
-  }
-  console.log(`Fetching image thumbnail for: "${query}"...`);
-  try {
-    const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_SEARCH_CX}&q=${encodeURIComponent(query)}&searchType=image&num=1`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'downforce-blog/1.0' } });
-    if (!res.ok) {
-      const body = await res.text();
-      console.warn(`Google image search HTTP ${res.status}: ${body}`);
-      return '';
-    }
-    const data = await res.json();
-    return data?.items?.[0]?.link ?? '';
-  } catch (err) {
-    console.warn(`Google image search failed: ${err.message}`);
-    return '';
-  }
-}
-
-function injectThumbnailIntoFrontmatter(markdown, thumbnailUrl) {
-  if (!thumbnailUrl) return markdown;
-  // Insert thumbnail field before the closing --- of the frontmatter block
-  return markdown.replace(/^(---\n[\s\S]*?)(---)/m, `$1thumbnail: "${thumbnailUrl}"\n$2`);
-}
 
 // ---------------------------------------------------------------------------
 // Claude API
@@ -301,14 +268,6 @@ ${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.
     console.error(markdown.slice(0, 300));
     process.exit(1);
   }
-
-  // Fetch thumbnail using top finisher name + race country as search query
-  const topDriver = race.Results?.[0];
-  const thumbQuery = topDriver
-    ? `${topDriver.Driver?.familyName} formula 1 ${race.Circuit?.Location?.country}`
-    : `${race.raceName} formula 1`;
-  const thumbnailUrl = await fetchThumbnail(thumbQuery);
-  markdown = injectThumbnailIntoFrontmatter(markdown, thumbnailUrl);
 
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);

@@ -699,7 +699,7 @@
     // Otherwise apply the time-based buffer.
     const raceStart = new Date(`${last.date}T${last.time ?? '14:00:00Z'}`).getTime();
     const RACE_DURATION_MS  = 2 * 60 * 60 * 1000;  // ~2h race
-    const PENALTY_BUFFER_MS = 5 * 60 * 60 * 1000;  // 5h penalty window
+    const PENALTY_BUFFER_MS = 4 * 60 * 60 * 1000;  // 4h post-race buffer
     const settledAt = raceStart + RACE_DURATION_MS + PENALTY_BUFFER_MS;
     if (now < settledAt) {
       const prevRound = parseInt(last.round, 10) - 1;

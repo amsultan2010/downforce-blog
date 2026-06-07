@@ -2,7 +2,7 @@ name: Generate Race Post
 
 on:
   schedule:
-    - cron: '0 20 * * 0'  # Every Sunday at 20:00 UTC
+    - cron: '0 */2 * * 0,1'  # Every 2 hours on Sunday and Monday UTC (covers all race timezones)
   workflow_dispatch:
 
 jobs:

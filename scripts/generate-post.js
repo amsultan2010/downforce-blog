@@ -90,6 +90,16 @@ function isRaceFromThisWeekend(race) {
   return daysDiff >= 0 && daysDiff <= 14;
 }
 
+// Returns true once 4 hours have passed since the race ended (~2h race duration + 4h buffer).
+// This ensures posts and standings are consistent regardless of race timezone.
+function isRaceSettled(race) {
+  if (!race?.date) return false;
+  const raceStart = new Date(`${race.date}T${race.time ?? '14:00:00Z'}`).getTime();
+  const RACE_DURATION_MS  = 2 * 60 * 60 * 1000;
+  const POST_RACE_BUFFER_MS = 4 * 60 * 60 * 1000;
+  return Date.now() >= raceStart + RACE_DURATION_MS + POST_RACE_BUFFER_MS;
+}
+
 function toKebabCase(str) {
   return str
     .toLowerCase()
@@ -231,7 +241,12 @@ async function main() {
   }
 
   if (!isRaceFromThisWeekend(race)) {
-    console.log(`Last race (${race.raceName}) was on ${race.date}, more than 7 days ago. No post needed.`);
+    console.log(`Last race (${race.raceName}) was on ${race.date}, more than 14 days ago. No post needed.`);
+    process.exit(0);
+  }
+
+  if (!isRaceSettled(race)) {
+    console.log(`${race.raceName} hasn't been settled for 4 hours yet. Waiting for penalties. Exiting.`);
     process.exit(0);
   }
 

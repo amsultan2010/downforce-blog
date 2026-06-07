@@ -667,11 +667,40 @@
     showDrivers(allDrivers, true);
   });
 
+  // Returns the API path segment to use for standings. If the most recently
+  // completed race finished less than 5 hours ago (race start + ~2h duration
+  // + 5h penalty window), fall back to the prior round so late penalties
+  // don't make standings look wrong.
+  async function resolveStandingsPath(): Promise<string> {
+    const sched = await fetch(`${BASE}/current/`);
+    if (!sched.ok) return 'current';
+    const sd = await sched.json();
+    const races: any[] = sd.MRData?.RaceTable?.Races ?? [];
+    const now = Date.now();
+    const past = races.filter(r => {
+      const start = new Date(`${r.date}T${r.time ?? '14:00:00Z'}`).getTime();
+      return start <= now;
+    });
+    if (!past.length) return 'current';
+    const last = past[past.length - 1];
+    const raceStart = new Date(`${last.date}T${last.time ?? '14:00:00Z'}`).getTime();
+    const RACE_DURATION_MS  = 2 * 60 * 60 * 1000;  // ~2h race
+    const PENALTY_BUFFER_MS = 5 * 60 * 60 * 1000;  // 5h penalty window
+    const settledAt = raceStart + RACE_DURATION_MS + PENALTY_BUFFER_MS;
+    if (now < settledAt) {
+      const prevRound = parseInt(last.round, 10) - 1;
+      if (prevRound < 1) return 'current';
+      return `${last.season}/${prevRound}`;
+    }
+    return 'current';
+  }
+
   async function load() {
     try {
+      const path = await resolveStandingsPath();
       const [dr, cr] = await Promise.all([
-        fetch(`${BASE}/current/driverStandings/`),
-        fetch(`${BASE}/current/constructorStandings/`),
+        fetch(`${BASE}/${path}/driverStandings/`),
+        fetch(`${BASE}/${path}/constructorStandings/`),
       ]);
       if (!dr.ok || !cr.ok) throw new Error('api error');
       const [dd, cd] = await Promise.all([dr.json(), cr.json()]);

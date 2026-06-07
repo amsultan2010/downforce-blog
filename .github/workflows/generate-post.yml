@@ -2,7 +2,7 @@ name: Generate Race Post
 
 on:
   schedule:
-    - cron: '0 */2 * * 0,1'  # Every 2 hours on Sunday and Monday UTC (covers all race timezones)
+    - cron: '0 */2 * * 6,0,1'  # Every 2 hours on Sat/Sun/Mon UTC (covers all race timezones incl. Azerbaijan)
   workflow_dispatch:
 
 jobs:
@@ -17,10 +17,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Fetch race data and generate post
         env:

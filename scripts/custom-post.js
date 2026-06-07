@@ -125,12 +125,15 @@ async function main() {
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);
 
+  const repoDir = join(__dirname, '..');
+  const gitOpts = { stdio: 'inherit', cwd: repoDir };
+
   console.log('Committing and pushing...');
-  execSync('git config user.email "bot@downforce.blog"', { stdio: 'inherit' });
-  execSync('git config user.name "Downforce Bot"', { stdio: 'inherit' });
-  execSync(`git add "${filepath}"`, { stdio: 'inherit' });
-  execSync(`git commit -m "feat: custom post — ${topic.slice(0, 60)}"`, { stdio: 'inherit' });
-  execSync('git push', { stdio: 'inherit' });
+  execSync('git config user.email "bot@downforce.blog"', gitOpts);
+  execSync('git config user.name "Downforce Bot"', gitOpts);
+  execSync(`git add "${filepath}"`, gitOpts);
+  execSync(`git commit -m "feat: custom post — ${topic.slice(0, 60)}"`, gitOpts);
+  execSync('git push', gitOpts);
 
   console.log('Done.');
 }

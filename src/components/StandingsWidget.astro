@@ -667,14 +667,18 @@
     showDrivers(allDrivers, true);
   });
 
-  // Returns the API path segment to use for standings. If the most recently
-  // completed race finished less than 5 hours ago (race start + ~2h duration
-  // + 5h penalty window), fall back to the prior round so late penalties
-  // don't make standings look wrong.
+  // Returns the API path segment to use for standings.
+  // Priority: if generate-post.js has published an article for the last race,
+  // standings-state.json is updated and we show current standings immediately.
+  // Otherwise fall back to time-based check: wait until race start + 2h + 5h
+  // so late penalties don't make standings look wrong.
   async function resolveStandingsPath(): Promise<string> {
-    const sched = await fetch(`${BASE}/current/`);
-    if (!sched.ok) return 'current';
-    const sd = await sched.json();
+    const [schedRes, stateRes] = await Promise.all([
+      fetch(`${BASE}/current/`),
+      fetch('/standings-state.json').catch(() => null),
+    ]);
+    if (!schedRes.ok) return 'current';
+    const sd = await schedRes.json();
     const races: any[] = sd.MRData?.RaceTable?.Races ?? [];
     const now = Date.now();
     const past = races.filter(r => {
@@ -683,6 +687,16 @@
     });
     if (!past.length) return 'current';
     const last = past[past.length - 1];
+
+    // If the race article has been published, standings are confirmed settled.
+    if (stateRes?.ok) {
+      const state = await stateRes.json().catch(() => null);
+      if (state?.season === last.season && state?.unlockedRound === last.round) {
+        return 'current';
+      }
+    }
+
+    // Otherwise apply the time-based buffer.
     const raceStart = new Date(`${last.date}T${last.time ?? '14:00:00Z'}`).getTime();
     const RACE_DURATION_MS  = 2 * 60 * 60 * 1000;  // ~2h race
     const PENALTY_BUFFER_MS = 5 * 60 * 60 * 1000;  // 5h penalty window

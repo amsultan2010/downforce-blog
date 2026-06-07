@@ -286,10 +286,15 @@ ${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);
 
+  // Unlock standings for this round so the widget shows updated data immediately.
+  const standingsStatePath = join(__dirname, '..', 'public', 'standings-state.json');
+  writeFileSync(standingsStatePath, JSON.stringify({ unlockedRound: race.round, season: race.season }) + '\n', 'utf8');
+  console.log(`Standings unlocked for round ${race.round} (${race.season}).`);
+
   console.log('Committing and pushing to GitHub...');
   execSync('git config user.email "bot@downforce.blog"', { stdio: 'inherit' });
   execSync('git config user.name "Downforce Bot"', { stdio: 'inherit' });
-  execSync(`git add "${filepath}"`, { stdio: 'inherit' });
+  execSync(`git add "${filepath}" "${standingsStatePath}"`, { stdio: 'inherit' });
   execSync(
     `git commit -m "feat: auto-generate post — ${race.raceName} ${race.date}"`,
     { stdio: 'inherit' }

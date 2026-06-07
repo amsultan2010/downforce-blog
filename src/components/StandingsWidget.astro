@@ -688,11 +688,13 @@
     if (!past.length) return 'current';
     const last = past[past.length - 1];
 
-    // If the race article has been published, standings are confirmed settled.
+    // If the race article has been published for 2+ hours, standings are settled.
     if (stateRes?.ok) {
       const state = await stateRes.json().catch(() => null);
       if (state?.season === last.season && state?.unlockedRound === last.round) {
-        return 'current';
+        const publishedAt = state.publishedAt ? new Date(state.publishedAt).getTime() : 0;
+        const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+        if (now >= publishedAt + TWO_HOURS_MS) return 'current';
       }
     }
 

@@ -189,7 +189,7 @@ lowercase rules (CRITICAL — follow these exactly):
 frontmatter format:
 ---
 title: "[title here]"
-date: "[YYYY-MM-DD]"
+date: "[YYYY-MM-DDTHH:MM:SSZ]"
 excerpt: "[one sentence hook]"
 tags: ["race-summary", relevant driver/team tags]
 category: "race-summaries"
@@ -298,13 +298,19 @@ ${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.
     process.exit(1);
   }
 
+  // Replace the date Claude wrote with an accurate ISO timestamp so posts
+  // published on the same calendar day sort correctly by time.
+  const publishedAt = new Date().toISOString();
+  markdown = markdown.replace(/^(date:\s*")[^"]*(")/m, `$1${publishedAt}$2`);
+
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);
 
-  // Unlock standings for this round so the widget shows updated data immediately.
+  // Record the publish time so the widget can wait 2h before showing new standings
+  // (gives time for post-race penalties to be reflected in the API).
   const standingsStatePath = join(__dirname, '..', 'public', 'standings-state.json');
-  writeFileSync(standingsStatePath, JSON.stringify({ unlockedRound: race.round, season: race.season }) + '\n', 'utf8');
-  console.log(`Standings unlocked for round ${race.round} (${race.season}).`);
+  writeFileSync(standingsStatePath, JSON.stringify({ unlockedRound: race.round, season: race.season, publishedAt }) + '\n', 'utf8');
+  console.log(`Standings state updated for round ${race.round} (${race.season}), published at ${publishedAt}.`);
 
   console.log('Committing and pushing to GitHub...');
   execSync('git config user.email "bot@downforce.blog"', { stdio: 'inherit' });

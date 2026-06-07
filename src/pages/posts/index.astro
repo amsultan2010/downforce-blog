@@ -173,21 +173,21 @@ const slugs = posts.map(p => p.id);
     z-index: 1;
   }
 
-  /* ── Grid layout — row-by-row ── */
+  /* ── Masonry layout ── */
   .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    columns: 2;
+    column-gap: 1.5rem;
   }
 
   .posts-grid > div {
-    min-width: 0;
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
   }
 
   /* Single column on mobile */
   @media (max-width: 620px) {
     .posts-grid {
-      grid-template-columns: 1fr;
+      columns: 1;
     }
 
     .random-btn {

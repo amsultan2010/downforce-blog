@@ -115,17 +115,18 @@ function buildFilename(race) {
 }
 
 function formatResults(race) {
-  const top10 = (race.Results ?? []).slice(0, 10).map(r => {
+  const results = race.Results ?? [];
+  const allFinishers = results.map(r => {
     const hasFastestLap = r.FastestLap?.rank === '1';
     return `${r.position}. ${r.Driver?.givenName} ${r.Driver?.familyName} (${r.Constructor?.name}) — ${r.status}${hasFastestLap ? ' [FASTEST LAP]' : ''}`;
   }).join('\n');
 
-  const dnfs = (race.Results ?? [])
+  const dnfs = results
     .filter(r => r.status !== 'Finished' && !r.status.startsWith('+'))
-    .map(r => `  ${r.Driver?.givenName} ${r.Driver?.familyName} — ${r.status}`)
+    .map(r => `  ${r.Driver?.givenName} ${r.Driver?.familyName} (${r.Constructor?.name}) — ${r.status}`)
     .join('\n');
 
-  return { top10, dnfs: dnfs || '  None' };
+  return { allFinishers, dnfs: dnfs || '  None' };
 }
 
 
@@ -258,7 +259,7 @@ async function main() {
     process.exit(0);
   }
 
-  const { top10, dnfs } = formatResults(race);
+  const { allFinishers, dnfs } = formatResults(race);
   const nextRace = findNextRace(schedule, race.round);
   const nextRaceInfo = nextRace
     ? `${nextRace.raceName} — Round ${nextRace.round} (${nextRace.date}, ${nextRace.Circuit?.Location?.locality}, ${nextRace.Circuit?.Location?.country})`
@@ -269,8 +270,8 @@ async function main() {
 ## Race: ${race.raceName} — Round ${race.round} (${race.date})
 Circuit: ${race.Circuit?.circuitName}, ${race.Circuit?.Location?.locality}, ${race.Circuit?.Location?.country}
 
-### Top 10 Finishers:
-${top10}
+### Full Race Results (use ONLY these driver-team pairings — do not use any other source):
+${allFinishers}
 
 ### Notable Retirements:
 ${dnfs}
@@ -302,6 +303,9 @@ ${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.
   // published on the same calendar day sort correctly by time.
   const publishedAt = new Date().toISOString();
   markdown = markdown.replace(/^(date:\s*")[^"]*(")/m, `$1${publishedAt}$2`);
+
+  // Strip any em-dashes Claude snuck in — replace with comma+space or just space.
+  markdown = markdown.replace(/\s*—\s*/g, ' ');
 
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);

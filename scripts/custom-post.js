@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Generates a custom blog post on any topic via Claude.
+// Generates a custom blog post on any topic via Claude, grounded in live F1 data.
 // Usage: node scripts/custom-post.js "your topic here"
 
 import { execSync } from 'child_process';
@@ -24,10 +24,48 @@ if (!topic) {
 }
 
 // ---------------------------------------------------------------------------
+// Fetch helpers
+// ---------------------------------------------------------------------------
+
+async function fetchJson(url) {
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'downforce-blog/1.0' },
+  });
+  if (!res.ok) throw new Error(`Fetch failed ${url} — HTTP ${res.status}`);
+  return res.json();
+}
+
+async function fetchDriverStandings() {
+  console.log('Fetching driver standings...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current/driverStandings/');
+  return data?.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings ?? [];
+}
+
+async function fetchConstructorStandings() {
+  console.log('Fetching constructor standings...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current/constructorStandings/');
+  return data?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings ?? [];
+}
+
+async function fetchSchedule() {
+  console.log('Fetching season schedule...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current.json');
+  return data?.MRData?.RaceTable?.Races ?? [];
+}
+
+async function fetchLastRaceResults() {
+  console.log('Fetching last race results...');
+  const data = await fetchJson('https://api.jolpi.ca/ergast/f1/current/last/results/');
+  return data?.MRData?.RaceTable?.Races?.[0] ?? null;
+}
+
+// ---------------------------------------------------------------------------
 // Claude API
 // ---------------------------------------------------------------------------
 
 const SYSTEM_PROMPT = `you write for the downforce blog. write a blog post between 500-700 words on whatever topic the user gives you.
+
+CRITICAL: only use the facts provided in the user message. do not invent standings, driver lineups, race results, or team positions. if the data says alpine is 4th in the constructors, say 4th. if a driver is listed for a team, use that driver. do not hallucinate any f1 facts.
 
 voice and style rules:
 - everything lowercase. headers, body text, all of it. no uppercase anywhere, including driver names, team names, acronyms, or proper nouns.
@@ -72,8 +110,7 @@ tags: ["editorial", relevant driver/team/topic tags]
 category: "editorial"
 ---`;
 
-async function callClaude(userTopic) {
-  const today = new Date().toISOString().slice(0, 10);
+async function callClaude(userMessage) {
   console.log('Calling Claude API...');
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -86,7 +123,7 @@ async function callClaude(userTopic) {
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 4096,
       system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: `Today is ${today}. Write a post about: ${userTopic}` }],
+      messages: [{ role: 'user', content: userMessage }],
     }),
   });
 
@@ -105,6 +142,52 @@ async function callClaude(userTopic) {
 
 async function main() {
   const today = new Date().toISOString().slice(0, 10);
+
+  const [driverStandings, constructorStandings, schedule, lastRace] = await Promise.all([
+    fetchDriverStandings(),
+    fetchConstructorStandings(),
+    fetchSchedule(),
+    fetchLastRaceResults(),
+  ]);
+
+  const now = new Date();
+  const nextRace = schedule.find(r => new Date(r.date) > now) ?? null;
+  const nextRaceInfo = nextRace
+    ? `${nextRace.raceName} — Round ${nextRace.round} (${nextRace.date}, ${nextRace.Circuit?.Location?.locality}, ${nextRace.Circuit?.Location?.country})`
+    : 'end of season — no upcoming races';
+
+  const lastRaceInfo = lastRace
+    ? `${lastRace.raceName} (${lastRace.date}) — Winner: ${lastRace.Results?.[0]?.Driver?.givenName} ${lastRace.Results?.[0]?.Driver?.familyName} (${lastRace.Results?.[0]?.Constructor?.name})`
+    : 'no recent race data';
+
+  const userMessage = `Today is ${today}. Write a post about: ${topic}
+
+Use ONLY the facts below. Do not invent any driver names, team positions, or race results not listed here.
+
+## Current Driver Championship Standings:
+${driverStandings.map(d =>
+  `${d.position}. ${d.Driver?.givenName} ${d.Driver?.familyName} (${d.Constructors?.[0]?.name}) — ${d.points} pts`
+).join('\n')}
+
+## Current Constructor Standings:
+${constructorStandings.map(c =>
+  `${c.position}. ${c.Constructor?.name} — ${c.points} pts`
+).join('\n')}
+
+## Most Recent Race:
+${lastRaceInfo}
+
+## Next Race:
+${nextRaceInfo}`;
+
+  const markdown = await callClaude(userMessage);
+
+  if (!markdown.startsWith('---')) {
+    console.error('Unexpected Claude response (does not begin with frontmatter):');
+    console.error(markdown.slice(0, 300));
+    process.exit(1);
+  }
+
   const slug = topic
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
@@ -113,14 +196,6 @@ async function main() {
     .slice(0, 60);
   const filename = `${today}-${slug}.md`;
   const filepath = join(POSTS_DIR, filename);
-
-  const markdown = await callClaude(topic);
-
-  if (!markdown.startsWith('---')) {
-    console.error('Unexpected Claude response (does not begin with frontmatter):');
-    console.error(markdown.slice(0, 300));
-    process.exit(1);
-  }
 
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);

@@ -1,23 +1,27 @@
 ---
-title: "alpine's 2026 season proves consistency actually works"
+title: "alpine's unexpected success in 2026: fifth and climbing"
 date: "2026-06-07"
-excerpt: "alpine figured out what everyone else keeps getting wrong: patience and incremental progress beat panic."
-tags: ["editorial", "alpine", "2026-season", "f1-midfield"]
+excerpt: "alpine are fifth in the constructors with gasly and colapinto both scoring points, and nobody predicted this in january."
+tags: ["editorial", "alpine", "pierre-gasly", "franco-colapinto", "2026-season"]
 category: "editorial"
 ---
 
-alpine is having the kind of season that makes you wonder why every other team doesn't just copy their homework. they're genuinely quick right now (third in the constructors as of this race, which nobody predicted in january), and it's not because they signed three world champions or pivoted their entire philosophy overnight. it's because they stayed the course.
+nobody had alpine fifth in the constructors at this point in the season. not even the most optimistic alpine fan sitting in the enstone car park in january would have said that out loud with a straight face.
 
-this matters since the paddock's default move is to burn everything down the moment you finish fourth. one bad season and suddenly you're restructuring, hiring new engineers from rival teams, bolting on a different power unit (remember that whole thing?), launching an entirely new car concept. alpine just... didn't do that. they looked at what worked in 2024 and 2025, fixed the bits that didn't, and kept building. radical concept, apparently.
+and yet here we are. pierre gasly eighth in the drivers' standings with 20 points, franco colapinto eleventh with 15. as a team they've got 35 points (good for fifth), sitting ahead of rb, haas, williams, audi, cadillac, and aston martin. that's not a fluke. that's a car that actually works.
 
-the enstone facility has also benefited from having genuine stability in leadership. piere gasly seems genuinely comfortable there (i know, 2021 was rough), and guanyu zhou's been a solid second driver without becoming a liability like some of their past number twos. they're not bleeding points to dnfs or driver errors the way mclaren does, and that's where constructors' championships actually get won.
+the 2026 regulation reset genuinely scrambled the grid. mercedes have gone absolutely ballistic (219 points, antonelli leading the championship after winning in canada), ferrari are second, mclaren third. the top three have pulled away. but the fight for fourth through eighth is genuinely wide open, and alpine have positioned themselves right in the middle of it.
 
-here's my thing though: alpine still has to do the hard part. they're in this position since the 2026 regs reset the grid pretty thoroughly, and everyone's fighting with new power units and chassis concepts. alpine didn't get any special advantage. they just executed better than the chaos at ferrari, who've already changed strategy directors twice this season (it's june, for god's sake). and better than mclaren, who are having their usual "do we pit this lap or next lap" midrace existential crisis.
+gasly deserves a lot of credit here. he's been the kind of driver who doesn't make the car look bad on its worst days, and on the good days he extracts everything. 20 points through six rounds means he's been consistently in the points, not spiking once and disappearing. that's the profile of a driver whose team can actually build a season around him.
 
-the car feels planted without being boring. it's not the fastest thing on a single flying lap like the red bulls or ferraris on their good days, but it's consistent. race pace is there. tyre management is there. they're not making bonkers strategy calls that require the commentators to develop stress disorders trying to explain them.
+colapinto is the more interesting story. 15 points as a driver who spent last season bouncing around mid-season as a williams replacement. the argentine has settled in, and the pace has been there when it matters. he's outscored several drivers on teams with more money and more experience. that's worth acknowledging (quietly, without getting too excited, since this is f1 and it can all go wrong next race).
 
-watching from riyadh, i've had plenty of early mornings tracking their results, and it's genuinely been a pleasure. there's something satisfying about a team that doesn't need you to write a dissertation explaining why their strategy was actually four-dimensional chess when it was just... normal.
+the contrast with aston martin is almost painful. alonso and stroll are both on zero points. zero. fernando alonso, the greatest driver to ever sit in an f1 car (yes i'm saying it again, yes i mean it), is scoring nothing since the aston martin am26 is a disaster. the injustice of this is genuinely hard to write about calmly from riyadh at whatever hour the canadian gp finished. alpine's 35 points look even more significant when you remember they share a constructors' fight with a team that has significantly more resources and a two-time world champion who can't get near the points.
 
-the danger now is expectations. fourth place in the championship would be a win by most measures. but if alpine gets to spa or monza and realizes they're in the fight for third, the pressure will mount. that's when teams start overthinking. start believing their own hype instead of trusting the process. watch out for that inflection point around mid-season.
+what alpine have done well is the unglamorous stuff. consistent pit stops. reasonable strategy calls. not throwing points away with silly mechanical failures or double dnfs on the same weekend. it's not exciting to write about, but it's exactly what separates fifth from seventh over a season.
 
-but right now? alpine's doing the thing that usually gets ignored in f1 discourse since it doesn't generate drama: they're being a well-run team. and it's working.
+the caveat: it's only six races. mercedes are on a different planet right now, and the midfield is extremely tight. rb with 21 points and haas with 19 are right behind alpine, and both of those teams are capable of jumping them over a single weekend. the barcelona grand prix next week on june 14th is a circuit that rewards aerodynamic efficiency and tyre management, two things alpine have shown flashes of but haven't proven consistently across different track types.
+
+the realistic target for alpine this year was probably seventh or eighth. they're ahead of that. whether they can hold fifth through spain, austria, and beyond is the actual question. but for now, they've earned the right to be talked about as a team that is overperforming expectations rather than explaining why they're underperforming them.
+
+that's rarer than it sounds in this paddock.

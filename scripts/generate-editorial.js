@@ -66,6 +66,8 @@ function findUpcomingRace(schedule) {
 
 const SYSTEM_PROMPT = `you write for the downforce blog. it's a friday and there's no race this weekend (or the race is days away). write a non-race editorial post between 500-700 words. pick one of these formats based on what feels most timely given the current f1 standings and season context provided:
 
+CRITICAL: only use the facts provided in the user message. do not invent standings, driver lineups, race results, or team positions. use only the standings and schedule data given to you. if you are unsure of a fact, do not include it.
+
 - driver focus: deep dive on one driver's season so far. stats, narrative, what's working, what isn't.
 - hot take: one strong opinion about something happening in f1 right now. defend it.
 - race preview: if a race is coming up next weekend, preview it. circuit characteristics, who historically does well there, what to watch for.

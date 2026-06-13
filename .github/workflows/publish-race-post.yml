@@ -1,0 +1,42 @@
+name: Publish Race Post
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  update-standings:
+    # Only runs when a race post PR is merged (not just closed/rejected)
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'post/race-')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Update standings state
+        run: |
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+          SEASON=$(echo "$BRANCH" | sed 's/post\/race-\([0-9]*\)-r.*/\1/')
+          ROUND=$(echo "$BRANCH" | sed 's/post\/race-[0-9]*-r\([0-9]*\)/\1/')
+          PUBLISHED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "{\"unlockedRound\":\"$ROUND\",\"season\":\"$SEASON\",\"publishedAt\":\"$PUBLISHED_AT\"}" > public/standings-state.json
+          echo "Standings unlocked for season $SEASON round $ROUND at $PUBLISHED_AT"
+
+      - name: Commit standings state
+        run: |
+          git config user.email "bot@downforce.blog"
+          git config user.name "Downforce Bot"
+          git add public/standings-state.json
+          git commit -m "chore: unlock standings after race post approved"
+          git push

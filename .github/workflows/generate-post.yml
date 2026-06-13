@@ -25,4 +25,5 @@ jobs:
       - name: Fetch race data and generate post
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/generate-post.js

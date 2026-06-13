@@ -310,23 +310,24 @@ ${f1Posts.length > 0 ? `## Community Pulse — r/formula1 hot posts:\n${f1Posts.
   writeFileSync(filepath, markdown, 'utf8');
   console.log(`Post saved: ${filepath}`);
 
-  // Record the publish time so the widget can wait 2h before showing new standings
-  // (gives time for post-race penalties to be reflected in the API).
-  const standingsStatePath = join(__dirname, '..', 'public', 'standings-state.json');
-  writeFileSync(standingsStatePath, JSON.stringify({ unlockedRound: race.round, season: race.season, publishedAt }) + '\n', 'utf8');
-  console.log(`Standings state updated for round ${race.round} (${race.season}), published at ${publishedAt}.`);
+  const branch = `post/race-${race.season}-r${race.round}`;
 
-  console.log('Committing and pushing to GitHub...');
+  console.log(`Creating branch ${branch} and opening PR for review...`);
   execSync('git config user.email "bot@downforce.blog"', { stdio: 'inherit' });
   execSync('git config user.name "Downforce Bot"', { stdio: 'inherit' });
-  execSync(`git add "${filepath}" "${standingsStatePath}"`, { stdio: 'inherit' });
+  execSync(`git checkout -b ${branch}`, { stdio: 'inherit' });
+  execSync(`git add "${filepath}"`, { stdio: 'inherit' });
+  execSync(`git commit -m "feat: auto-generate post — ${race.raceName} ${race.date}"`, { stdio: 'inherit' });
+  execSync(`git push -u origin ${branch}`, { stdio: 'inherit' });
+
+  const prBody = `Auto-generated race post for **${race.raceName}** (Round ${race.round}, ${race.date}).\n\nReview the article file in this PR. **Merge to publish** — standings will update automatically 2 hours after merge.\n\n**Checklist before merging:**\n- [ ] Driver names and teams are correct\n- [ ] Race results match the actual finishing order\n- [ ] No hallucinated facts\n- [ ] Tone and style feel right`;
+
   execSync(
-    `git commit -m "feat: auto-generate post — ${race.raceName} ${race.date}"`,
+    `gh pr create --title "race post: ${race.raceName} ${race.date}" --body ${JSON.stringify(prBody)} --base main --head ${branch}`,
     { stdio: 'inherit' }
   );
-  execSync('git push', { stdio: 'inherit' });
 
-  console.log('Done.');
+  console.log('PR opened. Merge it on GitHub to publish the post.');
 }
 
 main().catch(err => {

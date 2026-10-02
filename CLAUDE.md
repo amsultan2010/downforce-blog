@@ -17,16 +17,22 @@ The owner pastes the text and a thumbnail into the chat. Then:
    title: "all lowercase title"
    date: 2026-10-04
    excerpt: "one sentence, 160 characters or fewer."
+   tldr: "the main story in two or three sentences, 300 characters or fewer."
    category: race-report
    tags: ["three-to-six", "kebab-case-tags"]
    race: "2026 singapore grand prix"
    thumbnail: ../../assets/posts/<slug>.jpg
    thumbnailAlt: "what the photo shows, lowercase, no 'image of'"
+   thumbnailCredit: "photographer, CC BY-SA 4.0"
+   thumbnailSource: https://commons.wikimedia.org/wiki/File:...
    ---
    ```
 
    `category` is one of `race-report`, `sprint-report`, `editorial`, `guide`, `paddock`, `meta`.
    `race` is only for posts about one race weekend. `thumbnail` and `thumbnailAlt` are optional.
+   `tldr` is required: it shows in a box at the top of the post and has to fit in four lines.
+   `thumbnailCredit` and `thumbnailSource` are for photos that need attribution (wikimedia
+   commons and other creative commons photos); the credit shows next to the post's tags.
 4. Keep his words. Only apply the house style below, and fact-check (next section).
 5. `npm run build` must pass. Check the post at `/posts/<slug>/` in Orca's browser.
 6. Commit on a branch. Push or open a PR only when asked.

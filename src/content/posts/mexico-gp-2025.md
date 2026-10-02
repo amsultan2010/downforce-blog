@@ -2,6 +2,7 @@
 title: "the 2025 mexico grand prix: the stewards' room circus"
 date: 2025-11-06
 excerpt: "norris wins by half a minute and takes the title lead by a single point, while the FIA hands out a harsh penalty and a badly timed VSC."
+tldr: "norris won in mexico by 30 seconds and took the championship lead from piastri by one point. bearman finished P4 for haas, hamilton got a harsh 10-second penalty, and a late VSC killed verstappen's chase of leclerc for P2."
 category: race-report
 tags: ["mexico-city-gp", "lando-norris", "max-verstappen", "lewis-hamilton", "oliver-bearman", "fia"]
 race: "2025 mexico city grand prix"

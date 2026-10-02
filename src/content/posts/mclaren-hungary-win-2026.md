@@ -2,9 +2,14 @@
 title: "mclaren finally won a race and still made it awkward"
 date: 2026-07-31
 excerpt: "lando norris took mclaren's first win of 2026 in hungary, 15 seconds clear, after spending half the race asking his own team to let him past."
+tldr: "norris won in hungary by 15 seconds, mclaren's first win of 2026. the story was the pit wall, which kept him behind piastri for half the race while he said he was miles faster. piastri's gearbox then failed while he was running second."
 category: editorial
 tags: ["lando-norris", "oscar-piastri", "mclaren", "papaya-rules", "team-orders"]
 race: "2026 hungarian grand prix"
+thumbnail: ../../assets/posts/mclaren-hungary-win-2026.jpg
+thumbnailAlt: "lando norris's orange mclaren side-on at the red bull ring"
+thumbnailCredit: "lukas raich, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._1_Norris_(1).jpg"
 ---
 
 lando norris won the hungarian grand prix on sunday. it was his first win of 2026, mclaren's first since são paulo last november, and it only took the reigning world champion eleven rounds. he won by 15 seconds over max verstappen, too. so naturally the main topic afterwards was the mclaren pit wall.

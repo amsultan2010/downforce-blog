@@ -2,6 +2,7 @@
 title: "alpine is fifth in the championship with an engine it didn't build"
 date: 2026-06-07
 excerpt: "last in 2025, fifth after five rounds of 2026: how a mercedes power unit, gasly and colapinto turned alpine into the best of the midfield."
+tldr: "alpine finished last in 2025 and is fifth after five rounds of 2026. the mercedes engine is most of the reason, but gasly has scored in four races and colapinto already has 15 points. meanwhile my aston martin has zero."
 category: editorial
 tags: ["alpine", "gasly", "colapinto", "midfield", "aston-martin"]
 thumbnail: ../../assets/posts/alpine-fifth-mercedes-engine.jpg

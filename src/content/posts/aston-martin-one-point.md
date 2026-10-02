@@ -2,8 +2,13 @@
 title: "aston martin has one point and i'm choosing hope"
 date: 2026-08-07
 excerpt: "eleven races, one point, half the starts unfinished. a summer break report on my team, and the two reasons i haven't given up yet."
+tldr: "aston martin has one point from eleven races and has only finished half its starts. the two reasons for hope: a 16-part upgrade made hungary the first weekend that looked like progress, and honda's upgraded engine races at zandvoort."
 category: editorial
 tags: ["aston-martin", "fernando-alonso", "honda", "adrian-newey", "summer-break"]
+thumbnail: ../../assets/posts/aston-martin-one-point.jpg
+thumbnailAlt: "fernando alonso's green aston martin side-on at the red bull ring"
+thumbnailCredit: "lukas raich, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._14_Alonso_(3).jpg"
 ---
 
 aston martin has scored one point in 2026. one. it took eleven races, fernando alonso and the streets of monaco to get it (he finished P10 there from 21st on the grid, which says more about alonso than about the car).

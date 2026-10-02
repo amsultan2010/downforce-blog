@@ -2,6 +2,7 @@
 title: "hot take: verstappen wouldn't be in the WDC fight if mclaren was competent"
 date: 2025-10-22
 excerpt: "a 104-point gap is down to 40 with five races left, and max verstappen's talent is only half of the explanation."
+tldr: "verstappen was 104 points behind and is now 40 off piastri with five races left. his talent is only half the story. the other half is mclaren: five DNFs between norris and piastri, papaya rules, and a slow pit stop at monza."
 category: editorial
 tags: ["hot-take", "max-verstappen", "mclaren", "lando-norris", "oscar-piastri", "title-fight"]
 thumbnail: ../../assets/posts/hot-take-mclaren-incompetence.jpg

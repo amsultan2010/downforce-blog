@@ -2,9 +2,14 @@
 title: "lawson gets the red bull seat back (thanks to a punching bag)"
 date: 2026-08-21
 excerpt: "isack hadjar broke his wrist over the summer break, so liam lawson gets a second go at red bull, at the last ever dutch GP."
+tldr: "isack hadjar broke his wrist over the summer break (reportedly punching a heavy bag), so liam lawson is back in the red bull for the last ever dutch GP. he's earned it on form, but he gets one hour of practice on a sprint weekend."
 category: editorial
 tags: ["liam-lawson", "isack-hadjar", "red-bull", "yuki-tsunoda", "dutch-gp"]
 race: "2026 dutch grand prix"
+thumbnail: ../../assets/posts/lawson-red-bull-return-zandvoort.jpg
+thumbnailAlt: "liam lawson's racing bulls car, number 30, side-on at the red bull ring"
+thumbnailCredit: "lukas raich, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._30_Lawson_(3).jpg"
 ---
 
 the summer break is over, and red bull came back from it one driver short. isack hadjar fractured his wrist during the shutdown, and according to sky's craig slater he did it punching a heavy bag in the gym. red bull's statement on wednesday only said "wrist injury", which is what i would say too if i had lost a fight to a bag of sand.

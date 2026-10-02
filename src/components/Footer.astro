@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { NAV } from '../lib/site';
+import { NAV, SITE } from '../lib/site';
 
 const year = new Date().getFullYear();
 ---
@@ -30,6 +30,20 @@ const year = new Date().getFullYear();
       <p class="mono footer__clock">riyadh <span data-clock>--:--</span></p>
     </div>
   </div>
+
+  <a class="footer__author" href={SITE.authorUrl} target="_blank" rel="noopener author" data-fill data-cursor="visit">
+    <span class="fill" aria-hidden="true"></span>
+    <span class="wrap footer__author-in">
+      <span class="mono">written by</span>
+      <span class="footer__author-name">{SITE.author.toLowerCase()}</span>
+      <span class="mono">{new URL(SITE.authorUrl).hostname.replace('www.', '')}</span>
+      <span class="footer__author-arrow" aria-hidden="true">
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 19 19 5M8 5h11v11"></path>
+        </svg>
+      </span>
+    </span>
+  </a>
 
   <div class="footer__word" aria-hidden="true">
     <span class="display" data-footer-word>downforce</span>
@@ -81,6 +95,76 @@ const year = new Date().getFullYear();
     margin-top: 1.25rem;
   }
 
+  .footer__author {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.3s var(--ease-out);
+  }
+  .footer__author .fill {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--ink);
+    transform: translateY(101%);
+  }
+  .footer__author:focus-visible {
+    color: var(--paper);
+    outline-color: var(--paper);
+    outline-offset: -8px;
+  }
+  /* touch and keyboard never run the pointer script, so give them the fill in CSS */
+  .footer__author:focus-visible .fill {
+    transform: none;
+  }
+  @media (hover: hover) {
+    .footer__author:hover,
+    .footer__author:hover .mono {
+      color: var(--paper);
+    }
+  }
+  @media (hover: none) {
+    .footer__author:active,
+    .footer__author:active .mono {
+      color: var(--paper);
+    }
+    .footer__author:active .fill {
+      transform: none;
+    }
+  }
+  .footer__author-in {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    padding-block: clamp(1.75rem, 3.5vw, 3rem);
+  }
+  .footer__author .mono {
+    color: var(--mute);
+    transition: color 0.3s var(--ease-out);
+  }
+  .footer__author:focus-visible .mono {
+    color: var(--paper);
+  }
+  .footer__author-name {
+    font-weight: 880;
+    font-stretch: 112%;
+    font-size: clamp(2.4rem, 6.4vw, 6.25rem);
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+  }
+  .footer__author-arrow {
+    display: block;
+    width: clamp(2rem, 4vw, 3.5rem);
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+  .footer__author-arrow svg {
+    width: 100%;
+    height: 100%;
+  }
+
   .footer__word {
     container-type: inline-size;
     margin-inline: var(--gutter);
@@ -119,6 +203,16 @@ const year = new Date().getFullYear();
       grid-template-columns: 1fr 1fr;
     }
     .footer__note {
+      grid-column: 1 / -1;
+    }
+    .footer__author-in {
+      grid-template-columns: 1fr auto;
+      row-gap: 0.6rem;
+    }
+    .footer__author-name {
+      grid-column: 1 / -1;
+    }
+    .footer__author .mono:first-child {
       grid-column: 1 / -1;
     }
   }

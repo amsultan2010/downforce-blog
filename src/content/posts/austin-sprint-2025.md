@@ -2,6 +2,7 @@
 title: "the 2025 austin sprint: chaos, chaos and more chaos"
 date: 2025-10-19
 excerpt: "both mclarens out at turn 1, stroll torpedoes ocon, and max verstappen takes a free 8 points off the pair of them."
+tldr: "piastri got punted into norris at turn 1 and both mclarens were out on the spot, with alonso caught in the crossfire. stroll later took out ocon, the sprint ended behind the safety car, and verstappen won from pole for a free 8 points."
 category: sprint-report
 tags: ["austin", "sprint", "max-verstappen", "mclaren", "fernando-alonso"]
 race: "2025 united states grand prix"

@@ -2,8 +2,13 @@
 title: "the only rookie on the 2026 grid is arvid lindblad"
 date: 2026-06-26
 excerpt: "the youngest driver in F1 is an 18-year-old at racing bulls who scored on his debut, and this weekend is his team's home race in austria."
+tldr: "the only rookie on the 2026 grid is arvid lindblad, who is 18 and drives for racing bulls. he scored on his debut in australia, got lucky for P7 in monaco and has 13 points. lawson is still ahead of him, but for a red bull junior that counts as thriving."
 category: editorial
 tags: ["arvid-lindblad", "racing-bulls", "rookies", "austrian-gp", "red-bull"]
+thumbnail: ../../assets/posts/lindblad-only-rookie-2026.jpg
+thumbnailAlt: "arvid lindblad's racing bulls car at speed in shanghai"
+thumbnailCredit: "liauzh, CC BY 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Racing_Bulls_-_Arvid_Lindblad_-_Qualifying.jpg"
 ---
 
 quick quiz: who is the only rookie on the 2026 grid? if you said kimi antonelli, no. he's 19, but this is his second season, and he's busy leading the championship. the answer is arvid lindblad, who is 18 and drives for racing bulls.

@@ -2,6 +2,7 @@
 title: "the 2026 canadian grand prix: the gods don't want george in this fight"
 date: 2026-05-24
 excerpt: "russell took both poles and the sprint, then his mercedes died while leading, so antonelli won a fourth straight race and went 43 points clear."
+tldr: "russell took sprint pole, the sprint win and grand prix pole in montreal, then his power unit quit while he was leading. antonelli won a fourth race in a row and leads by 43 points. hamilton was P2, verstappen P3, and mclaren scored nothing."
 category: race-report
 tags: ["canadian-gp", "antonelli", "russell", "mercedes", "mclaren"]
 race: "2026 canadian grand prix"

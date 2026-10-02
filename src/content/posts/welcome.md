@@ -2,8 +2,13 @@
 title: "welcome to the downforce blog"
 date: 2026-06-05
 excerpt: "what the downforce blog is, who writes it, and what to expect from it."
+tldr: "this is the downforce blog. i'm a high schooler in riyadh and a massive aston martin and fernando alonso fan, and i write race reports, hot takes and a beginner's guide to F1. there's no schedule: posts go up when i have something to say."
 category: meta
 tags: ["welcome", "about", "meta"]
+thumbnail: ../../assets/posts/welcome.jpg
+thumbnailAlt: "fans standing on the track after the australian grand prix, one holding up a ferrari flag"
+thumbnailCredit: "yu chu chin, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:Track_Walk_at_the_2026_Australian_Grand_Prix_(028A8881).jpg"
 ---
 
 welcome to the downforce blog. i'm a high schooler in riyadh who has loved formula one for as long as i can remember, and this is where i write about it.

@@ -11,11 +11,14 @@ const posts = defineCollection({
       title: z.string(),
       date: z.coerce.date(),
       excerpt: z.string().max(160),
+      tldr: z.string().max(300),
       category: z.enum(CATEGORIES),
       tags: z.array(z.string()).default([]),
       race: z.string().optional(),
       thumbnail: image().optional(),
       thumbnailAlt: z.string().optional(),
+      thumbnailCredit: z.string().optional(),
+      thumbnailSource: z.string().url().optional(),
     }),
 });
 

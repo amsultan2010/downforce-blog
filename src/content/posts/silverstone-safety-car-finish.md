@@ -2,9 +2,14 @@
 title: "silverstone ended behind the safety car because of a software error"
 date: 2026-07-10
 excerpt: "leclerc won the british GP and ferrari got win number 250, but race control promised a final-lap restart and then couldn't deliver it."
+tldr: "the british GP finished behind the safety car right after race control showed a restart message, which the FIA blamed on a software error. leclerc won, ferrari's 250th. antonelli went from pole to P15, and his lead over russell is down to 25."
 category: editorial
 tags: ["british-gp", "silverstone", "fia", "safety-car", "charles-leclerc", "kimi-antonelli"]
 race: "2026 british grand prix"
+thumbnail: ../../assets/posts/silverstone-safety-car-finish.jpg
+thumbnailAlt: "the red F1 safety car parked between two medical cars"
+thumbnailCredit: "liauzh, CC BY 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Safety_Car_%26_Medical_Car.jpg"
 ---
 
 a record 564,000 people went to silverstone over the weekend. on sunday they watched the last laps of the british grand prix behind a safety car, right after race control told everyone the race was about to restart. it didn't.

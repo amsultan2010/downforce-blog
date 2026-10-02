@@ -2,8 +2,13 @@
 title: "antonelli's 66-point lead is down to 25"
 date: 2026-07-17
 excerpt: "three race weekends ago the championship looked finished, and now russell and hamilton are both within 32 points going into spa."
+tldr: "antonelli led by 66 points after monaco and has scored 23 in the three weekends since. russell is now 25 behind and hamilton 32. i don't think kimi is cracking, but some of the mistakes are his own, and ferrari keeps picking up the wins."
 category: editorial
 tags: ["kimi-antonelli", "george-russell", "lewis-hamilton", "title-fight", "belgian-gp", "mercedes"]
+thumbnail: ../../assets/posts/antonelli-lead-before-spa.jpg
+thumbnailAlt: "kimi antonelli's black and silver mercedes next to the kerb at the red bull ring"
+thumbnailCredit: "lukas raich, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._12_Antonelli_(3).jpg"
 ---
 
 after monaco, kimi antonelli had won five races in a row and led the championship by 66 points. i had mentally handed him the trophy. three race weekends later the lead is 25, and i'd like to formally retract everything i thought in june.

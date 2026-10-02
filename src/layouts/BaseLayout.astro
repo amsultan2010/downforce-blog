@@ -43,6 +43,7 @@ const siteLd = {
       '@id': new URL('/#author', Astro.site).href,
       name: SITE.author,
       url: new URL('/about/', Astro.site).href,
+      sameAs: [SITE.authorUrl],
     },
   ],
 };

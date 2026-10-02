@@ -20,7 +20,7 @@ interface Props {
   older?: Post;
 }
 const { post, newer, older } = Astro.props;
-const { title, date, excerpt, category, tags, race, thumbnail, thumbnailAlt } = post.data;
+const { title, date, excerpt, tldr, category, tags, race, thumbnail, thumbnailAlt, thumbnailCredit, thumbnailSource } = post.data;
 const { Content } = await render(post);
 const minutes = readingTime(post.body);
 
@@ -58,6 +58,9 @@ const articleLd = {
 
         <p class="meta mono" data-reveal="stagger">
           <span class="tag">{CATEGORY_LABEL[category]}</span>
+          <span>
+            by <a class="by link" href={SITE.authorUrl} target="_blank" rel="noopener author">{SITE.author.toLowerCase()}</a>
+          </span>
           <time datetime={isoDate(date)}>{formatDate(date)}</time>
           <span>{minutes} min read</span>
           {race && <span>{race}</span>}
@@ -94,9 +97,27 @@ const articleLd = {
             <ul class="side__tags">
               {tags.map((tag) => <li class="tag">{tag.replace(/-/g, ' ')}</li>)}
             </ul>
+            {
+              thumbnailCredit && (
+                <p class="mono mono--mute">
+                  cover photo (cropped):{' '}
+                  {thumbnailSource ? (
+                    <a class="link" href={thumbnailSource} target="_blank" rel="noopener">
+                      {thumbnailCredit}
+                    </a>
+                  ) : (
+                    thumbnailCredit
+                  )}
+                </p>
+              )
+            }
           </div>
         </aside>
         <div class="prose">
+          <aside class="tldr" aria-label="summary">
+            <p class="tldr__label mono">tldr</p>
+            <p class="tldr__text" data-split="lines">{tldr}</p>
+          </aside>
           <Content />
         </div>
       </div>
@@ -148,6 +169,15 @@ const articleLd = {
     color: var(--mute);
   }
   .meta .tag {
+    color: var(--accent-text);
+  }
+  .by {
+    color: var(--fg);
+    transition:
+      color 0.2s,
+      background-size 0.35s var(--ease-out);
+  }
+  .by:hover {
     color: var(--accent-text);
   }
   .title {
@@ -202,6 +232,29 @@ const articleLd = {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
+  }
+
+  /* the summary box borrows the cover's hard orange shadow */
+  .tldr {
+    margin-bottom: 2.4rem;
+    padding: 1.1rem 1.25rem 1.3rem;
+    border: var(--rule) solid var(--ink);
+    background: var(--paper-dim);
+    box-shadow: 6px 6px 0 var(--orange);
+  }
+  .tldr__label {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .tldr__text {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    font-weight: 560;
+    line-height: 1.42;
+    letter-spacing: -0.012em;
   }
 
   .around {

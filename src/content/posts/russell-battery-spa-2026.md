@@ -2,9 +2,14 @@
 title: "russell's title bid ran out of battery at spa"
 date: 2026-07-24
 excerpt: "george russell reached the top of eau rouge with zero percent battery, hamilton did the rest, and a 25-point gap to antonelli became 50."
+tldr: "russell's battery hit zero on lap 1 at spa, hamilton hit him at les combes and his race was over. hamilton got five seconds and still finished P4. antonelli won, so a 25-point gap is now 50 and russell is behind hamilton too."
 category: editorial
 tags: ["george-russell", "lewis-hamilton", "kimi-antonelli", "mercedes", "stewards"]
 race: "2026 belgian grand prix"
+thumbnail: ../../assets/posts/russell-battery-spa-2026.jpg
+thumbnailAlt: "george russell's mercedes at speed in front of a trackside advertising board"
+thumbnailCredit: "liauzh, CC BY 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Mercedes_-_George_Russell_-_Qualifying.jpg"
 ---
 
 a week ago this championship was getting interesting. kimi antonelli left monaco 68 points clear of george russell, then scored nothing in two of the next three grands prix, and by the time F1 arrived at spa the gap was 25. it took russell about half a lap to undo all of that work.

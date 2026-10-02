@@ -2,8 +2,13 @@
 title: "verstappen's best result of 2026 is a second place"
 date: 2026-07-03
 excerpt: "max verstappen dragged the red bull to P2 in austria, he's still seventh in the championship, and his contract has an exit clause."
+tldr: "verstappen's P2 in austria is his best result of 2026, and he's seventh in the championship. his contract reportedly lets him leave if he's outside the top two at the summer break, which he almost certainly will be. my guess is he stays at red bull anyway."
 category: editorial
 tags: ["max-verstappen", "red-bull", "austrian-gp", "driver-market", "mclaren"]
+thumbnail: ../../assets/posts/verstappen-exit-clause.jpg
+thumbnailAlt: "max verstappen's red bull riding the kerb at the red bull ring"
+thumbnailCredit: "lukas raich, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._3_Verstappen_(1).jpg"
 ---
 
 max verstappen finished second at the red bull ring on sunday, 1.6 seconds behind george russell. for me it was the drive of the race. it was also his best result of the season, which tells you how red bull's 2026 is going.

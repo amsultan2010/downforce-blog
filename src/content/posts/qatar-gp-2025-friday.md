@@ -2,6 +2,7 @@
 title: "my experience at the 2025 qatar GP (friday)"
 date: 2026-01-01
 excerpt: "my friday in the paddock club at lusail: a pit lane walk, a lot of signatures, and sprint qualifying from inside aston martin's garage."
+tldr: "my friday at the 2025 qatar GP with paddock access: a pit lane walk, signatures from norris, piastri, tsunoda and more, and sprint qualifying from inside aston martin's garage, where alonso put it P4 on the sprint grid."
 category: paddock
 tags: ["qatar-gp", "paddock-club", "aston-martin", "fernando-alonso", "sprint-qualifying"]
 race: "2025 qatar grand prix"

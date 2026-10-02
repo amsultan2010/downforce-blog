@@ -5,6 +5,7 @@ export const SITE = {
   description:
     'race reports, sprint reports and opinion pieces on formula 1, written by a fan in riyadh who watches every session.',
   author: 'Abdullah Sultan',
+  authorUrl: 'https://www.amsultan.site',
   locale: 'en',
   timeZone: 'Asia/Riyadh',
 };

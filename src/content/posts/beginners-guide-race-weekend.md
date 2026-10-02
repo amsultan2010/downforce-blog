@@ -2,6 +2,7 @@
 title: "the beginner's guide to F1 (part 1): drivers, teams, terms, & memes"
 date: 2025-10-19
 excerpt: "new to F1? part 1 of the beginner's guide walks through a race weekend, from media day on thursday to the podium on sunday."
+tldr: "a race weekend runs from media day on thursday through practice, qualifying (Q1, Q2 and Q3) and the race on sunday, and sprint weekends swap some of that around. this part also covers the five tire compounds and why everyone has to pit."
 category: guide
 tags: ["beginners-guide", "race-weekend", "qualifying", "sprint-format", "tires"]
 thumbnail: ../../assets/posts/beginners-guide-race-weekend.avif

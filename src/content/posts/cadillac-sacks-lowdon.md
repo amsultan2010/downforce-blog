@@ -2,8 +2,13 @@
 title: "cadillac sacked its team boss eleven races in"
 date: 2026-08-14
 excerpt: "graeme lowdon built cadillac's F1 team from nothing and was replaced by marcin budkowski in the middle of the summer break. harsh, but very F1."
+tldr: "cadillac replaced team principal graeme lowdon with marcin budkowski eleven races into its first season, and the CEO admitted it wasn't mutual. zero points is no surprise for a new team. nine retirements are the real problem, and the timing is harsh."
 category: editorial
 tags: ["cadillac", "graeme-lowdon", "marcin-budkowski", "team-principals", "summer-break"]
+thumbnail: ../../assets/posts/cadillac-sacks-lowdon.jpg
+thumbnailAlt: "a cadillac F1 car on stands in the pit lane, a mechanic working behind it"
+thumbnailCredit: "liauzh, CC BY 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Cadillac_-_MAC-26.jpg"
 ---
 
 cadillac has been an F1 team for eleven races, and on wednesday it replaced its team principal. graeme lowdon, the man who built the thing from nothing, is out. marcin budkowski is in, and his first race in charge is the dutch grand prix next weekend.

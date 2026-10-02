@@ -2,6 +2,7 @@
 title: "the 2025 austin grand prix: back to 2023"
 date: 2025-10-20
 excerpt: "max verstappen took both poles, both wins and every lap of the grand prix, and the title fight is now a three-way one."
+tldr: "verstappen took both poles and both wins in austin and led every lap of the grand prix. norris beat leclerc to P2 after a race-long fight and piastri was only P5, so it's a three-way title fight: norris is 14 points behind and max 40."
 category: race-report
 tags: ["austin", "max-verstappen", "lando-norris", "oscar-piastri", "title-fight"]
 race: "2025 united states grand prix"

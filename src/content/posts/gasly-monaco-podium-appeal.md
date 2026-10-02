@@ -2,9 +2,14 @@
 title: "it took three months to decide who finished third in monaco"
 date: 2026-09-04
 excerpt: "pierre gasly has lost his monaco podium for the second time, and the FIA now has three different answers for one pit lane."
+tldr: "the FIA's court of appeal has put gasly's two monaco penalties back, so he is seventh again and hadjar has the podium. that makes three different answers in three months for one pit lane, and it costs alpine nine points in the fight for fifth."
 category: editorial
 tags: ["pierre-gasly", "alpine", "fia", "penalties", "monaco-gp", "isack-hadjar"]
 race: "2026 monaco grand prix"
+thumbnail: ../../assets/posts/gasly-monaco-podium-appeal.jpg
+thumbnailAlt: "pierre gasly's alpine, number 10, running along the kerb at the red bull ring"
+thumbnailCredit: "lukas raich, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._10_Gasly_(1).jpg"
 ---
 
 quick question. who finished third in the monaco grand prix?

@@ -2,9 +2,14 @@
 title: "the 2026 monaco grand prix: kimi's grand slam, leclerc's two walls and a point for the GOAT"
 date: 2026-06-07
 excerpt: "antonelli becomes the youngest ever monaco winner, verstappen lasts one lap, leclerc finds the wall twice and alonso scores aston martin's first point."
+tldr: "antonelli led all 78 laps for a grand slam and became the youngest ever monaco winner, his fifth win in a row. verstappen lasted one lap, leclerc crashed twice, five drivers got pit lane speeding penalties, and alonso scored aston martin's first point."
 category: race-report
 tags: ["monaco-gp", "antonelli", "mercedes", "ferrari", "alonso", "gasly"]
 race: "2026 monaco grand prix"
+thumbnail: ../../assets/posts/monaco-gp-2026.jpg
+thumbnailAlt: "kimi antonelli stands on top of his mercedes after a win, next to the number 1 board"
+thumbnailCredit: "liauzh, CC BY 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Mercedes_-_Kimi_Antonelli_-_Post_Race_Celebration.jpg"
 ---
 
 monaco is supposed to be the one race where the fastest car can still lose. overtaking is close to impossible, and one mistake puts you in a wall. kimi antonelli arrived 43 points clear of george russell after four straight wins, and mercedes had spent the week insisting its drivers were free to race each other. so could anyone get in his way? (no.)

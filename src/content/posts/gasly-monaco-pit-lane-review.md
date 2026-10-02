@@ -2,8 +2,13 @@
 title: "F1 measured its own pit lane wrong, and only gasly gets his race back"
 date: 2026-06-12
 excerpt: "the stewards cancelled gasly's two monaco speeding penalties because the timing zone was 77cm out, and the other four drivers it caught get nothing."
+tldr: "the stewards cancelled gasly's two monaco speeding penalties after F1's timekeeper admitted the pit lane timing zone was measured 77cm too long, so he's third again. the four other drivers it caught get nothing, since a served penalty can't be undone."
 category: editorial
 tags: ["gasly", "alpine", "fia", "stewards", "monaco-gp", "penalties"]
+thumbnail: ../../assets/posts/gasly-monaco-pit-lane-review.jpg
+thumbnailAlt: "pierre gasly's pink and blue alpine at speed in shanghai, seen over a catch fence"
+thumbnailCredit: "liauzh, CC BY 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Alpine_-_Pierre_Gasly_-_Qualifying.jpg"
 ---
 
 five days after the monaco grand prix, pierre gasly has finished third in it.

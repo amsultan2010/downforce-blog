@@ -2,9 +2,14 @@
 title: "george russell found out he is the number two on lap 65"
 date: 2026-08-28
 excerpt: "mercedes swapped its cars at zandvoort and says the championship had nothing to do with it. the points table disagrees."
+tldr: "on lap 65 at zandvoort, mercedes told russell to let antonelli through for P2. the call made sense on tyres, but it leaves russell 59 points behind when it would have been 53. nobody at mercedes will call him the number two, and now nobody needs to."
 category: editorial
 tags: ["george-russell", "kimi-antonelli", "mercedes", "team-orders", "dutch-gp"]
 race: "2026 dutch grand prix"
+thumbnail: ../../assets/posts/russell-team-orders-zandvoort.jpg
+thumbnailAlt: "george russell's mercedes side-on next to the kerb at the red bull ring"
+thumbnailCredit: "lukas raich, CC BY-SA 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._63_Russell_(1).jpg"
 ---
 
 the last ever dutch GP gave us plenty to talk about. max verstappen put it in the wall on the banking before the first lap was over (his words: "it caught me out, simple as that"), the race was red flagged, and lando norris won for the second time in a row. but the part i keep coming back to happened on lap 65 of 72, on the mercedes radio.

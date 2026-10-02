@@ -2,9 +2,14 @@
 title: "lewis hamilton won a race for ferrari at 41"
 date: 2026-06-19
 excerpt: "hamilton's first ferrari win came in barcelona with three stops and a free pit stop from alonso's dead aston, and it cut antonelli's lead to 41."
+tldr: "lewis hamilton won in barcelona, his first win for ferrari, on a three-stop with a free pit stop under a VSC (caused by alonso's dead aston). at 41 he's the oldest winner since 1970. antonelli retired late, so his lead is down to 41."
 category: editorial
 tags: ["lewis-hamilton", "ferrari", "barcelona-gp", "kimi-antonelli", "fernando-alonso"]
 race: "2026 barcelona-catalunya grand prix"
+thumbnail: ../../assets/posts/hamilton-first-ferrari-win.jpg
+thumbnailAlt: "lewis hamilton's red ferrari, number 44, at speed in shanghai"
+thumbnailCredit: "liauzh, CC BY 4.0"
+thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Ferrari_-_Lewis_Hamilton_-_Qualifying.jpg"
 ---
 
 lewis hamilton won a grand prix in a ferrari. i've read that sentence a few times now and it still looks like a typo. this is the same guy who went all of last year without a single grand prix podium in red.

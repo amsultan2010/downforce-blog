@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Standings from '../components/Standings.astro';
+import { getBuildF1 } from '../lib/f1-build';
+import { f1Text } from '../lib/f1-render';
+
+const f1 = await getBuildF1();
+const live = f1Text(f1);
+const leader = f1.drivers[0];
+const second = f1.drivers[1];
+const topTeam = f1.teams[0];
+---
+
+<BaseLayout
+  title={`${f1.season} F1 standings`}
+  description={`formula 1 driver and constructor standings for ${f1.season}, refreshed from the official results after every round.`}
+>
+  <section class="top on-deep" data-intro>
+    <div class="top__grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="eyebrow mono" data-reveal="up"><span data-f1="season">{live.season}</span></p>
+      <h1 class="h-xl display" data-split="chars">the <span class="serif-accent">standings</span></h1>
+
+      <span class="rule" data-rule></span>
+      <dl class="facts" data-reveal="stagger">
+        {
+          leader && (
+            <div>
+              <dt class="mono">championship leader</dt>
+              <dd class="facts__big">{leader.last}</dd>
+              <dd class="mono">
+                {leader.points} pts{second ? `, ${leader.points - second.points} clear of ${second.last}` : ''}
+              </dd>
+            </div>
+          )
+        }
+        {
+          topTeam && (
+            <div>
+              <dt class="mono">leading constructor</dt>
+              <dd class="facts__big">{topTeam.name}</dd>
+              <dd class="mono">
+                {topTeam.points} pts, {topTeam.wins} {topTeam.wins === 1 ? 'win' : 'wins'}
+              </dd>
+            </div>
+          )
+        }
+        <div>
+          <dt class="mono">next race <span data-f1="next-countdown"></span></dt>
+          <dd class="facts__big" data-f1="next-name">{live['next-name']}</dd>
+          <dd class="mono" data-f1="next-when">{live['next-when']}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="board on-deep">
+    <div class="wrap">
+      <p class="mono board__note">
+        <i class="pulse" aria-hidden="true"></i><span data-f1="after">{live.after}</span>. data from the jolpica results
+        API, refreshed every time this page loads.
+      </p>
+      <Standings level={2} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .top {
+    position: relative;
+    padding-top: calc(var(--header-h) + clamp(4rem, 9vw, 9rem));
+    padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    overflow: hidden;
+  }
+  .top__grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 5rem 5rem;
+    opacity: 0.3;
+    mask-image: linear-gradient(to bottom, #000, transparent);
+  }
+  .top .wrap {
+    position: relative;
+  }
+  .top .eyebrow {
+    margin-bottom: 1.5rem;
+  }
+  .top .rule {
+    margin-top: clamp(2.5rem, 5vw, 5rem);
+    background: var(--fg);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .facts > div {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+  }
+  .facts dt {
+    color: var(--accent-text);
+  }
+  .facts dd.mono {
+    color: var(--mute);
+  }
+  .facts__big {
+    font-weight: 900;
+    font-stretch: 120%;
+    font-size: clamp(1.7rem, 3.4vw, 3.4rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+  }
+
+  .board {
+    padding-block: clamp(2rem, 4vw, 4rem) clamp(5rem, 10vw, 10rem);
+  }
+  .board__note {
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    color: var(--mute);
+  }
+  .pulse {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.6rem;
+    border-radius: 999px;
+    background: var(--orange);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,185 @@
+---
+// The championship as a timing tower. Rows are rendered at build time from the Jolpica
+// API and refreshed in the browser on load (see src/lib/motion/standings.ts).
+import { getBuildF1 } from '../lib/f1-build';
+import { driverRows, teamRows } from '../lib/f1-render';
+
+interface Props {
+  /** how many drivers to list; Alonso is always shown */
+  drivers?: number;
+  teams?: number;
+  /** heading level for the two tower titles, so the page outline never skips a level */
+  level?: 2 | 3;
+}
+const { drivers = 99, teams = 99, level = 3 } = Astro.props;
+const H = `h${level}` as 'h2' | 'h3';
+const f1 = await getBuildF1();
+---
+
+<div class="towers" data-standings data-drivers={drivers} data-teams={teams}>
+  <section class="tower" aria-labelledby="tower-drivers">
+    <header class="tower__head">
+      <H id="tower-drivers" class="h-sm">drivers</H>
+      <span class="mono mono--mute">gap / pts</span>
+    </header>
+    <ol class="tower__list" data-tower="drivers" set:html={driverRows(f1, drivers)} />
+  </section>
+
+  <section class="tower" aria-labelledby="tower-teams">
+    <header class="tower__head">
+      <H id="tower-teams" class="h-sm">constructors</H>
+      <span class="mono mono--mute">gap / pts</span>
+    </header>
+    <ol class="tower__list" data-tower="teams" set:html={teamRows(f1, teams)} />
+  </section>
+</div>
+
+<style is:global>
+  .towers {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+
+  .tower__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 0.9rem;
+    border-bottom: var(--rule) solid var(--fg);
+  }
+
+  .trow {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.2rem 5px 3.4rem 1fr auto 4.2rem;
+    align-items: center;
+    column-gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: 0.55rem 0.75rem 0.55rem 0;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .trow--team {
+    grid-template-columns: 2.2rem 5px 1fr auto 4.2rem;
+  }
+
+  /* points as a share of the leader's total, in the team colour */
+  .trow__bar {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--team);
+    opacity: 0.16;
+    transform: scaleX(var(--share));
+    transform-origin: left center;
+    transition: opacity 0.25s var(--ease-out);
+  }
+  .trow:hover .trow__bar {
+    opacity: 0.3;
+  }
+
+  .trow__pos {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-align: right;
+    color: var(--mute);
+  }
+  .trow__chip {
+    align-self: stretch;
+    background: var(--team);
+  }
+  .trow__code {
+    font-weight: 900;
+    font-stretch: 125%;
+    font-size: 1.15rem;
+    letter-spacing: -0.03em;
+  }
+  .trow__name {
+    min-width: 0;
+    font-weight: 640;
+    font-size: 1rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .trow--team .trow__name {
+    font-weight: 880;
+    font-stretch: 115%;
+    font-size: 1.15rem;
+    letter-spacing: -0.03em;
+  }
+  .trow__first {
+    font-weight: 400;
+    color: var(--mute);
+  }
+  .trow__team {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--mute);
+  }
+  .trow__gap {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--mute);
+    white-space: nowrap;
+  }
+  .trow__pts {
+    font-weight: 900;
+    font-stretch: 112%;
+    font-size: 1.5rem;
+    letter-spacing: -0.04em;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* the house rule: Alonso is always on the board */
+  .trow--goat {
+    --team: var(--orange);
+  }
+  .trow--goat .trow__bar {
+    transform: none;
+    opacity: 0.2;
+  }
+  .trow__goat {
+    margin-left: 0.4rem;
+    padding: 0.12rem 0.3rem;
+    background: var(--orange);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    vertical-align: 0.15em;
+  }
+
+  @media (max-width: 900px) {
+    .towers {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .trow {
+      grid-template-columns: 1.6rem 4px 2.9rem 1fr auto 3.2rem;
+      column-gap: 0.55rem;
+    }
+    .trow--team {
+      grid-template-columns: 1.6rem 4px 1fr auto 3.2rem;
+    }
+    .trow__first,
+    .trow__gap {
+      display: none;
+    }
+    .trow__code {
+      font-size: 0.95rem;
+    }
+    .trow__pts {
+      font-size: 1.25rem;
+    }
+  }
+</style>

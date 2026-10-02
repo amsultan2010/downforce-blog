@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://downforce-blog.vercel.app/sitemap-index.xml

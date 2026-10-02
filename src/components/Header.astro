@@ -1,188 +1,177 @@
 ---
-const pathname = Astro.url.pathname;
-const isActive = (href: string) =>
-  pathname === href || (href !== '/' && pathname.startsWith(href));
+import Logo from './Logo.astro';
+import { NAV } from '../lib/site';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---
 
-<header class="site-header">
-  <div class="container header-inner">
-    <a href="/" class="logo" aria-label="the downforce blog — home">
-      the downforce blog
+<header class="site-header" data-header>
+  <div class="bar on-paper">
+    <a href="/" class="brand" aria-label="the downforce blog, home" data-cursor="home">
+      <Logo size={44} class="brand__mark" />
+      <span class="brand__word display" aria-hidden="true">downforce</span>
     </a>
 
-    <nav class="nav" aria-label="Main navigation">
-      <a href="/posts" class:list={['nav-link', { active: isActive('/posts') }]}>posts</a>
-      <a href="/about" class:list={['nav-link', { active: isActive('/about') }]}>about</a>
-      <a
-        href="/rss.xml"
-        class="nav-rss"
-        aria-label="RSS feed"
-        title="RSS feed"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="2.5" cy="11.5" r="1.5" fill="currentColor"/>
-          <path d="M1 7.5C4.59 7.5 7.5 10.41 7.5 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-          <path d="M1 3C7.63 3 13 8.37 13 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-        </svg>
-      </a>
-
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"/>
-          <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
+    <nav class="nav" aria-label="main">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} class="nav__link mono" aria-current={isCurrent(item.href) ? 'page' : undefined} data-roll>
+                <span class="roll">
+                  <span class="roll__a">{item.label}</span>
+                  <span class="roll__b" aria-hidden="true">
+                    {item.label}
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </nav>
+
+    <a href="/standings/" class="next mono" aria-label="next race, see standings">
+      <span class="next__dot" aria-hidden="true"></span>
+      <span data-f1="next-short">next race</span>
+    </a>
+
+    <span class="progress" data-progress aria-hidden="true"></span>
   </div>
 </header>
 
 <style>
   .site-header {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0 0 auto 0;
     z-index: 100;
-    background: var(--header-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    padding: clamp(0.5rem, 1.2vw, 1rem) var(--gutter) 0;
+    pointer-events: none;
   }
 
-  .site-header.scrolled {
-    border-bottom-color: var(--accent);
-    box-shadow: 0 1px 32px rgba(232, 74, 37, 0.12);
+  .bar {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    height: var(--header-h);
+    max-width: calc(var(--max) - 2 * var(--gutter));
+    margin-inline: auto;
+    border: var(--rule) solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+    pointer-events: auto;
   }
 
-  .header-inner {
+  .brand {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    transition: height 0.3s var(--ease-out-quint);
+    gap: 0.85rem;
+    padding: 0 1.1rem 0 0.7rem;
+    border-right: var(--rule) solid var(--ink);
   }
-
-  .site-header.scrolled .header-inner {
-    height: 48px;
+  .brand :global(.brand__mark) {
+    border: var(--rule) solid var(--ink);
   }
-
-  .logo {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    color: var(--text);
-    transition: color 0.2s ease;
-  }
-
-  .logo:hover { color: var(--accent); }
-  .logo.glitch {
-    animation: logoGlitch 0.35s steps(2) forwards;
-  }
-  @keyframes logoGlitch {
-    0%   { text-shadow: -3px 0 var(--accent), 3px 0 var(--blue); letter-spacing: 0.06em; }
-    33%  { text-shadow:  3px 0 var(--accent),-2px 0 var(--blue); letter-spacing: 0.01em; }
-    66%  { text-shadow: -1px 0 var(--blue);                       letter-spacing: 0.02em; }
-    100% { text-shadow: none;                                      letter-spacing: 0.01em; }
+  .brand__word {
+    font-size: 1.35rem;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    padding-bottom: 0.12em;
   }
 
   .nav {
     display: flex;
-    align-items: center;
-    gap: 1.75rem;
+    flex: 1;
   }
-
-  .nav-link {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-    text-transform: lowercase;
+  .nav ul {
+    display: flex;
+    align-items: stretch;
+  }
+  .nav li {
+    display: flex;
+  }
+  .nav__link {
     position: relative;
-    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(0.8rem, 1.6vw, 1.5rem);
+    font-size: 0.8125rem;
+    transition: background-color 0.25s var(--ease-out);
   }
-
-  .nav-link::after {
+  .nav__link:hover {
+    background: var(--paper-dim);
+  }
+  .nav__link[aria-current='page']::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    left: clamp(0.8rem, 1.6vw, 1.5rem);
+    right: clamp(0.8rem, 1.6vw, 1.5rem);
+    bottom: 1rem;
+    height: 3px;
+    background: var(--orange);
+  }
+
+  .roll {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    line-height: 1.5;
+  }
+  .roll__a,
+  .roll__b {
+    display: block;
+  }
+  .roll__b {
+    position: absolute;
+    inset: 0;
+    transform: translateY(105%);
+  }
+
+  .next {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 1.2rem;
+    background: var(--orange);
+    border-left: var(--rule) solid var(--ink);
+    white-space: nowrap;
+    transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+  }
+  .next:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .next__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: currentColor;
+  }
+
+  .progress {
+    position: absolute;
     left: 0;
     right: 0;
-    height: 1px;
-    background: var(--accent);
+    bottom: -2px;
+    height: 4px;
+    background: var(--orange);
     transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.25s var(--ease-out-quint);
+    transform-origin: left center;
   }
 
-  .nav-link:hover,
-  .nav-link.active {
-    color: var(--text);
+  @media (max-width: 720px) {
+    .brand__word {
+      display: none;
+    }
+    .brand {
+      padding: 0 0.6rem;
+    }
+    .next {
+      display: none;
+    }
+    .nav ul {
+      width: 100%;
+      justify-content: flex-end;
+    }
   }
-
-  .nav-link.active::after,
-  .nav-link:hover::after {
-    transform: scaleX(1);
-  }
-
-  .nav-rss {
-    color: var(--text-muted);
-    transition: color 0.2s ease;
-    display: flex;
-    align-items: center;
-  }
-
-  .nav-rss:hover { color: var(--accent); }
-
-  .site-header {
-    background: var(--header-bg);
-  }
-
-  .theme-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-muted);
-    transition: color 0.2s ease;
-    padding: 0.2rem;
-  }
-  .theme-toggle:hover { color: var(--accent); }
-
-  .icon-sun { display: none; }
-  .icon-moon { display: block; }
-
-  [data-theme="dark"] .icon-sun { display: block; }
-  [data-theme="dark"] .icon-moon { display: none; }
 </style>
-
-<script>
-  const btn = document.getElementById('theme-toggle');
-  btn?.addEventListener('click', () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('df-theme', next);
-  });
-
-  const header = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => {
-    header?.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  const logo = document.querySelector<HTMLElement>('.logo');
-  logo?.addEventListener('mouseenter', () => {
-    logo.classList.remove('glitch');
-    void logo.offsetWidth;
-    logo.classList.add('glitch');
-  });
-</script>

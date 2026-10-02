@@ -1,17 +1,22 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
+
+export const CATEGORIES = ['race-report', 'sprint-report', 'editorial', 'guide', 'paddock', 'meta'] as const;
 
 const posts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
-  schema: z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    excerpt: z.string(),
-    tags: z.array(z.string()).default([]),
-    thumbnail: z.string().optional(),
-    race: z.string().optional(),
-    category: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.coerce.date(),
+      excerpt: z.string().max(160),
+      category: z.enum(CATEGORIES),
+      tags: z.array(z.string()).default([]),
+      race: z.string().optional(),
+      thumbnail: image().optional(),
+      thumbnailAlt: z.string().optional(),
+    }),
 });
 
 export const collections = { posts };

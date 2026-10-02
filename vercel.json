@@ -1,0 +1,50 @@
+{
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/2025/10/19/the-2025-austin-sprint-race-chaos-chaos-and-more-chaos/",
+      "destination": "/posts/austin-sprint-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/2025/10/19/the-beginners-guide-to-f1-part-1-drivers-teams-terms-memes/",
+      "destination": "/posts/beginners-guide-race-weekend/",
+      "permanent": true
+    },
+    {
+      "source": "/2025/10/20/the-2025-austin-gran-prix-back-to-2023/",
+      "destination": "/posts/austin-grand-prix-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/2025/10/22/hot-take-mclarens-failure-to-secure-the-wdc-is-not-only-due-to-verstappens-talent-but-also-mclarens-incompetence/",
+      "destination": "/posts/hot-take-mclaren-incompetence/",
+      "permanent": true
+    },
+    {
+      "source": "/2025/10/29/the-beginners-guide-to-f1-part-2-drivers-teams-terms-and-memes/",
+      "destination": "/posts/beginners-guide-f1-terms/",
+      "permanent": true
+    },
+    {
+      "source": "/2025/11/06/the-2025-mexico-grand-prix-the-stewards-room-circus/",
+      "destination": "/posts/mexico-gp-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/2025/11/09/the-2025-sao-paulo-sprint-slip-n-slides-lico-lawson-being-lawson/",
+      "destination": "/posts/sao-paulo-sprint-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/2025/11/17/the-2025-sao-paulo-grand-prix-verstappens-masterclass-ferrari-tragedy-the-norris-era/",
+      "destination": "/posts/sao-paulo-gp-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/2026/01/01/my-experience-at-the-2025-qatar-gp-friday/",
+      "destination": "/posts/qatar-gp-2025-friday/",
+      "permanent": true
+    }
+  ]
+}

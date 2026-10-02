@@ -1,117 +1,125 @@
 ---
+import Logo from './Logo.astro';
+import { NAV } from '../lib/site';
+
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="footer-left">
-      <a href="/" class="footer-logo">the downforce blog</a>
-      <p class="footer-tagline">race analysis. actual opinions.</p>
-    </div>
+<footer class="footer on-orange">
+  <div class="kerb" aria-hidden="true"><div class="kerb__run" data-kerb></div></div>
 
-    <div class="footer-right">
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="/posts" class="footer-link">posts</a>
-        <a href="/about" class="footer-link">about</a>
-        <a href="/rss.xml" class="footer-link">rss</a>
-      </nav>
-      <p class="footer-copy">&copy; {year}</p>
+  <div class="wrap footer__top">
+    <div class="footer__col">
+      <p class="mono">pages</p>
+      <ul>
+        <li><a class="footer__link" href="/">home</a></li>
+        {NAV.map((item) => <li><a class="footer__link" href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </div>
+    <div class="footer__col">
+      <p class="mono">follow</p>
+      <ul>
+        <li><a class="footer__link" href="/rss.xml" data-astro-reload>RSS feed</a></li>
+      </ul>
+    </div>
+    <div class="footer__col footer__note">
+      <p class="mono">pit wall</p>
+      <p class="serif">
+        written in riyadh by one fan. not affiliated with formula 1, the FIA or any team.
+      </p>
+      <p class="mono footer__clock">riyadh <span data-clock>--:--</span></p>
     </div>
   </div>
 
-  <div class="footer-flag" aria-hidden="true">
-    <div class="flag-stripe"></div>
+  <div class="footer__word" aria-hidden="true">
+    <span class="display" data-footer-word>downforce</span>
+  </div>
+
+  <div class="wrap footer__base">
+    <a href="/" class="footer__home" aria-label="the downforce blog, home"><Logo size={36} ground="#f2ecdf" /></a>
+    <p class="mono">© {year} the downforce blog</p>
+    <a href="#top" class="mono footer__top-link" data-to-top>back to top</a>
   </div>
 </footer>
 
 <style>
-  .site-footer {
-    background: var(--bg-dark);
-    color: var(--text-light);
-    margin-top: 6rem;
+  .footer {
+    position: relative;
     overflow: hidden;
   }
 
-  .footer-inner {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding-top: 3rem;
-    padding-bottom: 2.5rem;
+  .footer__top {
+    border-bottom: var(--rule) solid var(--ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
     gap: 2rem;
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(2rem, 4vw, 3rem);
+  }
+  .footer__col > .mono {
+    margin-bottom: 1rem;
+    color: var(--mute);
+  }
+  .footer__link {
+    display: inline-block;
+    font-weight: 800;
+    font-stretch: 112%;
+    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+    letter-spacing: -0.04em;
+    line-height: 1.12;
+    transition: transform 0.35s var(--ease-out);
+  }
+  .footer__link:hover {
+    transform: translateX(0.5rem);
+  }
+  .footer__note .serif {
+    max-width: 30ch;
+    font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .footer__clock {
+    margin-top: 1.25rem;
   }
 
-  @media (max-width: 600px) {
-    .footer-inner {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+  .footer__word {
+    container-type: inline-size;
+    margin-inline: var(--gutter);
+    overflow: hidden;
   }
-
-  .footer-logo {
+  .footer__word span {
     display: block;
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-light);
-    letter-spacing: 0.01em;
-    margin-bottom: 0.4rem;
-    transition: color 0.2s ease;
-  }
-  .footer-logo:hover { color: var(--amber); }
-
-  .footer-tagline {
-    font-size: 0.9375rem;
-    color: var(--text-light-muted);
-    font-weight: 300;
-    letter-spacing: 0.06em;
+    font-size: calc(100cqi / 6.62);
+    line-height: 0.9;
+    padding-bottom: 0.08em;
+    white-space: nowrap;
   }
 
-  .footer-right {
-    text-align: right;
+  .footer__base {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 1.25rem;
+    padding-block: 1.25rem;
+    border-top: var(--rule) solid var(--ink);
+  }
+  .footer__home :global(svg) {
+    border: var(--rule) solid var(--ink);
+  }
+  .footer__top-link {
+    margin-left: auto;
+    padding: 0.5rem 0;
+    border-bottom: var(--rule) solid var(--ink);
+    transition: opacity 0.2s;
+  }
+  .footer__top-link:hover {
+    opacity: 0.6;
   }
 
-  @media (max-width: 600px) {
-    .footer-right {
-      text-align: left;
-      align-items: flex-start;
+  @media (max-width: 800px) {
+    .footer__top {
+      grid-template-columns: 1fr 1fr;
     }
-  }
-
-  .footer-nav {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  .footer-link {
-    font-size: 0.9375rem;
-    color: var(--text-light-muted);
-    letter-spacing: 0.04em;
-    text-transform: lowercase;
-    transition: color 0.2s ease;
-  }
-  .footer-link:hover { color: var(--text-light); }
-
-  .footer-copy {
-    font-size: 0.875rem;
-    color: rgba(243, 237, 225, 0.25);
-    letter-spacing: 0.04em;
-  }
-
-  /* Decorative checkered stripe at the very bottom */
-  .footer-flag { height: 8px; display: flex; }
-  .flag-stripe {
-    flex: 1;
-    background-image: repeating-linear-gradient(
-      90deg,
-      rgba(243,237,225,0.15) 0px,
-      rgba(243,237,225,0.15) 8px,
-      transparent 8px,
-      transparent 16px
-    );
+    .footer__note {
+      grid-column: 1 / -1;
+    }
   }
 </style>

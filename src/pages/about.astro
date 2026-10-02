@@ -1,170 +1,145 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts } from '../lib/posts';
+import race3 from '../assets/site/race3.jpg';
+
+const posts = await getPosts();
+const first = posts[posts.length - 1];
+const since = first ? first.data.date.getUTCFullYear() : new Date().getFullYear();
 ---
 
 <BaseLayout
   title="about"
-  description="about the downforce blog — race analysis with actual opinions"
+  description="who writes the downforce blog: a high schooler in riyadh, an aston martin fan, and a firm believer that fernando alonso is the greatest of all time."
 >
-  <div class="about-wrapper">
-    <div class="container">
-      <div class="about-header reveal-on-scroll">
-        <div class="about-accent-line" aria-hidden="true"></div>
-        <h1 class="about-title">about</h1>
-      </div>
-
-      <div class="about-body reveal-on-scroll">
-        <div class="about-bio">
-          <p class="bio-lead">
-            i'm a high schooler based in riyadh who has loved formula one for as long
-            as i can remember. this is where i write about it.
-          </p>
-
-          <p>
-            i started the downforce blog since i wanted a place to put my actual
-            thoughts on races, not just repost what everyone else was saying. f1 is
-            the most technically complex, politically messy, and genuinely exciting
-            sport on the planet, and most coverage doesn't do it justice.
-          </p>
-
-          <p>
-            i'm a massive Aston Martin fan and an even bigger Fernando Alonso fan.
-            the man is the greatest driver of all time and i will not be taking
-            questions. that bias shows up in the writing. so does everything else i
-            think about the sport.
-          </p>
-
-          <p>
-            posts go up after every race weekend, plus editorials and hot takes
-            whenever something in the paddock is worth reacting to.
-          </p>
-        </div>
-
-        <aside class="about-details">
-          <div class="detail-block">
-            <h2 class="detail-label">what's covered</h2>
-            <ul class="detail-list">
-              <li>race reports after every grand prix</li>
-              <li>driver and team analysis</li>
-              <li>strategy breakdowns and hot takes</li>
-              <li>season storylines and championship battles</li>
-              <li>friday editorials on whatever's worth discussing</li>
-            </ul>
-          </div>
-
-          <div class="detail-block">
-            <h2 class="detail-label">stay updated</h2>
-            <ul class="detail-list">
-              <li>
-                <a href="/rss.xml" class="detail-link">rss feed →</a>
-              </li>
-            </ul>
-          </div>
-        </aside>
-      </div>
+  <section class="top on-green" data-intro>
+    <div class="wrap">
+      <p class="eyebrow mono" data-reveal="up">who writes this</p>
+      <h1 class="h-xl display" data-split="chars">about</h1>
+      <p class="lede" data-split="lines">
+        i'm a high schooler in riyadh who has loved formula 1 for as long as i can remember. this is where i write about
+        it.
+      </p>
     </div>
-  </div>
+  </section>
+
+  <section class="body on-paper">
+    <div class="wrap body__grid">
+      <div class="prose">
+        <p data-split="lines">
+          i started the downforce blog since i wanted a place to put my actual thoughts on races, not just repost what
+          everyone else was saying. F1 is the most technically complex, politically messy and exciting sport on the
+          planet, and most coverage doesn't do it justice.
+        </p>
+        <p data-split="lines">
+          i'm a massive aston martin fan and an even bigger fernando alonso fan. the man is the greatest driver of all
+          time and i will not be taking questions. that bias shows up in the writing. so does everything else i think
+          about the sport.
+        </p>
+        <p data-split="lines">
+          posts go up after race weekends, plus editorials and hot takes whenever something in the paddock is worth
+          reacting to.
+        </p>
+      </div>
+
+      <aside class="side">
+        <figure class="frame" data-reveal="clip">
+          <Image
+            src={race3}
+            alt="the start of a night race seen from above, the cars fanning out across the track"
+            widths={[480, 800]}
+            sizes="(min-width: 900px) 30vw, 92vw"
+            data-parallax="6"
+          />
+        </figure>
+
+        <dl class="facts" data-reveal="stagger">
+          <div>
+            <dt class="mono">based in</dt>
+            <dd>riyadh, saudi arabia</dd>
+          </div>
+          <div>
+            <dt class="mono">writing since</dt>
+            <dd>{since}</dd>
+          </div>
+          <div>
+            <dt class="mono">posts so far</dt>
+            <dd><span data-count={posts.length}>{posts.length}</span></dd>
+          </div>
+          <div>
+            <dt class="mono">team</dt>
+            <dd>aston martin</dd>
+          </div>
+          <div>
+            <dt class="mono">follow</dt>
+            <dd><a class="link" href="/rss.xml" data-astro-reload>RSS feed</a></dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .about-wrapper {
-    padding-top: calc(56px + 4rem);
-    padding-bottom: 6rem;
+  .top {
+    padding-top: calc(var(--header-h) + clamp(4rem, 9vw, 9rem));
+    padding-bottom: clamp(3rem, 6vw, 6rem);
   }
-
-  .about-header {
-    margin-bottom: 3rem;
-  }
-
-  .about-accent-line {
-    width: 32px;
-    height: 3px;
-    background: var(--accent);
+  .top .eyebrow {
     margin-bottom: 1.5rem;
   }
-
-  .about-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 0.95;
-    color: var(--text);
+  .top .lede {
+    max-width: 30ch;
+    margin-top: clamp(2rem, 4vw, 4rem);
   }
 
-  .about-body {
+  .body {
+    padding-block: clamp(3.5rem, 8vw, 8rem) clamp(5rem, 10vw, 10rem);
+  }
+  .body__grid {
     display: grid;
-    grid-template-columns: 1fr minmax(200px, 280px);
-    gap: 5rem;
+    grid-template-columns: minmax(0, 40rem) minmax(0, 26rem);
+    justify-content: space-between;
+    gap: clamp(2.5rem, 6vw, 7rem);
     align-items: start;
   }
 
-  @media (max-width: 768px) {
-    .about-body {
+  .side .frame {
+    aspect-ratio: 4 / 3;
+    box-shadow: 8px 8px 0 var(--orange);
+  }
+  .side .frame :global(img) {
+    position: absolute;
+    top: -8%;
+    left: 0;
+    height: 116%;
+  }
+  .facts {
+    margin-top: 2.75rem;
+    border-top: var(--rule) solid var(--ink);
+  }
+  .facts > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--ink);
+  }
+  .facts dt {
+    color: var(--mute);
+  }
+  .facts dd {
+    font-weight: 760;
+    font-stretch: 108%;
+    letter-spacing: -0.02em;
+    text-align: right;
+  }
+
+  @media (max-width: 899px) {
+    .body__grid {
       grid-template-columns: 1fr;
-      gap: 3rem;
     }
   }
-
-  .about-bio {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .bio-lead {
-    font-family: var(--font-display);
-    font-size: clamp(1.25rem, 3vw, 1.625rem);
-    font-weight: 600;
-    line-height: 1.35;
-    color: var(--text);
-  }
-
-  .about-bio p {
-    font-size: 1.0625rem;
-    line-height: 1.8;
-    color: var(--text-muted);
-  }
-
-  .about-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-
-  .detail-label {
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.75rem;
-  }
-
-  .detail-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .detail-list li {
-    font-size: 0.9375rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    padding-left: 0.75rem;
-    border-left: 2px solid var(--border);
-    transition: border-color 0.2s ease, color 0.2s ease;
-  }
-
-  .detail-list li:hover {
-    border-left-color: var(--accent);
-    color: var(--text);
-  }
-
-  .detail-link {
-    color: var(--accent);
-    transition: color 0.2s ease;
-  }
-  .detail-link:hover { color: var(--accent-hover); }
 </style>

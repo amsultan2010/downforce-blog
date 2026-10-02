@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostRow from '../components/PostRow.astro';
+import { getPosts } from '../lib/posts';
+
+const latest = (await getPosts()).slice(0, 3);
+---
+
+<BaseLayout title="page not found" description="this page did not finish. head back to the latest posts." noindex>
+  <section class="dnf on-green" data-intro>
+    <div class="wrap">
+      <p class="eyebrow mono" data-reveal="up">error 404</p>
+      <h1 class="dnf__big display" data-split="chars">DNF</h1>
+      <p class="lede" data-split="lines">
+        this page did not finish. it either retired a long time ago or never made the grid.
+      </p>
+      <div class="dnf__cta" data-reveal="stagger">
+        <a class="btn btn--accent" href="/" data-magnetic>back to the start line</a>
+        <a class="btn btn--ghost" href="/posts/" data-magnetic>all posts</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight on-paper">
+    <div class="wrap">
+      <h2 class="h-md" data-split="lines">or read something that did finish</h2>
+      <ol class="rows">
+        {latest.map((post, i) => <PostRow post={post} index={i + 1} />)}
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dnf {
+    padding-top: calc(var(--header-h) + clamp(4rem, 9vw, 9rem));
+    padding-bottom: clamp(4rem, 8vw, 8rem);
+  }
+  .dnf .eyebrow {
+    margin-bottom: 1rem;
+  }
+  .dnf__big {
+    font-size: clamp(7rem, 34vw, 34rem);
+    line-height: 0.8;
+    margin-left: -0.04em;
+    color: var(--orange);
+  }
+  .dnf .lede {
+    max-width: 28ch;
+    margin-top: clamp(1.5rem, 3vw, 3rem);
+  }
+  .dnf__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    margin-top: 2.5rem;
+  }
+  .rows {
+    margin-top: 2rem;
+    border-top: var(--rule) solid var(--ink);
+  }
+</style>

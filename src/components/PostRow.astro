@@ -1,0 +1,142 @@
+---
+// One post as a full-width row: used for the home page list and the posts index.
+import { getImage } from 'astro:assets';
+import { CATEGORY_LABEL, formatDate, isoDate, postUrl, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+  index?: number;
+  excerpt?: boolean;
+}
+const { post, index, excerpt = false } = Astro.props;
+const { title, date, category, thumbnail } = post.data;
+const peek = thumbnail ? (await getImage({ src: thumbnail, width: 560, height: 373, format: 'webp' })).src : undefined;
+---
+
+<li class="prow" data-cat={category} data-flip-id={post.id}>
+  <a href={postUrl(post)} class:list={['prow__link', { 'prow__link--plain': index === undefined }]} data-fill data-peek={peek} data-cursor="read">
+    <span class="fill" aria-hidden="true"></span>
+    {index !== undefined && <span class="prow__num mono">{String(index).padStart(2, '0')}</span>}
+    <span class="prow__main">
+      <span class="prow__title">{title}</span>
+      {excerpt && <span class="prow__excerpt serif">{post.data.excerpt}</span>}
+    </span>
+    <span class="prow__cat tag">{CATEGORY_LABEL[category]}</span>
+    <time class="prow__date mono" datetime={isoDate(date)}>{formatDate(date)}</time>
+    <span class="prow__arrow" aria-hidden="true">
+      <svg class="arrow" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 19 19 5M8 5h11v11"></path>
+      </svg>
+    </span>
+  </a>
+</li>
+
+<style>
+  .prow {
+    border-bottom: var(--rule) solid var(--line);
+  }
+  .prow[hidden] {
+    display: none;
+  }
+  .prow__link {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto 7.5rem 2rem;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    padding: clamp(1.1rem, 2.2vw, 1.9rem) clamp(0.25rem, 1vw, 1rem);
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.3s var(--ease-out);
+  }
+  .prow__link--plain {
+    grid-template-columns: 1fr auto 7.5rem 2rem;
+  }
+  .prow__cat {
+    justify-self: start;
+  }
+  .fill {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--orange);
+    transform: translateY(101%);
+  }
+  .prow__link:hover,
+  .prow__link:focus-visible {
+    color: var(--ink);
+  }
+  /* touch and keyboard never run the pointer script, so give them the fill in CSS */
+  .prow__link:focus-visible .fill {
+    transform: none;
+  }
+  @media (hover: none) {
+    .prow__link:active .fill {
+      transform: none;
+    }
+  }
+
+  .prow__num {
+    color: var(--mute);
+    transition: color 0.3s var(--ease-out);
+  }
+  .prow__link:hover .prow__num,
+  .prow__link:hover .prow__date {
+    color: var(--ink);
+  }
+  .prow__main {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .prow__title {
+    font-weight: 860;
+    font-stretch: 110%;
+    font-size: clamp(1.3rem, 2.5vw, 2.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    transition: transform 0.45s var(--ease-out);
+  }
+  .prow__link:hover .prow__title {
+    transform: translateX(0.6rem);
+  }
+  .prow__excerpt {
+    max-width: 62ch;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+    color: var(--mute);
+    transition: color 0.3s var(--ease-out);
+  }
+  .prow__link:hover .prow__excerpt {
+    color: var(--ink);
+  }
+  .prow__date {
+    color: var(--mute);
+    text-align: right;
+    transition: color 0.3s var(--ease-out);
+  }
+  .prow__arrow {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    overflow: hidden;
+  }
+
+  @media (max-width: 760px) {
+    .prow__link,
+    .prow__link--plain {
+      grid-template-columns: 1fr auto;
+      row-gap: 0.7rem;
+    }
+    .prow__num {
+      display: none;
+    }
+    .prow__main {
+      grid-column: 1 / -1;
+    }
+    .prow__arrow {
+      display: none;
+    }
+  }
+</style>

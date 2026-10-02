@@ -1,0 +1,23 @@
+---
+// The mark: an F1 rear wing seen from behind, with the load arrow under it.
+interface Props {
+  size?: number;
+  class?: string;
+  /** tile colour; the default orange disappears on an orange surface */
+  ground?: string;
+}
+const { size = 40, class: className, ground = '#e84a25' } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  aria-hidden="true"
+  focusable="false"
+>
+  <rect width="64" height="64" fill={ground}></rect>
+  <path class="logo-wing" fill="#0e1a12" d="M8 12h48v26h-9V22H17v16H8z"></path>
+  <path class="logo-arrow" fill="#0e1a12" d="M21 31l11 11 11-11v11L32 53 21 42z"></path>
+</svg>

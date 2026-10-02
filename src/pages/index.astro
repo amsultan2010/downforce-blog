@@ -1,810 +1,716 @@
 ---
-import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
-import StandingsWidget from '../components/StandingsWidget.astro';
+import PostRow from '../components/PostRow.astro';
+import Standings from '../components/Standings.astro';
+import Logo from '../components/Logo.astro';
+import { CATEGORY_LABEL, CATEGORY_PLURAL, formatDate, getPosts, isoDate, postUrl, readingTime, type Category } from '../lib/posts';
+import { getBuildF1 } from '../lib/f1-build';
+import { f1Text } from '../lib/f1-render';
+import heroImg from '../assets/site/hero.jpg';
+import race1 from '../assets/site/race1.jpg';
+import race2 from '../assets/site/race2.jpg';
+import race3 from '../assets/site/race3.jpg';
+import race4 from '../assets/site/race4.jpg';
 
-const allPosts = await getCollection('posts');
-const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const posts = await getPosts();
+const [feature, ...rest] = posts;
+const rows = rest.slice(0, 5);
 
-const recentPosts = posts.slice(0, 3);
-const [featuredPost, ...restPosts] = recentPosts;
+const f1 = await getBuildF1();
+const live = f1Text(f1);
 
-// Auto-detect thumbnails by article number (oldest post = article1, next = article2, etc.)
-const thumbGlob = import.meta.glob('/public/images/posts/*.*', { eager: true });
-const thumbByName: Record<string, string> = {};
-for (const path of Object.keys(thumbGlob)) {
-  const file = path.split('/').pop()!;
-  const name = file.replace(/\.[^.]+$/, '');
-  thumbByName[name] = path.replace('/public', '');
-}
-const sortedAsc = [...allPosts].sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
-const thumbMap: Record<string, string> = {};
-sortedAsc.forEach((post, i) => {
-  const key = `article${i + 1}`;
-  if (thumbByName[key]) thumbMap[post.id] = thumbByName[key];
-});
+const fallbacks = [race2, race4, race1, race3];
+const featureImg = feature?.data.thumbnail ?? fallbacks[0];
+const featureAlt = feature?.data.thumbnail ? (feature.data.thumbnailAlt ?? '') : '';
+
+const archive = (['race-report', 'sprint-report', 'editorial', 'guide', 'paddock'] as Category[])
+  .map((cat) => ({ cat, count: posts.filter((p) => p.data.category === cat).length }))
+  .filter((c) => c.count > 0);
+
+const photos = [
+  { src: race2, alt: 'the whole field streams towards the first corner at the start of a race, a ferrari in front' },
+  { src: race4, alt: 'a mercedes leads a red bull through a floodlit corner' },
+  { src: race1, alt: 'four cars squeeze through a corner side by side under floodlights' },
+  { src: race3, alt: 'the start of a night race seen from above, the cars fanning out across the track' },
+];
+
+const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddock stories', 'live standings'];
 ---
 
-<BaseLayout
-  title="the downforce blog"
-  description="race analysis with actual opinions. f1 coverage that says something."
-  showLoader
->
-  <!-- Racing ticker -->
-  <div class="race-ticker" aria-hidden="true">
-    <div class="ticker-track">
-      {[1,2].map(() => (
-        <span class="ticker-inner">
-          <span class="t-item">formula one</span><span class="t-sep">·</span>
-          <span class="t-item">race analysis</span><span class="t-sep">·</span>
-          <span class="t-item">actual opinions</span><span class="t-sep">·</span>
-          <span class="t-item">f1 2025</span><span class="t-sep">·</span>
-          <span class="t-item">driver standings</span><span class="t-sep">·</span>
-          <span class="t-item">strategy calls</span><span class="t-sep">·</span>
-          <span class="t-item">race reports</span><span class="t-sep">·</span>
-          <span class="t-item">team dynamics</span><span class="t-sep">·</span>
-          <span class="t-item">hot takes</span><span class="t-sep">·</span>
-        </span>
-      ))}
-    </div>
-  </div>
+<BaseLayout>
+  <section class="hero on-green" data-hero data-intro>
+    <div class="hero__grid" data-hero-grid aria-hidden="true"></div>
+    <svg class="hero__line" data-hero-line viewBox="0 0 1200 620" fill="none" aria-hidden="true">
+      <path
+        data-draw
+        data-at="0.5"
+        d="M80 420C80 300 160 220 300 220h220c80 0 120-60 200-80 100-25 180-80 290-50s140 150 70 210c-50 45-140 30-180 80s0 120-80 150c-100 38-180-60-280-50s-140 80-260 70S80 500 80 420Z"
+        stroke="#e84a25"
+        stroke-width="2.5"></path>
+      <path
+        data-hero-car
+        d="M80 420C80 300 160 220 300 220h220c80 0 120-60 200-80 100-25 180-80 290-50s140 150 70 210c-50 45-140 30-180 80s0 120-80 150c-100 38-180-60-280-50s-140 80-260 70S80 500 80 420Z"
+        stroke="#f2ecdf"
+        stroke-width="5"
+        stroke-linecap="round"></path>
+    </svg>
 
-  <!-- Hero -->
-  <section class="hero" id="hero">
-    <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
-    <div class="hero-bg-overlay" aria-hidden="true"></div>
-    <div class="hero-grain" aria-hidden="true"></div>
-    <div class="hero-cursor-glow" id="hero-glow" aria-hidden="true"></div>
-    <div class="hero-streaks" aria-hidden="true">
-      {Array.from({length:10}).map((_,i) => <div class="hero-streak" style={`--i:${i}`}></div>)}
-    </div>
+    <div class="wrap hero__inner">
+      <ul class="hero__strip mono" data-reveal="stagger" data-at="0.9">
+        <li>riyadh <span data-clock>--:--</span></li>
+        <li data-f1="season">{live.season}</li>
+        <li data-f1="leader">{live.leader}</li>
+        <li class="hero__live"><i aria-hidden="true"></i>live standings</li>
+      </ul>
 
-    <div class="hero-particles" aria-hidden="true">
-      {Array.from({length:12}).map((_,i) => {
-        const left = 5 + i * 8;
-        const dur  = 5 + (i % 4) * 1.1;
-        const del  = i * 0.55;
-        const sz   = 2 + (i % 3) * 2;
-        const col  = i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--amber)' : 'var(--blue)';
-        return <div class="hero-particle" style={`left:${left}%;animation-duration:${dur}s;animation-delay:${del}s;width:${sz}px;height:${sz}px;background:${col}`}></div>;
-      })}
-    </div>
-
-    <div class="container hero-inner">
-      <div class="hero-accent-line" aria-hidden="true"></div>
-      <h1 class="hero-title" aria-label="the downforce blog">
-        <span class="ht-the hero-anim" style="--d:0.05s">the</span>
-        <span class="ht-main" aria-hidden="true"><span class="hl" style="--i:0">d</span><span class="hl" style="--i:1">o</span><span class="hl" style="--i:2">w</span><span class="hl" style="--i:3">n</span><span class="hl" style="--i:4">f</span><span class="hl" style="--i:5">o</span><span class="hl" style="--i:6">r</span><span class="hl" style="--i:7">c</span><span class="hl" style="--i:8">e</span></span>
-        <span class="ht-blog hero-anim" style="--d:0.6s">blog</span>
+      <h1 class="hero__title">
+        <span class="hero__the mono" data-reveal="up" data-at="0.15">the</span>
+        <span class="hero__word display" data-hero-word><span data-split="chars" data-at="0">downforce</span></span>
+        <span class="hero__blog serif-accent" data-split="chars" data-at="0.45">blog</span>
       </h1>
-      <p class="hero-tagline hero-anim" style="--d:0.7s">race analysis.<br class="mobile-break" /> actual opinions.</p>
-      <div class="hero-sub hero-anim" style="--d:0.82s">
-        <span>formula one sports blog</span>
+
+      <div class="hero__lower">
+        <div class="hero__copy">
+          <p class="lede" data-split="lines" data-at="0.7">
+            formula 1 race reports and opinions, written from riyadh by a fan who watches every session.
+          </p>
+          <div class="hero__cta" data-reveal="stagger" data-at="1.05">
+            {
+              feature && (
+                <a class="btn btn--accent" href={postUrl(feature)} data-magnetic>
+                  read the latest
+                  <span class="btn__arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <path d="M5 19 19 5M8 5h11v11" />
+                    </svg>
+                  </span>
+                </a>
+              )
+            }
+            <a class="btn btn--ghost" href="#standings" data-magnetic>see the standings</a>
+          </div>
+        </div>
+
+        <figure class="hero__media frame" data-hero-media data-reveal="clip" data-at="0.55">
+          <Image
+            src={heroImg}
+            alt="a pack of formula 1 cars funnels into a first corner, a red bull ahead of two mclarens and a ferrari"
+            widths={[640, 960, 1440]}
+            sizes="(min-width: 900px) 46vw, 92vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </figure>
       </div>
-      <a href="#posts" class="hero-cta hero-anim" id="hero-cta" style="--d:0.92s">read the latest →</a>
     </div>
-    <div class="hero-scroll-hint" aria-hidden="true">
-      <span>scroll</span>
-      <div class="scroll-line"></div>
-    </div>
+
+    <a href="#latest" class="hero__cue mono" data-hero-cue data-reveal="up" data-at="1.4">
+      scroll <i aria-hidden="true"></i>
+    </a>
   </section>
 
-  <!-- Race photos strip (2×2) -->
-  <section class="photo-strip" aria-label="Race photography">
-    <div class="photo-item">
-      <img src="/images/race1.jpg" alt="F1 cars battling through a corner" loading="eager" width="960" height="540" />
+  <div class="ticker on-orange" aria-hidden="true">
+    <div class="ticker__track" data-marquee>
+      {
+        [0, 1].map(() => (
+          <div class="ticker__set">
+            {ticker.map((item) => (
+              <>
+                <span class="ticker__item display">{item}</span>
+                <Logo size={34} class="ticker__mark" ground="#f2ecdf" />
+              </>
+            ))}
+          </div>
+        ))
+      }
     </div>
-    <div class="photo-item">
-      <img src="/images/race2.jpg" alt="F1 cars racing under the lights" loading="eager" width="960" height="540" />
-    </div>
-    <div class="photo-item">
-      <img src="/images/race3.jpg" alt="F1 action on track" loading="lazy" width="960" height="540" />
-    </div>
-    <div class="photo-item">
-      <img src="/images/race4.jpg" alt="F1 racing at speed" loading="lazy" width="960" height="540" />
-    </div>
-  </section>
-
-  <!-- Editorial statement -->
-  <section class="editorial-band">
-    <div class="container editorial-inner">
-      <p class="editorial-quote reveal-fade">
-        "race reports with a point of view from an avid fan who covers everything."
-      </p>
-      <div class="editorial-pillars">
-        <div class="pillar reveal-left" style="transition-delay:0s">
-          <span class="pillar-icon">◆</span>
-          <span class="pillar-label">race analysis</span>
-          <span class="pillar-text">lap-by-lap breakdowns that go beyond the podium</span>
-        </div>
-        <div class="pillar reveal-left" style="transition-delay:0.1s">
-          <span class="pillar-icon">◆</span>
-          <span class="pillar-label">team dynamics</span>
-          <span class="pillar-text">strategy calls, inter-team politics, and engineer decisions</span>
-        </div>
-        <div class="pillar reveal-left" style="transition-delay:0.2s">
-          <span class="pillar-icon">◆</span>
-          <span class="pillar-label">hot takes</span>
-          <span class="pillar-text">opinions you won't find in the official press kits</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats band -->
-  <section class="stats-band" aria-label="Blog statistics">
-    <div class="container stats-inner">
-      <div class="stat-item reveal-scale" style="transition-delay:0s">
-        <span class="stat-num" data-target="22">0</span>
-        <span class="stat-unit">races</span>
-        <span class="stat-label">on the 2026 calendar</span>
-      </div>
-      <div class="stat-divider" aria-hidden="true"></div>
-      <div class="stat-item reveal-scale" style="transition-delay:0.12s">
-        <span class="stat-num" data-target="11">0</span>
-        <span class="stat-unit">teams</span>
-        <span class="stat-label">covered every race</span>
-      </div>
-      <div class="stat-divider" aria-hidden="true"></div>
-      <div class="stat-item reveal-scale" style="transition-delay:0.24s">
-        <span class="stat-num" data-target="100">0</span>
-        <span class="stat-unit">%</span>
-        <span class="stat-label">unfiltered takes</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Posts grid -->
-  <section class="posts-section" id="posts">
-    <div class="container">
-      <div class="section-header reveal-fade">
-        <h2 class="section-label"><span class="label-dot" aria-hidden="true"></span>latest</h2>
-        <a href="/posts" class="see-all">all posts →</a>
-      </div>
-
-      {featuredPost && (
-        <div class="featured-post reveal-on-scroll">
-          <PostCard post={featuredPost} featured autoThumb={thumbMap[featuredPost.id]} />
-        </div>
-      )}
-
-      {restPosts.length > 0 && (
-        <div class="posts-grid">
-          {restPosts.map((post, i) => (
-            <div class="reveal-on-scroll" style={`transition-delay: ${i * 0.08}s`}>
-              <PostCard post={post} autoThumb={thumbMap[post.id]} />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {posts.length === 0 && (
-        <p class="no-posts">no posts yet. check back soon.</p>
-      )}
-    </div>
-  </section>
-
-  <!-- Live standings -->
-  <div class="reveal-on-scroll">
-    <StandingsWidget />
   </div>
 
+  <section class="section on-paper" id="latest">
+    <div class="wrap">
+      <header class="head">
+        <p class="eyebrow mono">sector 01 / latest</p>
+        <h2 class="h-lg" data-split="chars">latest <span class="serif-accent">posts</span></h2>
+      </header>
+
+      {
+        feature && (
+          <article class="feature">
+            <a href={postUrl(feature)} class="feature__media frame" data-reveal="clip-left" data-tilt data-cursor="read" tabindex="-1" aria-hidden="true">
+              <Image src={featureImg} alt={featureAlt} widths={[640, 960, 1400]} sizes="(min-width: 900px) 56vw, 92vw" data-parallax="6" />
+            </a>
+            <div class="feature__body">
+              <p class="mono feature__meta" data-reveal="up">
+                <span class="tag">{CATEGORY_LABEL[feature.data.category]}</span>
+                <time datetime={isoDate(feature.data.date)}>{formatDate(feature.data.date)}</time>
+                <span>{readingTime(feature.body)} min read</span>
+              </p>
+              <h3 class="h-md feature__title">
+                <a href={postUrl(feature)} data-split="lines">{feature.data.title}</a>
+              </h3>
+              <p class="serif feature__excerpt" data-split="lines">{feature.data.excerpt}</p>
+              <div data-reveal="up">
+                <a class="btn" href={postUrl(feature)} data-magnetic>
+                  read the post
+                  <span class="btn__arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <path d="M5 19 19 5M8 5h11v11" />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </article>
+        )
+      }
+
+      <span class="rule" data-rule></span>
+      <ol class="rows" data-reveal="stagger">
+        {rows.map((post, i) => <PostRow post={post} index={i + 2} />)}
+      </ol>
+
+      <div class="more" data-reveal="up">
+        <a class="btn btn--accent" href="/posts/" data-magnetic>all {posts.length} posts</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto on-green" data-manifesto>
+    <div class="manifesto__inner">
+      <div class="wrap">
+        <p class="eyebrow mono">sector 02 / what this is</p>
+        <p class="manifesto__text" data-manifesto-text>
+          race reports with a point of view, from a fan in riyadh who watches every session and has an opinion about all
+          of them.
+        </p>
+      </div>
+      <div class="manifesto__track" data-manifesto-track>
+        {
+          photos.map((photo, i) => (
+            <figure class="frame">
+              <Image src={photo.src} alt={photo.alt} widths={[640, 1000]} sizes="(min-width: 900px) 44vw, 80vw" />
+              <figcaption class="mono">
+                {String(i + 1).padStart(2, '0')} / {String(photos.length).padStart(2, '0')}
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+      <span class="manifesto__bar" data-manifesto-bar aria-hidden="true"></span>
+    </div>
+  </section>
+
+  <section class="section section--tight on-paper">
+    <div class="wrap">
+      <header class="head head--split">
+        <div>
+          <p class="eyebrow mono">sector 03 / the archive</p>
+          <h2 class="h-lg" data-split="chars">pick a <span class="serif-accent">lane</span></h2>
+        </div>
+        <p class="serif head__note" data-split="lines">
+          {posts.length} posts since october 2025, sorted by what kind of mood you are in.
+        </p>
+      </header>
+
+      <span class="rule" data-rule></span>
+      <ul class="lanes">
+        {
+          archive.map(({ cat, count }) => (
+            <li>
+              <a href={`/posts/?c=${cat}`} class="lane" data-fill data-cursor="open">
+                <span class="fill" aria-hidden="true" />
+                <span class="lane__name display">{CATEGORY_PLURAL[cat]}</span>
+                <span class="lane__count">
+                  <span class="lane__num display" data-count={count}>
+                    {count}
+                  </span>
+                  <span class="mono">{count === 1 ? 'post' : 'posts'}</span>
+                </span>
+              </a>
+              <span class="rule" data-rule />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section standings on-deep" id="standings">
+    <div class="standings__grid" aria-hidden="true"></div>
+    <div class="wrap">
+      <header class="head head--split">
+        <div>
+          <p class="eyebrow mono">sector 04 / championship</p>
+          <h2 class="h-lg" data-split="chars">the <span class="serif-accent">standings</span></h2>
+        </div>
+        <div class="standings__meta">
+          <p class="mono"><i class="pulse" aria-hidden="true"></i><span data-f1="after">{live.after}</span></p>
+          <p class="mono mono--mute">live from the results API. top ten drivers shown.</p>
+        </div>
+      </header>
+
+      <Standings drivers={10} />
+
+      <div class="next" data-reveal="clip">
+        <div class="next__main">
+          <p class="mono">next race <span data-f1="next-countdown"></span></p>
+          <p class="next__name display" data-f1="next-name">{live['next-name']}</p>
+          <p class="mono" data-f1="next-when">{live['next-when']}</p>
+        </div>
+        <a class="btn" href="/standings/" data-magnetic>full standings</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="peek frame" data-peek-box aria-hidden="true"><img alt="" width="280" height="187" /></div>
 </BaseLayout>
 
 <style>
-  /* ─── hero ─── */
+  /* hero */
   .hero {
-    min-height: calc(100svh - 56px);
-    display: flex;
-    align-items: center;
-    padding-top: 0;
-    background: var(--bg-dark);
-    color: var(--text-light);
     position: relative;
+    min-height: 100svh;
+    padding-top: calc(var(--header-h) + clamp(2rem, 5vw, 4.5rem));
+    padding-bottom: clamp(4rem, 7vw, 6rem);
     overflow: hidden;
   }
-
-  .hero-bg {
+  .hero__grid {
     position: absolute;
-    inset: -30% 0;
-    background-image: url('/images/hero.jpg'), url('/images/race1.jpg');
-    background-size: cover;
-    background-position: center 50%;
-    will-change: transform;
-    z-index: 0;
+    inset: -10% 0;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: clamp(3rem, 6vw, 6rem) clamp(3rem, 6vw, 6rem);
+    opacity: 0.45;
+    mask-image: linear-gradient(to bottom, #000 40%, transparent);
   }
-
-  .hero-bg-overlay {
+  .hero__line {
     position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to bottom, rgba(27,58,38,0.88) 0%, rgba(27,58,38,0.72) 60%, rgba(27,58,38,0.92) 100%),
-      linear-gradient(to right, rgba(27,58,38,0.6) 0%, transparent 70%);
-    z-index: 0;
+    right: -8%;
+    top: 14%;
+    width: min(78vw, 76rem);
+    height: auto;
+    opacity: 0.55;
+    overflow: visible;
   }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(243,237,225,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(243,237,225,0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(232, 74, 37, 0.10) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(29, 126, 240, 0.06) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .hero-inner {
+  .hero__inner {
     position: relative;
-    z-index: 2;
-    padding-top: 4rem;
-    padding-bottom: 5rem;
   }
 
-  .hero-accent-line {
-    width: 0;
-    height: 3px;
-    background: var(--accent);
-    margin-bottom: 2rem;
-    animation: accentDraw 0.5s var(--ease-out-quint) 0.05s forwards;
-  }
-
-  @keyframes accentDraw {
-    to { width: 40px; }
-  }
-
-  .hero-anim {
-    opacity: 0;
-    transform: translateY(20px);
-    filter: blur(4px);
-    animation: heroIn 0.65s var(--ease-out-quint) var(--d, 0s) forwards;
-  }
-
-  @keyframes heroIn {
-    to { opacity: 1; transform: translateY(0); filter: blur(0); }
-  }
-
-  /* ── letter-split title ── */
-  .ht-the {
-    display: block;
-    font-size: clamp(1rem, 3vw, 1.8rem);
-    font-weight: 400;
-    letter-spacing: 0.22em;
-    color: rgba(243,237,225,0.45);
-    text-transform: lowercase;
-    margin-bottom: 0.1em;
-  }
-  .ht-main { display: block; line-height: 0.9; }
-  .ht-blog {
-    display: block;
-    font-size: clamp(1.6rem, 4.5vw, 3rem);
-    font-weight: 400;
-    font-style: italic;
-    color: rgba(243,237,225,0.5);
-    letter-spacing: 0.07em;
-    margin-top: 0.15em;
-  }
-  .hl {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(60px) rotateX(-80deg);
-    animation: hlIn 0.55s var(--ease-out-quint) calc(0.15s + var(--i) * 0.05s) forwards;
-  }
-  @keyframes hlIn {
-    to { opacity: 1; transform: translateY(0) rotateX(0); }
-  }
-
-  /* ── grain overlay ── */
-  .hero-grain {
-    position: absolute;
-    inset: -20%;
-    opacity: 0.028;
-    z-index: 2;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 180px 180px;
-    pointer-events: none;
-    animation: grainDrift 0.4s steps(1) infinite;
-  }
-  @keyframes grainDrift {
-    0%  { transform: translate(0,0); }
-    25% { transform: translate(-3%,-4%); }
-    50% { transform: translate(4%, 2%); }
-    75% { transform: translate(-2%, 5%); }
-  }
-
-  /* ── cursor glow ── */
-  .hero-cursor-glow {
-    position: absolute;
-    width: 700px;
-    height: 700px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232,74,37,0.14) 0%, transparent 65%);
-    pointer-events: none;
-    transform: translate(-50%,-50%);
-    top: 50%;
-    left: 80%;
-    transition: top 0.18s ease, left 0.18s ease;
-    will-change: top, left;
-    z-index: 2;
-  }
-
-  /* ── racing streaks ── */
-  .hero-streaks {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 2;
-  }
-  .hero-streak {
-    position: absolute;
-    left: -20%;
-    height: 1px;
-    top: calc(8% + var(--i) * 8.5%);
-    width: 0;
-    background: linear-gradient(90deg, transparent, rgba(232,74,37,0.5) 30%, rgba(232,74,37,0.15) 70%, transparent);
-    animation: streakIn 0.8s cubic-bezier(0.22,1,0.36,1) calc(0.25s + var(--i) * 0.055s) forwards;
-  }
-  @keyframes streakIn {
-    to { width: 150%; }
-  }
-
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(3.5rem, 12vw, 8rem);
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    color: var(--text-light);
-    margin-bottom: 2rem;
-  }
-
-  .hero-tagline {
-    font-family: var(--font-display);
-    font-size: clamp(1.4rem, 4vw, 2.25rem);
-    font-weight: 400;
-    font-style: italic;
-    color: var(--text-light-muted);
-    letter-spacing: 0.01em;
-    line-height: 1.3;
-    margin-bottom: 1.5rem;
-  }
-
-  .mobile-break { display: none; }
-  @media (max-width: 480px) { .mobile-break { display: inline; } }
-
-  .hero-sub {
+  .hero__strip {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.05rem;
-    color: rgba(243, 237, 225, 0.85);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem 2.25rem;
+    padding-block: 0.8rem;
+    border-block: 1px solid var(--line);
+    color: var(--mute);
   }
-
-  .dot { color: var(--amber); }
-
-  .hero-cta {
-    display: inline-block;
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-light);
-    border: 1px solid rgba(243, 237, 225, 0.3);
-    padding: 0.65rem 1.5rem;
-    transition: background 0.2s ease, border-color 0.2s ease;
-  }
-
-  .hero-cta:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .hero-scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
+  .hero__live {
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    color: rgba(243, 237, 225, 0.25);
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    margin-left: auto;
+    color: var(--fg);
   }
-
-  .scroll-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, rgba(243,237,225,0.3), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
+  .hero__live i,
+  .pulse {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 999px;
+    background: var(--orange);
+    animation: pulse 1.8s ease-in-out infinite;
   }
-
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
+  .hero__live i {
+    margin-right: 0;
   }
-
-  /* ─── ticker ─── */
-  .race-ticker {
-    background: var(--amber);
-    overflow: hidden;
-    padding: 0.55rem 0;
-    white-space: nowrap;
-    margin-top: 56px;
-  }
-
-  .ticker-track {
-    display: inline-flex;
-    animation: ticker 28s linear infinite;
-  }
-
-  .race-ticker:hover .ticker-track {
-    animation-play-state: paused;
-  }
-
-  .ticker-inner {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    padding-right: 1rem;
-  }
-
-  .t-item {
-    font-family: var(--font-display);
-    font-size: 0.95rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(27,58,38,0.9);
-  }
-
-  .t-sep {
-    color: rgba(243,237,225,0.4);
-    font-size: 0.6rem;
-  }
-
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  /* ─── photo strip ─── */
-  .photo-strip {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 280px 280px;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-    line-height: 0;
-  }
-
-  @media (max-width: 600px) {
-    .photo-strip {
-      grid-template-rows: 170px 170px;
+  @keyframes pulse {
+    50% {
+      opacity: 0.25;
     }
   }
 
-  .photo-item {
-    overflow: hidden;
+  .hero__title {
     position: relative;
+    container-type: inline-size;
+    margin-top: clamp(1.5rem, 3.5vw, 3.5rem);
+    font-weight: inherit;
+    letter-spacing: 0;
+  }
+  .hero__the {
     display: block;
-    width: 100%;
-    height: 100%;
+    margin-left: 0.4em;
+    font-size: clamp(0.8rem, 1.3vw, 1.1rem);
+    color: var(--accent-text);
   }
-
-  .photo-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .hero__word {
     display: block;
-    filter: brightness(0.85) saturate(0.85);
-    transition: filter 0.4s ease;
+    margin-left: -0.045em;
+    /* the word is 6.54em wide, so this sets it to the full width of the column */
+    font-size: calc(100cqi / 6.62);
+    white-space: nowrap;
+  }
+  .hero__blog {
+    position: absolute;
+    right: 0;
+    bottom: -0.6em;
+    font-size: clamp(2.6rem, 9.5cqi, 10rem);
+    line-height: 1;
+    color: var(--orange);
   }
 
-  .photo-item:hover img {
-    filter: brightness(1) saturate(1);
-  }
-
-  /* ─── editorial band ─── */
-  .editorial-band {
-    background: var(--bg-dark);
-    color: var(--text-light);
-    padding: 1.5rem 0;
-  }
-
-  .editorial-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .editorial-quote {
-    font-family: var(--font-display);
-    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-    font-style: italic;
-    font-weight: 400;
-    color: var(--text-light-muted);
-    line-height: 1.4;
-    max-width: 700px;
-    border-left: 3px solid var(--accent);
-    padding-left: 1.25rem;
-  }
-
-  .editorial-pillars {
+  .hero__lower {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: end;
+    margin-top: clamp(3.5rem, 8vw, 8rem);
   }
-
-  @media (max-width: 640px) {
-    .editorial-pillars { grid-template-columns: 1fr; gap: 1rem; }
+  .hero__copy .lede {
+    max-width: 24ch;
   }
-
-  .pillar {
+  .hero__cta {
     display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    margin-top: clamp(1.75rem, 3vw, 2.75rem);
+  }
+  .hero__media {
+    aspect-ratio: 16 / 9;
+    /* bleeds off the right edge of the viewport */
+    margin-right: calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2));
+    border-color: var(--paper);
+    border-right: 0;
+  }
+  .hero__media :global(img) {
+    position: absolute;
+    top: -16%;
+    left: 0;
+    height: 116%;
   }
 
-  .pillar-icon {
-    font-size: 0.6rem;
+  .hero__cue {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--mute);
+  }
+  .hero__cue i {
+    display: block;
+    width: 1px;
+    height: 2rem;
+    background: currentColor;
   }
 
-  .pillar:nth-child(1) .pillar-icon { color: var(--accent); }
-  .pillar:nth-child(2) .pillar-icon { color: var(--amber); }
-  .pillar:nth-child(3) .pillar-icon { color: var(--blue); }
-
-  .pillar-label {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-light);
+  /* ticker */
+  .ticker {
+    overflow: hidden;
+    border-block: var(--rule) solid var(--ink);
+  }
+  .ticker__track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+  .ticker__set {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    padding: 0.9rem clamp(0.75rem, 1.5vw, 1.5rem);
+  }
+  .ticker__item {
+    font-size: clamp(1.6rem, 3.4vw, 3rem);
+    line-height: 1;
+    white-space: nowrap;
+    padding-bottom: 0.1em;
+  }
+  .ticker :global(.ticker__mark) {
+    flex: none;
+    border: var(--rule) solid var(--ink);
   }
 
-  .pillar-text {
-    font-size: 0.9375rem;
-    color: var(--text-light-muted);
-    line-height: 1.6;
-    font-weight: 300;
+  /* section heads */
+  .head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(2.5rem, 5vw, 5rem);
+  }
+  .head--split {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    column-gap: 3rem;
+  }
+  .head .eyebrow {
+    margin-bottom: 1.25rem;
+  }
+  .head__note {
+    max-width: 26ch;
+    font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--mute);
   }
 
-  /* ─── posts section ─── */
-  .posts-section {
-    padding: 4rem 0;
+  /* feature */
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1.75rem, 4vw, 4.5rem);
+    align-items: end;
+    margin-bottom: clamp(3rem, 6vw, 6rem);
+  }
+  .feature__media {
+    display: block;
+    aspect-ratio: 3 / 2;
+    box-shadow: 10px 10px 0 var(--ink);
+  }
+  .feature__media :global(img) {
+    position: absolute;
+    top: -8%;
+    left: 0;
+    height: 116%;
+  }
+  .feature__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    color: var(--mute);
+  }
+  .feature__meta .tag {
+    color: var(--fg);
+  }
+  .feature__title {
+    margin-block: 1.1rem 1rem;
+  }
+  .feature__title a {
+    display: block;
+  }
+  .feature__excerpt {
+    max-width: 38ch;
+    margin-bottom: 2rem;
+    font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+    line-height: 1.4;
   }
 
-  .section-header {
+  .more {
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  /* manifesto: the pinned set piece */
+  .manifesto {
+    position: relative;
+    overflow: hidden;
+  }
+  .manifesto__inner {
+    position: relative;
+    display: grid;
+    /* minmax(0, ...) stops the max-content photo track from widening the column */
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vh, 3rem);
+    height: 100svh;
+    padding-block: calc(var(--header-h) + 2.5rem) 2.75rem;
+  }
+  .manifesto__text {
+    margin-top: 1.5rem;
+    max-width: 27ch;
+    font-weight: 880;
+    font-stretch: 108%;
+    font-size: clamp(1.9rem, 4.4vw, 4.75rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .manifesto__track {
+    display: flex;
+    align-items: stretch;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    width: max-content;
+    padding-inline: var(--gutter);
+  }
+  .manifesto__track figure {
+    position: relative;
+    flex: none;
+    height: 100%;
+    aspect-ratio: 16 / 10;
+    border-color: var(--paper);
+  }
+  .manifesto__track :global(img) {
+    width: 124%;
+    max-width: none;
+    margin-left: -12%;
+  }
+  .manifesto__track figcaption {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0.45rem 0.7rem;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .manifesto__bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  @media (max-width: 899px) {
+    .manifesto__inner {
+      height: auto;
+      padding-block: clamp(4.5rem, 12vw, 7rem);
+    }
+    .manifesto__text {
+      max-width: none;
+    }
+    .manifesto__track {
+      width: auto;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+    .manifesto__track figure {
+      width: 80vw;
+      height: auto;
+      scroll-snap-align: center;
+    }
+    .manifesto__bar {
+      display: none;
+    }
+  }
+
+  /* archive lanes */
+  .lane {
+    position: relative;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 2rem;
-  }
-
-  .section-label {
-    font-family: var(--font-display);
-    font-size: 0.9375rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .see-all {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-    transition: color 0.2s ease;
-  }
-  .see-all:hover { color: var(--accent); }
-
-  .featured-post {
-    margin-bottom: 1.5rem;
-  }
-
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
     gap: 1.5rem;
+    padding: clamp(0.9rem, 2vw, 1.6rem) clamp(0.25rem, 1vw, 1rem);
+    overflow: hidden;
+    isolation: isolate;
   }
-
-  .no-posts {
-    color: var(--text-muted);
-    font-size: 1rem;
-    font-style: italic;
-  }
-
-  /* ─── hero particles ─── */
-  .hero-particles {
+  .lane .fill {
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 2;
+    z-index: -1;
+    background: var(--ink);
+    transform: translateY(101%);
   }
-
-  .hero-particle {
-    position: absolute;
-    bottom: -8px;
-    border-radius: 50%;
-    opacity: 0;
-    animation: floatUp linear infinite;
-    will-change: transform, opacity;
+  .lane:hover,
+  .lane:focus-visible {
+    color: var(--paper);
   }
-
-  @media (max-width: 600px) {
-    .hero-particle { display: none; }
+  .lane:focus-visible .fill {
+    transform: none;
   }
-
-  /* ─── stats band ─── */
-  .stats-band {
-    background: var(--bg-dark);
-    border-top: 1px solid rgba(243,237,225,0.06);
-    border-bottom: 1px solid rgba(243,237,225,0.06);
-    padding: 1.25rem 0;
-    overflow: hidden;
+  .lane {
+    transition: color 0.3s var(--ease-out);
   }
-
-  .stats-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    flex-wrap: wrap;
+  .lane__name {
+    font-size: clamp(2.2rem, 7.4vw, 8rem);
+    line-height: 0.95;
+    padding-bottom: 0.08em;
+    transition: transform 0.5s var(--ease-out);
   }
-
-  .stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    flex: 1;
-    min-width: 140px;
-    padding: 1rem 2rem;
+  .lane:hover .lane__name {
+    transform: translateX(clamp(0.5rem, 2vw, 2rem));
   }
-
-  .stat-num {
-    font-family: var(--font-display);
-    font-size: clamp(3.5rem, 10vw, 6rem);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.04em;
-    color: var(--text-light);
+  .lane__count {
     display: flex;
     align-items: baseline;
+    gap: 0.6rem;
+    flex: none;
+  }
+  .lane__num {
+    font-size: clamp(1.6rem, 3.6vw, 3.6rem);
+    color: var(--accent-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .lane:hover .lane__num {
+    color: var(--orange);
   }
 
-  .stat-unit {
-    font-family: var(--font-display);
-    font-size: clamp(1.1rem, 3vw, 1.75rem);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-top: 0.1rem;
+  /* standings */
+  .standings {
+    overflow: hidden;
   }
-
-  .stat-label {
-    font-size: 0.8125rem;
-    font-weight: 300;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-light-muted);
-    text-align: center;
+  .standings__grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 5rem 5rem;
+    opacity: 0.3;
   }
-
-  .stat-divider {
-    width: 1px;
-    height: 80px;
-    background: linear-gradient(to bottom, transparent, rgba(243,237,225,0.15), transparent);
-    flex-shrink: 0;
-  }
-
-  @media (max-width: 560px) {
-    .stats-inner { gap: 0; }
-    .stat-divider { width: 80px; height: 1px; }
-    .stat-item { padding: 1.25rem 1rem; min-width: 100px; }
-  }
-
-  /* ─── section label pulse dot ─── */
-  .label-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    margin-right: 0.5rem;
-    vertical-align: middle;
-    animation: pulseDot 2s ease-in-out infinite;
+  .standings .wrap {
     position: relative;
-    top: -1px;
+  }
+  .standings__meta {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 22rem;
+  }
+
+  .next {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: clamp(3rem, 6vw, 6rem);
+    padding: clamp(1.5rem, 3vw, 3rem);
+    background: var(--orange);
+    color: var(--ink);
+    border: var(--rule) solid var(--ink);
+    --shadow: var(--ink);
+  }
+  .next__main {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .next__name {
+    font-size: clamp(1.9rem, 5vw, 5rem);
+    line-height: 0.92;
+    padding-bottom: 0.06em;
+  }
+
+  /* pointer-following thumbnail for the post rows */
+  .peek {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 120;
+    width: 17.5rem;
+    aspect-ratio: 3 / 2;
+    margin: -5.8rem 0 0 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+
+  @media (max-width: 899px) {
+    .hero__lower,
+    .feature {
+      grid-template-columns: 1fr;
+    }
+    .hero__media {
+      margin-right: calc(var(--gutter) * -1);
+    }
+    .hero__blog {
+      bottom: -0.55em;
+    }
+    .hero__cue {
+      display: none;
+    }
+    .head--split {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
-
-<script>
-  // Hero parallax — bg moves at 0.5x scroll speed, disabled for reduced-motion users
-  const heroBg = document.getElementById('hero-bg');
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (heroBg && !prefersReduced) {
-    window.addEventListener('scroll', () => {
-      heroBg.style.transform = `translateY(${(window.scrollY * 0.5).toFixed(1)}px)`;
-    }, { passive: true });
-  }
-
-  // Cursor spotlight in hero
-  const hero = document.getElementById('hero');
-  const glow = document.getElementById('hero-glow');
-  if (hero && glow) {
-    hero.addEventListener('mousemove', e => {
-      const r = hero.getBoundingClientRect();
-      glow.style.left = (e.clientX - r.left) + 'px';
-      glow.style.top  = (e.clientY - r.top)  + 'px';
-    }, { passive: true });
-  }
-
-  // Photo strip parallax
-  const photos = document.querySelectorAll<HTMLElement>('.photo-item img');
-  const speeds = [0.03, 0.06, 0.04, 0.07];
-  window.addEventListener('scroll', () => {
-    photos.forEach((img, i) => {
-      (img as HTMLElement).style.setProperty('--py', (window.scrollY * (speeds[i] ?? 0.05)).toFixed(1) + 'px');
-    });
-  }, { passive: true });
-
-  // Count-up for stats
-  const countEls = document.querySelectorAll<HTMLElement>('.stat-num[data-target]');
-  const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target as HTMLElement;
-      const target = parseInt(el.dataset.target ?? '0', 10);
-      const duration = 1200;
-      const start = performance.now();
-      const tick = (now: number) => {
-        const t = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - t, 3);
-        el.textContent = Math.round(eased * target).toString();
-        if (t < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-      countObserver.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-  countEls.forEach(el => countObserver.observe(el));
-
-  // Magnetic CTA
-  const cta = document.getElementById('hero-cta');
-  if (cta) {
-    cta.addEventListener('mousemove', e => {
-      const r = cta.getBoundingClientRect();
-      const x = ((e.clientX - r.left - r.width  / 2) * 0.3).toFixed(1);
-      const y = ((e.clientY - r.top  - r.height / 2) * 0.3).toFixed(1);
-      cta.style.transform = `translate(${x}px, ${y}px)`;
-    });
-    cta.addEventListener('mouseleave', () => { cta.style.transform = ''; });
-  }
-</script>

@@ -15,10 +15,10 @@ const fonts = [
   { name: 'JetBrains Mono', data: font('jetbrains-mono', 'jetbrains-mono-latin-500-normal.woff'), weight: 500 as const, style: 'normal' as const },
 ];
 
-const GREEN = '#11261a';
+const TEAL = '#0a3940';
 const PAPER = '#f2ecdf';
-const ORANGE = '#e84a25';
-const INK = '#0e1a12';
+const LIME = '#c6e33a';
+const INK = '#071f23';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -38,7 +38,7 @@ function mark() {
       height: 84,
       viewBox: '0 0 64 64',
       children: [
-        { type: 'rect', props: { width: 64, height: 64, fill: ORANGE } },
+        { type: 'rect', props: { width: 64, height: 64, fill: LIME } },
         { type: 'path', props: { fill: INK, d: 'M8 12h48v26h-9V22H17v16H8z' } },
         { type: 'path', props: { fill: INK, d: 'M21 31l11 11 11-11v11L32 53 21 42z' } },
       ],
@@ -60,9 +60,9 @@ function card(post?: Post) {
       flexDirection: 'column',
       justifyContent: 'space-between',
       padding: 64,
-      backgroundColor: GREEN,
+      backgroundColor: TEAL,
       color: PAPER,
-      borderBottom: `22px solid ${ORANGE}`,
+      borderBottom: `22px solid ${LIME}`,
     },
     [
       h('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between' }, [
@@ -70,10 +70,10 @@ function card(post?: Post) {
           mark(),
           h('div', { fontFamily: 'Archivo', fontSize: 40, letterSpacing: -2 }, 'downforce'),
         ]),
-        h('div', { fontFamily: 'JetBrains Mono', fontSize: 24, color: '#a3bcaa' }, post ? 'the downforce blog' : ''),
+        h('div', { fontFamily: 'JetBrains Mono', fontSize: 24, color: '#9fc4c8' }, post ? 'the downforce blog' : ''),
       ]),
       h('div', { display: 'flex', flexDirection: 'column', gap: 28 }, [
-        h('div', { fontFamily: 'JetBrains Mono', fontSize: 26, color: '#ff8a66' }, meta),
+        h('div', { fontFamily: 'JetBrains Mono', fontSize: 26, color: '#d6f060' }, meta),
         h('div', { fontFamily: 'Archivo', fontSize: size, lineHeight: 0.98, letterSpacing: -size * 0.04 }, title),
       ]),
     ],

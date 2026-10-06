@@ -55,7 +55,7 @@ function curtainOut(cover: Cover): gsap.core.Timeline {
     // five lights on, one by one, then lights out and away we go
     const lights = $$('[data-light]', el);
     tl.set('[data-curtain-lights]', { autoAlpha: 1 })
-      .to(lights, { backgroundColor: '#e84a25', duration: 0.01, stagger: 0.13 }, 0.1)
+      .to(lights, { backgroundColor: '#c6e33a', duration: 0.01, stagger: 0.13 }, 0.1)
       .to(lights, { backgroundColor: 'transparent', duration: 0.01 }, '+=0.22')
       .to('[data-curtain-lights]', { autoAlpha: 0, duration: 0.15 }, '+=0.05');
   } else {

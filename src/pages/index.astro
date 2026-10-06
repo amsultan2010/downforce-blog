@@ -39,14 +39,14 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
 ---
 
 <BaseLayout>
-  <section class="hero on-green" data-hero data-intro>
+  <section class="hero on-teal" data-hero data-intro>
     <div class="hero__grid" data-hero-grid aria-hidden="true"></div>
     <svg class="hero__line" data-hero-line viewBox="0 0 1200 620" fill="none" aria-hidden="true">
       <path
         data-draw
         data-at="0.5"
         d="M80 420C80 300 160 220 300 220h220c80 0 120-60 200-80 100-25 180-80 290-50s140 150 70 210c-50 45-140 30-180 80s0 120-80 150c-100 38-180-60-280-50s-140 80-260 70S80 500 80 420Z"
-        stroke="#e84a25"
+        stroke="#c6e33a"
         stroke-width="2.5"></path>
       <path
         data-hero-car
@@ -110,7 +110,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     </a>
   </section>
 
-  <div class="ticker on-orange" aria-hidden="true">
+  <div class="ticker on-lime" aria-hidden="true">
     <div class="ticker__track" data-marquee>
       {
         [0, 1].map(() => (
@@ -176,7 +176,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     </div>
   </section>
 
-  <section class="manifesto on-green" data-manifesto>
+  <section class="manifesto on-teal" data-manifesto>
     <div class="manifesto__inner">
       <div class="wrap">
         <p class="eyebrow mono">sector 02 / what this is</p>
@@ -318,7 +318,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     height: 0.5rem;
     margin-right: 0.5rem;
     border-radius: 999px;
-    background: var(--orange);
+    background: var(--lime);
     animation: pulse 1.8s ease-in-out infinite;
   }
   .hero__live i {
@@ -356,7 +356,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     bottom: -0.6em;
     font-size: clamp(2.6rem, 9.5cqi, 10rem);
     line-height: 1;
-    color: var(--orange);
+    color: var(--lime);
   }
 
   .hero__lower {
@@ -557,7 +557,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     bottom: 0;
     width: 100%;
     height: 6px;
-    background: var(--orange);
+    background: var(--lime);
     transform: scaleX(0);
     transform-origin: left center;
   }
@@ -634,7 +634,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     font-variant-numeric: tabular-nums;
   }
   .lane:hover .lane__num {
-    color: var(--orange);
+    color: var(--lime);
   }
 
   /* standings */
@@ -665,7 +665,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     gap: 2rem;
     margin-top: clamp(3rem, 6vw, 6rem);
     padding: clamp(1.5rem, 3vw, 3rem);
-    background: var(--orange);
+    background: var(--lime);
     color: var(--ink);
     border: var(--rule) solid var(--ink);
     --shadow: var(--ink);

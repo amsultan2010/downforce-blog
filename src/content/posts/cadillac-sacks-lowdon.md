@@ -6,9 +6,7 @@ tldr: "cadillac replaced team principal graeme lowdon with marcin budkowski elev
 category: editorial
 tags: ["cadillac", "graeme-lowdon", "marcin-budkowski", "team-principals", "summer-break"]
 thumbnail: ../../assets/posts/cadillac-sacks-lowdon.jpg
-thumbnailAlt: "a cadillac F1 car on stands in the pit lane, a mechanic working behind it"
-thumbnailCredit: "liauzh, CC BY 4.0"
-thumbnailSource: "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Cadillac_-_MAC-26.jpg"
+thumbnailAlt: "graeme lowdon in a black cadillac team shirt and sunglasses, walking through the paddock"
 ---
 
 cadillac has been an F1 team for eleven races, and on wednesday it replaced its team principal. graeme lowdon, the man who built the thing from nothing, is out. marcin budkowski is in, and his first race in charge is the dutch grand prix next weekend.

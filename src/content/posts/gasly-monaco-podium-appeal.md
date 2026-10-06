@@ -7,9 +7,7 @@ category: editorial
 tags: ["pierre-gasly", "alpine", "fia", "penalties", "monaco-gp", "isack-hadjar"]
 race: "2026 monaco grand prix"
 thumbnail: ../../assets/posts/gasly-monaco-podium-appeal.jpg
-thumbnailAlt: "pierre gasly's alpine, number 10, running along the kerb at the red bull ring"
-thumbnailCredit: "lukas raich, CC BY-SA 4.0"
-thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._10_Gasly_(1).jpg"
+thumbnailAlt: "pierre gasly in his pink alpine race suit and helmet, looking down at his car"
 ---
 
 quick question. who finished third in the monaco grand prix?

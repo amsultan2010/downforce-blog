@@ -6,9 +6,7 @@ tldr: "aston martin has one point from eleven races and has only finished half i
 category: editorial
 tags: ["aston-martin", "fernando-alonso", "honda", "adrian-newey", "summer-break"]
 thumbnail: ../../assets/posts/aston-martin-one-point.jpg
-thumbnailAlt: "fernando alonso's green aston martin side-on at the red bull ring"
-thumbnailCredit: "lukas raich, CC BY-SA 4.0"
-thumbnailSource: "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2026_Nr._14_Alonso_(3).jpg"
+thumbnailAlt: "an aston martin driver stands next to his green car, stuck in a gravel trap"
 ---
 
 aston martin has scored one point in 2026. one. it took eleven races, fernando alonso and the streets of monaco to get it (he finished P10 there from 21st on the grid, which says more about alonso than about the car).

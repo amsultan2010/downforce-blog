@@ -7,7 +7,7 @@ const latest = (await getPosts()).slice(0, 3);
 ---
 
 <BaseLayout title="page not found" description="this page did not finish. head back to the latest posts." noindex>
-  <section class="dnf on-green" data-intro>
+  <section class="dnf on-teal" data-intro>
     <div class="wrap">
       <p class="eyebrow mono" data-reveal="up">error 404</p>
       <h1 class="dnf__big display" data-split="chars">DNF</h1>
@@ -43,7 +43,7 @@ const latest = (await getPosts()).slice(0, 3);
     font-size: clamp(7rem, 34vw, 34rem);
     line-height: 0.8;
     margin-left: -0.04em;
-    color: var(--orange);
+    color: var(--lime);
   }
   .dnf .lede {
     max-width: 28ch;

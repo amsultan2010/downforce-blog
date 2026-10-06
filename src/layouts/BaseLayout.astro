@@ -62,7 +62,7 @@ const siteLd = {
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#11261a" />
+    <meta name="theme-color" content="#0a3940" />
     <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
     <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
 
@@ -158,8 +158,8 @@ const siteLd = {
     inset: 0;
     display: grid;
     place-items: center;
-    background: var(--green-950);
-    border-block: 14px solid var(--orange);
+    background: var(--teal-950);
+    border-block: 14px solid var(--lime);
   }
   .curtain__mark,
   .curtain__lights {
@@ -196,7 +196,7 @@ const siteLd = {
     height: var(--cursor-size);
     margin: calc(var(--cursor-size) / -2) 0 0 calc(var(--cursor-size) / -2);
     border-radius: 999px;
-    background: var(--orange);
+    background: var(--lime);
     color: var(--ink);
     opacity: 0;
     visibility: hidden;
@@ -205,7 +205,7 @@ const siteLd = {
   }
   .cursor[data-state='link'] {
     background: transparent;
-    border: var(--rule) solid var(--orange);
+    border: var(--rule) solid var(--lime);
   }
   .cursor span {
     font-size: 0.6875rem;

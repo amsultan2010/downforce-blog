@@ -47,7 +47,7 @@ const articleLd = {
   <script type="application/ld+json" is:inline slot="head" set:html={JSON.stringify(articleLd)} />
 
   <article data-article>
-    <header class="top on-green" data-intro>
+    <header class="top on-teal" data-intro>
       <div class="wrap">
         <a href="/posts/" class="back mono" data-reveal="up">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -194,12 +194,12 @@ const articleLd = {
     color: var(--mute);
   }
 
-  /* the cover straddles the green header and the paper body */
+  /* the cover straddles the teal header and the paper body */
   .cover {
     aspect-ratio: 16 / 8;
     margin-bottom: clamp(-12rem, -12vw, -4rem);
     border-color: var(--paper);
-    box-shadow: 10px 10px 0 var(--orange);
+    box-shadow: 10px 10px 0 var(--lime);
     z-index: 1;
   }
   .cover :global(img) {
@@ -234,13 +234,13 @@ const articleLd = {
     gap: 0.4rem;
   }
 
-  /* the summary box borrows the cover's hard orange shadow */
+  /* the summary box borrows the cover's hard lime shadow */
   .tldr {
     margin-bottom: 2.4rem;
     padding: 1.1rem 1.25rem 1.3rem;
     border: var(--rule) solid var(--ink);
     background: var(--paper-dim);
-    box-shadow: 6px 6px 0 var(--orange);
+    box-shadow: 6px 6px 0 var(--lime);
   }
   .tldr__label {
     display: inline-block;
@@ -279,7 +279,7 @@ const articleLd = {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: var(--orange);
+    background: var(--lime);
     transform: translateY(101%);
   }
   .around__link:hover,

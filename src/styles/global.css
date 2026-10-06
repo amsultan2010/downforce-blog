@@ -6,15 +6,15 @@
 
 /* tokens */
 :root {
-  --green-950: #0b1a12;
-  --green-900: #11261a;
-  --green-800: #1b3a26;
-  --green-700: #2a5238;
+  --teal-950: #06282d;
+  --teal-900: #0a3940;
+  --teal-800: #124f58;
+  --teal-700: #1d6872;
   --paper: #f2ecdf;
   --paper-dim: #e6dfcf;
-  --ink: #0e1a12;
-  --orange: #e84a25;
-  --orange-deep: #b8330f;
+  --ink: #071f23;
+  --lime: #c6e33a;
+  --lime-deep: #4f6a00;
 
   --font-display: 'Archivo Variable', 'Arial Black', 'Helvetica Neue', sans-serif;
   --font-serif: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
@@ -30,36 +30,36 @@
 }
 
 /* surface themes: every section picks one */
-.on-green,
+.on-teal,
 .on-deep {
-  --bg: var(--green-900);
+  --bg: var(--teal-900);
   --fg: var(--paper);
-  --mute: #a3bcaa;
+  --mute: #9fc4c8;
   --line: rgb(242 236 223 / 0.18);
-  --accent: var(--orange);
-  --accent-text: #ff8a66;
-  --shadow: var(--orange);
+  --accent: var(--lime);
+  --accent-text: #d6f060;
+  --shadow: var(--lime);
   background: var(--bg);
   color: var(--fg);
 }
 .on-deep {
-  --bg: var(--green-950);
+  --bg: var(--teal-950);
 }
 .on-paper {
   --bg: var(--paper);
   --fg: var(--ink);
-  --mute: #4f6255;
+  --mute: #47656a;
   --line: var(--ink);
-  --accent: var(--orange);
-  --accent-text: var(--orange-deep);
+  --accent: var(--lime);
+  --accent-text: var(--lime-deep);
   --shadow: var(--ink);
   background: var(--bg);
   color: var(--fg);
 }
-.on-orange {
-  --bg: var(--orange);
+.on-lime {
+  --bg: var(--lime);
   --fg: var(--ink);
-  --mute: #3a1508;
+  --mute: #2f3d00;
   --line: var(--ink);
   --accent: var(--ink);
   --accent-text: var(--ink);
@@ -84,7 +84,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scrollbar-gutter: stable;
-  background: var(--green-900);
+  background: var(--teal-900);
   color: var(--ink);
 }
 
@@ -137,16 +137,20 @@ button {
 }
 
 ::selection {
-  background: var(--orange);
+  background: var(--lime);
   color: var(--ink);
 }
 
 :focus-visible {
-  outline: 3px solid var(--orange);
+  outline: 3px solid var(--lime);
   outline-offset: 3px;
 }
-.on-orange :focus-visible {
+.on-lime :focus-visible {
   outline-color: var(--ink);
+}
+/* lime is too pale to read as a line on paper */
+.on-paper :focus-visible {
+  outline-color: var(--lime-deep);
 }
 
 /* type */
@@ -276,7 +280,7 @@ h4 {
   left: 0.5rem;
   z-index: 300;
   padding: 0.75rem 1rem;
-  background: var(--orange);
+  background: var(--lime);
   color: var(--ink);
   border: var(--rule) solid var(--ink);
   transform: translateY(-200%);
@@ -320,7 +324,7 @@ h4 {
   cursor: not-allowed;
 }
 .btn--accent {
-  --btn-bg: var(--orange);
+  --btn-bg: var(--lime);
 }
 .btn--ghost {
   --btn-bg: transparent;
@@ -383,7 +387,7 @@ h4 {
   position: relative;
   overflow: hidden;
   border: var(--rule) solid var(--ink);
-  background: var(--green-800);
+  background: var(--teal-800);
 }
 .frame img {
   width: 100%;
@@ -449,7 +453,7 @@ h4 {
 }
 .prose blockquote {
   padding-left: 1.2em;
-  border-left: 4px solid var(--orange);
+  border-left: 4px solid var(--accent-text);
   font-style: italic;
 }
 .prose hr {

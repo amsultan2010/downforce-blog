@@ -34,7 +34,7 @@ The owner pastes the text and a thumbnail into the chat. Then:
    `thumbnailCredit` and `thumbnailSource` are for photos that need attribution (wikimedia
    commons and other creative commons photos); the credit shows next to the post's tags.
 4. Keep his words. Only apply the house style below, and fact-check (next section).
-5. `npm run build` must pass. Check the post at `/posts/<slug>/` in Orca's browser.
+5. `npm run build` must pass. Check the post at `/posts/<slug>/` in the browser.
 6. Commit on a branch. Push or open a PR only when asked.
 
 Everything else updates itself: the home page, the posts index, RSS, the sitemap, and the share
@@ -66,7 +66,7 @@ standard.
   `data-parallax`, `data-magnetic`, `data-fill`. `boot.ts` owns the page lifecycle.
 - `src/lib/f1.ts` standings from the Jolpica API: fetched at build, refreshed in the browser.
   `src/data/f1-snapshot.json` is the fallback if the API is down during a build.
-- `src/styles/global.css` tokens. Green, paper and orange only. Radii are 0 or fully round.
+- `src/styles/global.css` tokens. Teal, paper and lime only. Radii are 0 or fully round.
 
 ## Site rules
 

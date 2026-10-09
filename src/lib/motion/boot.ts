@@ -11,6 +11,7 @@ import { standings } from './standings';
 import { SITE } from '../site';
 
 const REDUCED = '(prefers-reduced-motion: reduce)';
+const FINE = '(hover: hover) and (pointer: fine)';
 const root = document.documentElement;
 
 let lenis: Lenis | null = null;
@@ -21,7 +22,8 @@ let swapped = false;
 const reduced = () => window.matchMedia(REDUCED).matches;
 
 function smoothScroll() {
-  if (reduced() || lenis) return;
+  // a touch screen keeps its own momentum scrolling, which beats redoing it in javascript
+  if (reduced() || lenis || !window.matchMedia(FINE).matches) return;
   lenis = new Lenis({ lerp: 0.11, anchors: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis!.raf(time * 1000));

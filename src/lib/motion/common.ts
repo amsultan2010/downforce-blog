@@ -1,6 +1,6 @@
 // Behaviours declared in markup with data attributes. Each element type gets its own verb:
 // display type splits, media clips, rules draw, numbers count, lists stagger.
-import { gsap, ScrollTrigger, SplitText, D, E, $$, type Conditions } from './core';
+import { gsap, ScrollTrigger, SplitText, D, E, $$, park, type Conditions } from './core';
 
 const ONCE = (trigger: Element, start = 'top 86%') => ({ trigger, start, once: true });
 
@@ -160,23 +160,19 @@ function parallax(c: Conditions) {
 
 function marquees() {
   $$('[data-marquee]').forEach((track) => {
-    const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: 'none', repeat: -1 });
-    const skew = gsap.quickTo(track, 'skewX', { duration: 0.5, ease: 'power3' });
+    const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: 'none', repeat: -1, paused: true });
     let settle: gsap.core.Tween | undefined;
-    let upright: gsap.core.Tween | undefined;
     ScrollTrigger.create({
       trigger: track,
       start: 'top bottom',
       end: 'bottom top',
+      onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
       onUpdate(self) {
         const v = self.getVelocity();
-        // scroll speeds the ticker up and leans it into the direction of travel
+        // scroll speeds the ticker up and turns it to run with the direction of travel
         loop.timeScale(gsap.utils.clamp(-6, 6, (v >= 0 ? 1 : -1) * (1 + Math.abs(v) / 350)));
-        skew(gsap.utils.clamp(-12, 12, v / -160));
         settle?.kill();
         settle = gsap.to(loop, { timeScale: v >= 0 ? 1 : -1, duration: 0.9, ease: 'power2.out', delay: 0.05 });
-        upright?.kill();
-        upright = gsap.delayedCall(0.15, () => skew(0));
       },
     });
   });
@@ -225,8 +221,8 @@ function footer() {
       },
     });
   }
-  // ambient: the kerb never stops rolling
-  $$('[data-kerb]').forEach((k) => gsap.to(k, { x: -56, duration: 1.6, ease: 'none', repeat: -1 }));
+  // ambient: the kerb rolls for as long as it is on screen
+  $$('[data-kerb]').forEach((k) => park(gsap.to(k, { x: -56, duration: 1.6, ease: 'none', repeat: -1 }), k.parentElement ?? k));
 }
 
 export function common(c: Conditions) {

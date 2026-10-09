@@ -29,4 +29,16 @@ export const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode
 export const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
 
+/** A loop only earns its frames while it is on screen: it runs between the trigger entering
+ *  and leaving the viewport, and sits paused the rest of the time. */
+export function park(loop: gsap.core.Animation, trigger: Element) {
+  loop.pause();
+  return ScrollTrigger.create({
+    trigger,
+    start: 'top bottom',
+    end: 'bottom top',
+    onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
+  });
+}
+
 export { gsap, ScrollTrigger, SplitText };

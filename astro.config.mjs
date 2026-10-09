@@ -1,12 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// Canonical origin. On Vercel this follows the project's production domain, so it stays
-// right before and after a custom domain is attached. Override with SITE_URL if needed.
-const site =
-  process.env.SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : 'https://downforce.blog');
+// Canonical origin: the production host. The bare domain redirects to www, so canonicals,
+// the sitemap and share images all name www directly. Override with SITE_URL if needed.
+const site = process.env.SITE_URL || 'https://www.downforceblog.com';
 
 export default defineConfig({
   site,

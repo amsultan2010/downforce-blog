@@ -1,5 +1,5 @@
 // Home page scenes: hero depth, the ambient racing line, and the one pinned set piece.
-import { gsap, ScrollTrigger, SplitText, $, $$, type Conditions } from './core';
+import { gsap, SplitText, $, $$, park, type Conditions } from './core';
 
 function hero() {
   const root = $('[data-hero]');
@@ -23,15 +23,11 @@ function hero() {
   if (car) {
     const len = car.getTotalLength();
     gsap.set(car, { strokeDasharray: `${len * 0.06} ${len * 0.94}` });
-    const lap = gsap.fromTo(car, { strokeDashoffset: 0 }, { strokeDashoffset: -len, duration: 11, ease: 'none', repeat: -1 });
-    ScrollTrigger.create({
-      trigger: root,
-      start: 'top bottom',
-      end: 'bottom top',
-      onToggle: (s) => (s.isActive ? lap.play() : lap.pause()),
-    });
+    park(gsap.fromTo(car, { strokeDashoffset: 0 }, { strokeDashoffset: -len, duration: 11, ease: 'none', repeat: -1 }), root);
   }
-  gsap.to('[data-hero-cue] i', { y: 9, duration: 1.1, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+  // the cue is not drawn on a phone, so it gets no loop there
+  const cue = $('[data-hero-cue] i');
+  if (cue?.offsetParent) park(gsap.to(cue, { y: 9, duration: 1.1, ease: 'sine.inOut', yoyo: true, repeat: -1 }), root);
 }
 
 function manifesto(c: Conditions) {
@@ -61,6 +57,9 @@ function manifesto(c: Conditions) {
       start: 'top top',
       end: () => '+=' + (travel() + window.innerHeight * 0.9),
       invalidateOnRefresh: true,
+      // measured first, so every trigger further down the page counts the room the pin adds.
+      // without it they all fire one pin length early, before anyone has scrolled to them
+      refreshPriority: 1,
     },
   });
 

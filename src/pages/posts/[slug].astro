@@ -94,7 +94,7 @@ const articleLd = {
         <aside class="side">
           <div class="side__stick">
             <p class="mono mono--mute">filed under</p>
-            <ul class="side__tags">
+            <ul class="side__tags" data-reveal="stagger">
               {tags.map((tag) => <li class="tag">{tag.replace(/-/g, ' ')}</li>)}
             </ul>
             {
@@ -135,7 +135,7 @@ const articleLd = {
             <a href={postUrl(p)} class="around__link" data-fill data-cursor="read">
               <span class="fill" aria-hidden="true" />
               <span class="mono">{label}</span>
-              <span class="around__title">{p.data.title}</span>
+              <span class="around__title" data-split="lines">{p.data.title}</span>
               <span class="mono around__date">{formatDate(p.data.date)}</span>
             </a>
           ),
@@ -152,7 +152,9 @@ const articleLd = {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding-block: 0.4rem;
+    /* a full-height tap target that takes up no more room than the label did */
+    min-height: 2.75rem;
+    margin-block: -0.5rem;
     color: var(--mute);
     transition: color 0.2s, gap 0.3s var(--ease-out);
   }

@@ -74,7 +74,10 @@ const year = new Date().getFullYear();
     color: var(--mute);
   }
   .footer__link {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 2.75rem;
     font-weight: 800;
     font-stretch: 112%;
     font-size: clamp(1.5rem, 2.6vw, 2.4rem);
@@ -84,6 +87,9 @@ const year = new Date().getFullYear();
   }
   .footer__link:hover {
     transform: translateX(0.5rem);
+  }
+  .footer__link:active {
+    transform: translateX(0.15rem);
   }
   .footer__note .serif {
     max-width: 30ch;
@@ -182,16 +188,27 @@ const year = new Date().getFullYear();
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    padding-block: 1.25rem;
+    padding-block: 1.25rem max(1.25rem, env(safe-area-inset-bottom));
     border-top: var(--rule) solid var(--ink);
+  }
+  .footer__home {
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
   }
   .footer__home :global(svg) {
     border: var(--rule) solid var(--ink);
   }
   .footer__top-link {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
     margin-left: auto;
-    padding: 0.5rem 0;
-    border-bottom: var(--rule) solid var(--ink);
+    white-space: nowrap;
+    text-decoration: underline;
+    text-decoration-thickness: var(--rule);
+    text-underline-offset: 0.6rem;
     transition: opacity 0.2s;
   }
   .footer__top-link:hover {

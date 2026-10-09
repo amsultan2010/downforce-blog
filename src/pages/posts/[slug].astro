@@ -152,7 +152,9 @@ const articleLd = {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding-block: 0.4rem;
+    /* a full-height tap target that takes up no more room than the label did */
+    min-height: 2.75rem;
+    margin-block: -0.5rem;
     color: var(--mute);
     transition: color 0.2s, gap 0.3s var(--ease-out);
   }

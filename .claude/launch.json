@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "downforce-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "4331"], "port": 4331 }
+  ]
+}

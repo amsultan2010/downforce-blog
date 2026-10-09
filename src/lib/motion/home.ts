@@ -57,6 +57,9 @@ function manifesto(c: Conditions) {
       start: 'top top',
       end: () => '+=' + (travel() + window.innerHeight * 0.9),
       invalidateOnRefresh: true,
+      // measured first, so every trigger further down the page counts the room the pin adds.
+      // without it they all fire one pin length early, before anyone has scrolled to them
+      refreshPriority: 1,
     },
   });
 

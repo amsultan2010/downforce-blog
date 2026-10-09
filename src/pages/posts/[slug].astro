@@ -94,7 +94,7 @@ const articleLd = {
         <aside class="side">
           <div class="side__stick">
             <p class="mono mono--mute">filed under</p>
-            <ul class="side__tags">
+            <ul class="side__tags" data-reveal="stagger">
               {tags.map((tag) => <li class="tag">{tag.replace(/-/g, ' ')}</li>)}
             </ul>
             {
@@ -135,7 +135,7 @@ const articleLd = {
             <a href={postUrl(p)} class="around__link" data-fill data-cursor="read">
               <span class="fill" aria-hidden="true" />
               <span class="mono">{label}</span>
-              <span class="around__title">{p.data.title}</span>
+              <span class="around__title" data-split="lines">{p.data.title}</span>
               <span class="mono around__date">{formatDate(p.data.date)}</span>
             </a>
           ),

@@ -73,6 +73,17 @@ function reveals(c: Conditions) {
       return;
     }
 
+    if (kind === 'print') {
+      // sector labels are written left to right, rule first, like a row landing on a timing screen
+      gsap.set(el, { visibility: 'visible' });
+      gsap.fromTo(
+        el,
+        { clipPath: CLIP_FROM['clip-left'] },
+        { clipPath: 'inset(0% 0% 0% 0%)', duration: D.base, ease: E.inOut, clearProps: 'clipPath', scrollTrigger: ONCE(el, 'top 90%') },
+      );
+      return;
+    }
+
     if (kind === 'stagger') {
       gsap.set(el, { visibility: 'visible' });
       gsap.from(el.children, {

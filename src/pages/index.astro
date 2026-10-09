@@ -130,7 +130,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
   <section class="section on-paper" id="latest">
     <div class="wrap">
       <header class="head">
-        <p class="eyebrow mono">sector 01 / latest</p>
+        <p class="eyebrow mono" data-reveal="print">sector 01 / latest</p>
         <h2 class="h-lg" data-split="chars">latest <span class="serif-accent">posts</span></h2>
       </header>
 
@@ -179,7 +179,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
   <section class="manifesto on-teal" data-manifesto>
     <div class="manifesto__inner">
       <div class="wrap">
-        <p class="eyebrow mono">sector 02 / what this is</p>
+        <p class="eyebrow mono" data-reveal="print">sector 02 / what this is</p>
         <p class="manifesto__text" data-manifesto-text>
           race reports with a point of view, from a fan in riyadh who watches every session and has an opinion about all
           of them.
@@ -205,7 +205,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     <div class="wrap">
       <header class="head head--split">
         <div>
-          <p class="eyebrow mono">sector 03 / the archive</p>
+          <p class="eyebrow mono" data-reveal="print">sector 03 / the archive</p>
           <h2 class="h-lg" data-split="chars">pick a <span class="serif-accent">lane</span></h2>
         </div>
         <p class="serif head__note" data-split="lines">
@@ -220,7 +220,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
             <li>
               <a href={`/posts/?c=${cat}`} class="lane" data-fill data-cursor="open">
                 <span class="fill" aria-hidden="true" />
-                <span class="lane__name display">{CATEGORY_PLURAL[cat]}</span>
+                <span class="lane__name display" data-split="chars">{CATEGORY_PLURAL[cat]}</span>
                 <span class="lane__count">
                   <span class="lane__num display" data-count={count}>
                     {count}
@@ -241,7 +241,7 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
     <div class="wrap">
       <header class="head head--split">
         <div>
-          <p class="eyebrow mono">sector 04 / championship</p>
+          <p class="eyebrow mono" data-reveal="print">sector 04 / championship</p>
           <h2 class="h-lg" data-split="chars">the <span class="serif-accent">standings</span></h2>
         </div>
         <div class="standings__meta">

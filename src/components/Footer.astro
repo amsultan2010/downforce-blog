@@ -11,14 +11,14 @@ const year = new Date().getFullYear();
   <div class="wrap footer__top">
     <div class="footer__col">
       <p class="mono">pages</p>
-      <ul>
+      <ul data-reveal="stagger">
         <li><a class="footer__link" href="/">home</a></li>
         {NAV.map((item) => <li><a class="footer__link" href={item.href}>{item.label}</a></li>)}
       </ul>
     </div>
     <div class="footer__col">
       <p class="mono">follow</p>
-      <ul>
+      <ul data-reveal="stagger">
         <li><a class="footer__link" href="/rss.xml" data-astro-reload>RSS feed</a></li>
       </ul>
     </div>

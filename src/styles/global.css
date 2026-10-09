@@ -503,7 +503,8 @@ h4 {
 
 /* motion: only hide things when the motion script is going to reveal them */
 .js-motion [data-split],
-.js-motion [data-reveal] {
+.js-motion [data-reveal],
+.js-motion [data-plist] {
   visibility: hidden;
 }
 .js-motion [data-rule] {

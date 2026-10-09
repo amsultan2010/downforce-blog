@@ -24,7 +24,7 @@ const latest = (await getPosts()).slice(0, 3);
   <section class="section section--tight on-paper">
     <div class="wrap">
       <h2 class="h-md" data-split="lines">or read something that did finish</h2>
-      <ol class="rows">
+      <ol class="rows" data-reveal="stagger">
         {latest.map((post, i) => <PostRow post={post} index={i + 1} />)}
       </ol>
     </div>

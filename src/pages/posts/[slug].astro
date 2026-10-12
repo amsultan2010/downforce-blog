@@ -1,6 +1,6 @@
 ---
 import { render } from 'astro:content';
-import { Image } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../lib/site';
 import { CATEGORY_LABEL, formatDate, getPosts, isoDate, postUrl, readingTime, type Post } from '../../lib/posts';
@@ -25,6 +25,8 @@ const { Content } = await render(post);
 const minutes = readingTime(post.body);
 
 const url = new URL(postUrl(post), Astro.site).href;
+// The cover photo goes first so a search result can show it; the share card is the fallback.
+const photo = thumbnail && (await getImage({ src: thumbnail, width: Math.min(1200, thumbnail.width), format: 'webp' })).src;
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -33,12 +35,19 @@ const articleLd = {
   datePublished: date.toISOString(),
   dateModified: date.toISOString(),
   url,
-  mainEntityOfPage: url,
-  image: new URL(`/og/${post.id}.png`, Astro.site).href,
+  mainEntityOfPage: { '@id': `${url}#webpage` },
+  isPartOf: { '@id': new URL('/#website', Astro.site).href },
+  image: [...(photo ? [new URL(photo, Astro.site).href] : []), new URL(`/og/${post.id}.png`, Astro.site).href],
   keywords: tags.join(', '),
   articleSection: CATEGORY_LABEL[category],
+  wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
   inLanguage: 'en',
-  author: { '@type': 'Person', '@id': new URL('/#author', Astro.site).href, name: SITE.author },
+  author: {
+    '@type': 'Person',
+    '@id': new URL('/#author', Astro.site).href,
+    name: SITE.author,
+    url: new URL('/about/', Astro.site).href,
+  },
   publisher: { '@id': new URL('/#author', Astro.site).href },
 };
 ---

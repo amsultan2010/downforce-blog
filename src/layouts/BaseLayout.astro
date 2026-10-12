@@ -26,18 +26,58 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogUrl = new URL(ogImage, Astro.site).href;
 const f1 = await getBuildF1();
 
+const websiteId = new URL('/#website', Astro.site).href;
+// Home, then the posts index for a post, then the page itself. The 404 has no trail.
+const crumbs =
+  title && !noindex
+    ? [
+        { name: 'home', path: '/' },
+        ...(article ? [{ name: 'posts', path: '/posts/' }] : []),
+        { name: title, path: Astro.url.pathname },
+      ]
+    : [];
+
 const siteLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'WebSite',
-      '@id': new URL('/#website', Astro.site).href,
+      '@id': websiteId,
       url: new URL('/', Astro.site).href,
       name: SITE.name,
+      alternateName: SITE.alternateNames,
       description: SITE.description,
       inLanguage: 'en',
       publisher: { '@id': new URL('/#author', Astro.site).href },
     },
+    ...(noindex
+      ? []
+      : [
+          {
+            '@type': 'WebPage',
+            '@id': `${canonical}#webpage`,
+            url: canonical,
+            name: fullTitle,
+            description,
+            inLanguage: 'en',
+            isPartOf: { '@id': websiteId },
+            ...(crumbs.length && { breadcrumb: { '@id': `${canonical}#breadcrumb` } }),
+          },
+        ]),
+    ...(crumbs.length
+      ? [
+          {
+            '@type': 'BreadcrumbList',
+            '@id': `${canonical}#breadcrumb`,
+            itemListElement: crumbs.map((crumb, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: crumb.name,
+              item: new URL(crumb.path, Astro.site).href,
+            })),
+          },
+        ]
+      : []),
     {
       '@type': 'Person',
       '@id': new URL('/#author', Astro.site).href,

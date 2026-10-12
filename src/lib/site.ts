@@ -1,6 +1,8 @@
 export const SITE = {
   name: 'the downforce blog',
   short: 'downforce',
+  /** other ways people type the name into a search box */
+  alternateNames: ['downforce blog', 'downforce'],
   tagline: 'formula 1 race reports and opinions, written from riyadh',
   description:
     'race reports, sprint reports and opinion pieces on formula 1, written by a fan in riyadh who watches every session.',

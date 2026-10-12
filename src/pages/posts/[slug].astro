@@ -20,7 +20,7 @@ interface Props {
   older?: Post;
 }
 const { post, newer, older } = Astro.props;
-const { title, date, excerpt, tldr, category, tags, race, thumbnail, thumbnailAlt, thumbnailCredit, thumbnailSource } = post.data;
+const { title, seoTitle, date, excerpt, tldr, category, tags, race, thumbnail, thumbnailAlt, thumbnailCredit, thumbnailSource } = post.data;
 const { Content } = await render(post);
 const minutes = readingTime(post.body);
 
@@ -52,7 +52,7 @@ const articleLd = {
 };
 ---
 
-<BaseLayout title={title} description={excerpt} ogImage={`/og/${post.id}.png`} article={{ published: date, tags }}>
+<BaseLayout title={title} searchTitle={seoTitle} description={excerpt} ogImage={`/og/${post.id}.png`} article={{ published: date, tags }}>
   <script type="application/ld+json" is:inline slot="head" set:html={JSON.stringify(articleLd)} />
 
   <article data-article>

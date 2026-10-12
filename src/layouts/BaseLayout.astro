@@ -12,6 +12,8 @@ import { getBuildF1 } from '../lib/f1-build';
 interface Props {
   /** page name; omit on the homepage */
   title?: string;
+  /** the title a search result shows, when the page name is too short or too long for one */
+  searchTitle?: string;
   description?: string;
   /** site-relative path to a 1200x630 image */
   ogImage?: string;
@@ -19,9 +21,14 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description = SITE.description, ogImage = '/og/default.png', article, noindex = false } = Astro.props;
+const { title, searchTitle = title, description = SITE.description, ogImage = '/og/default.png', article, noindex = false } = Astro.props;
 
-const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | formula 1 race reports and opinions`;
+const homeTitle = `${SITE.name} | formula 1 race reports and opinions`;
+const shareTitle = title ? `${title} | ${SITE.name}` : homeTitle;
+// A search result shows about 60 characters. A post title that would run past that gives up
+// the site name, not its own words.
+const withSite = `${searchTitle} | ${SITE.name}`;
+const fullTitle = !searchTitle ? homeTitle : article && withSite.length > 60 ? searchTitle : withSite;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogUrl = new URL(ogImage, Astro.site).href;
 const f1 = await getBuildF1();
@@ -107,7 +114,7 @@ const siteLd = {
     <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:title" content={fullTitle} />
+    <meta property="og:title" content={shareTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:url" content={canonical} />
@@ -118,7 +125,7 @@ const siteLd = {
     {article && <meta property="article:published_time" content={article.published.toISOString()} />}
     {article?.tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:title" content={shareTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogUrl} />
 

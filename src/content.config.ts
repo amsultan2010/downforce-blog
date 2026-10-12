@@ -9,6 +9,7 @@ const posts = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      seoTitle: z.string().max(60).optional(),
       date: z.coerce.date(),
       excerpt: z.string().max(160),
       tldr: z.string().max(300),

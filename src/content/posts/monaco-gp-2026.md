@@ -1,5 +1,6 @@
 ---
 title: "the 2026 monaco grand prix: kimi's grand slam, leclerc's two walls and a point for the GOAT"
+seoTitle: "the 2026 monaco grand prix: antonelli's grand slam"
 date: 2026-06-07
 excerpt: "antonelli becomes the youngest ever monaco winner, verstappen lasts one lap, leclerc finds the wall twice and alonso scores aston martin's first point."
 tldr: "antonelli led all 78 laps for a grand slam and became the youngest ever monaco winner, his fifth win in a row. verstappen lasted one lap, leclerc crashed twice, five drivers got pit lane speeding penalties, and alonso scored aston martin's first point."

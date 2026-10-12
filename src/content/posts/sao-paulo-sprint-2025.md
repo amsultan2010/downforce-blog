@@ -1,5 +1,6 @@
 ---
 title: "the 2025 são paulo sprint: slip 'n' slides, LICO and lawson being lawson"
+seoTitle: "the 2025 são paulo sprint: slip 'n' slides and LICO"
 date: 2025-11-09
 excerpt: "norris wins a damp sprint, piastri bins it on a puddle his own teammate put there, and lawson collects yet another penalty."
 tldr: "norris won a damp são paulo sprint by 0.8 seconds from antonelli. piastri spun into the barrier on a puddle norris had dragged onto the track, so norris now leads by nine points. lawson got another penalty and bortoleto crashed on the last lap."

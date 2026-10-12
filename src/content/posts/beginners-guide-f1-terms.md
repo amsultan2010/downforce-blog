@@ -1,5 +1,6 @@
 ---
 title: "the beginner's guide to F1 (part 2): drivers, teams, terms, and memes"
+seoTitle: "the beginner's guide to F1, part 2: F1 terms explained"
 date: 2025-10-29
 excerpt: "part 2 of the beginner's guide: the F1 terms that confused me most when i started watching, each with a definition and an example."
 tldr: "part 2 of the beginner's guide covers the words nobody on the broadcast stops to explain: downforce, the FIA, the grid, pecking order, midfield, backmarker, grand slam, number two driver and chicane. each one gets a definition and an example."

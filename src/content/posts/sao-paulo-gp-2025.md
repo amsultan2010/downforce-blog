@@ -1,5 +1,6 @@
 ---
 title: "the 2025 são paulo grand prix: verstappen's masterclass, ferrari tragedy and the 'norris era'"
+seoTitle: "the 2025 são paulo grand prix: verstappen's masterclass"
 date: 2025-11-17
 excerpt: "verstappen goes from the pit lane to the podium, both ferraris retire, and norris leaves brazil 24 points clear in the championship."
 tldr: "norris won in são paulo from pole and now leads the championship by 24 points. verstappen started from the pit lane, got a puncture and still finished P3. piastri got a 10-second penalty for the crash that took out leclerc, and both ferraris retired."

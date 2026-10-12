@@ -1,5 +1,6 @@
 ---
 title: "hot take: verstappen wouldn't be in the WDC fight if mclaren was competent"
+seoTitle: "hot take: mclaren put verstappen in the 2025 WDC fight"
 date: 2025-10-22
 excerpt: "a 104-point gap is down to 40 with five races left, and max verstappen's talent is only half of the explanation."
 tldr: "verstappen was 104 points behind and is now 40 off piastri with five races left. his talent is only half the story. the other half is mclaren: five DNFs between norris and piastri, papaya rules, and a slow pit stop at monza."

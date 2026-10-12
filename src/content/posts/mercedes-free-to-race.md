@@ -1,5 +1,6 @@
 ---
 title: "mercedes says antonelli and russell are free to race. let's see how long that lasts"
+seoTitle: "mercedes says antonelli and russell are free to race"
 date: 2026-06-06
 excerpt: "antonelli leads russell by 43 points after montreal, mercedes refuses to pick a side, and monaco qualifying is the first real test of that."
 tldr: "antonelli leads russell by 43 points after montreal, where the two touched twice and russell's battery died while he was leading. mercedes still says they're free to race. i think that's the right call, and monaco qualifying is the first test of it."

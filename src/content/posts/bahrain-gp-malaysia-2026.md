@@ -1,5 +1,6 @@
 ---
 title: "the 2026 bahrain grand prix (in malaysia): the dutch lion finally wins one"
+seoTitle: "the 2026 bahrain grand prix (in malaysia): verstappen wins"
 date: 2026-10-04
 excerpt: "verstappen wins his first race of 2026 at a soaked sepang, russell's mercedes dies behind the safety car and alonso scores four points."
 tldr: "the bahrain GP moved to sepang and started 93 minutes late after a storm and a software bug that left cars without power. verstappen won from pole, his first win of 2026. russell retired from third behind the safety car, so antonelli leads by 84 points with seven races left."

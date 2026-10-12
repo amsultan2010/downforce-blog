@@ -1,5 +1,6 @@
 ---
 title: "silverstone ended behind the safety car because of a software error"
+seoTitle: "why the 2026 british GP ended behind the safety car"
 date: 2026-07-10
 excerpt: "leclerc won the british GP and ferrari got win number 250, but race control promised a final-lap restart and then couldn't deliver it."
 tldr: "the british GP finished behind the safety car right after race control showed a restart message, which the FIA blamed on a software error. leclerc won, ferrari's 250th. antonelli went from pole to P15, and his lead over russell is down to 25."

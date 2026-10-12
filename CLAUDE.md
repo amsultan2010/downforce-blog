@@ -15,6 +15,7 @@ The owner pastes the text and a thumbnail into the chat. Then:
    ```
    ---
    title: "all lowercase title"
+   seoTitle: "the title cut to 60 characters or fewer"
    date: 2026-10-04
    excerpt: "one sentence, 160 characters or fewer."
    tldr: "the main story in two or three sentences, 300 characters or fewer."
@@ -30,6 +31,8 @@ The owner pastes the text and a thumbnail into the chat. Then:
 
    `category` is one of `race-report`, `sprint-report`, `editorial`, `guide`, `paddock`, `meta`.
    `race` is only for posts about one race weekend. `thumbnail` and `thumbnailAlt` are optional.
+   `seoTitle` is only for a `title` longer than 60 characters: it is what a search result shows,
+   the page keeps the full title. Cut his title down, keeping the race or the names in it.
    `tldr` is required: it shows in a box at the top of the post and has to fit in four lines.
    `thumbnailCredit` and `thumbnailSource` are for photos that need attribution (wikimedia
    commons and other creative commons photos); the credit shows next to the post's tags.

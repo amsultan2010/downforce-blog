@@ -6,6 +6,8 @@ tldr: "verstappen took both poles, the sprint and the grand prix in singapore, h
 category: race-report
 tags: ["singapore-gp", "verstappen", "red-bull", "hamilton", "russell", "antonelli"]
 race: "2026 singapore grand prix"
+thumbnail: ../../assets/posts/singapore-gp-2026.webp
+thumbnailAlt: "a red bull leads a line of cars down the floodlit pit straight at marina bay, past packed grandstands"
 ---
 
 last week i predicted max verstappen would make it two in a row and fernando alonso would score again. one out of two. i'll let you guess which.

@@ -122,7 +122,8 @@ export async function fetchF1(signal?: AbortSignal): Promise<F1Data> {
   }));
 
   const last = races.find((r) => Number(r.round) === round);
-  const next = races.find((r) => Number(r.round) === round + 1);
+  // by date, not round + 1: results post hours after a race, and 3h matches the 'under way' window
+  const next = races.map(raceInfo).find((r) => Date.parse(r.start) > Date.now() - 3 * 3_600_000);
 
   return {
     season: String(dl.season),
@@ -131,7 +132,7 @@ export async function fetchF1(signal?: AbortSignal): Promise<F1Data> {
     drivers,
     teams,
     lastRace: last ? raceInfo(last) : null,
-    nextRace: next ? raceInfo(next) : null,
+    nextRace: next ?? null,
     fetchedAt: new Date().toISOString(),
   };
 }

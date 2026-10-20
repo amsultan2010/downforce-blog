@@ -55,9 +55,14 @@ const timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-d
 const gp = (name: string) => name.replace('grand prix', 'GP');
 const day = (r: RaceInfo) => dayFmt.format(new Date(r.start)).toLowerCase().replace(',', '');
 
+// whole days since the epoch for the riyadh calendar date of `t`, so 'today' means the same local date
+const ymdFmt = new Intl.DateTimeFormat('en-CA', { timeZone: SITE.timeZone });
+const dayNo = (t: number) => Date.parse(ymdFmt.format(t)) / 86_400_000;
+
 function countdown(r: RaceInfo, now: number): string {
-  const ms = new Date(r.start).getTime() - now;
-  const days = Math.floor(ms / 86_400_000);
+  const start = new Date(r.start).getTime();
+  const ms = start - now;
+  const days = dayNo(start) - dayNo(now);
   if (ms < -3 * 3_600_000) return 'done';
   if (ms < 0) return 'under way';
   if (days === 0) return 'today';

@@ -9,7 +9,6 @@
   --teal-950: #06282d;
   --teal-900: #0a3940;
   --teal-800: #124f58;
-  --teal-700: #1d6872;
   --paper: #f2ecdf;
   --paper-dim: #e6dfcf;
   --ink: #071f23;
@@ -27,7 +26,6 @@
   --header-h: 4.25rem;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* surface themes: every section picks one */
@@ -37,7 +35,6 @@
   --fg: var(--paper);
   --mute: #9fc4c8;
   --line: rgb(242 236 223 / 0.18);
-  --accent: var(--lime);
   --accent-text: #d6f060;
   --shadow: var(--lime);
   background: var(--bg);
@@ -51,7 +48,6 @@
   --fg: var(--ink);
   --mute: #47656a;
   --line: var(--ink);
-  --accent: var(--lime);
   --accent-text: var(--lime-deep);
   --shadow: var(--ink);
   background: var(--bg);
@@ -62,7 +58,6 @@
   --fg: var(--ink);
   --mute: #2f3d00;
   --line: var(--ink);
-  --accent: var(--ink);
   --accent-text: var(--ink);
   --shadow: var(--ink);
   background: var(--bg);
@@ -322,12 +317,6 @@ h4 {
 .btn:active {
   box-shadow: 1px 1px 0 var(--shadow, var(--ink));
 }
-.btn[disabled],
-.btn[aria-disabled='true'] {
-  opacity: 0.45;
-  box-shadow: none;
-  cursor: not-allowed;
-}
 .btn--accent {
   --btn-bg: var(--lime);
 }
@@ -475,13 +464,7 @@ h4 {
   font-size: clamp(1.6rem, 2.6vw, 2.3rem);
   line-height: 1;
 }
-.prose h3 {
-  margin-top: 1.9em;
-  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
-  line-height: 1.05;
-}
-.prose h2 + *,
-.prose h3 + * {
+.prose h2 + * {
   margin-top: 0.7em;
 }
 .prose strong {

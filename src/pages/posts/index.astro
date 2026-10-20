@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostRow from '../../components/PostRow.astro';
-import { CATEGORY_PLURAL, getPosts, type Category } from '../../lib/posts';
+import { CATEGORY_PLURAL, getPosts } from '../../lib/posts';
+import { CATEGORIES } from '../../content.config';
 
 const posts = await getPosts();
-const cats = (['race-report', 'sprint-report', 'editorial', 'guide', 'paddock', 'meta'] as Category[])
+const cats = CATEGORIES
   .map((cat) => ({ cat, count: posts.filter((p) => p.data.category === cat).length }))
   .filter((c) => c.count > 0);
 ---
@@ -20,7 +21,7 @@ const cats = (['race-report', 'sprint-report', 'editorial', 'guide', 'paddock', 
       <h1 class="h-xl display" data-split="chars">all <span class="serif-accent">posts</span></h1>
       <div class="top__row">
         <p class="lede" data-split="lines">
-          <span data-shown>{posts.length}</span> posts, newest first. filter by type, or let the site pick one for you.
+          {posts.length} posts, newest first. filter by type, or let the site pick one for you.
         </p>
         <div data-reveal="stagger">
           <button class="btn btn--accent" type="button" data-random data-magnetic>random post</button>
@@ -118,19 +119,5 @@ const cats = (['race-report', 'sprint-report', 'editorial', 'guide', 'paddock', 
   .plist {
     position: relative;
     border-top: var(--rule) solid var(--ink);
-  }
-
-  .peek {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 120;
-    width: 17.5rem;
-    aspect-ratio: 3 / 2;
-    margin: -5.8rem 0 0 1.5rem;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    box-shadow: 6px 6px 0 var(--ink);
   }
 </style>

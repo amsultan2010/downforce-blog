@@ -6,7 +6,6 @@ import { gsap, SplitText, D, E, $$, type Conditions } from './core';
 const CLIP_FROM: Record<string, string> = {
   clip: 'inset(0% 0% 100% 0%)',
   'clip-left': 'inset(0% 100% 0% 0%)',
-  'clip-right': 'inset(0% 0% 0% 100%)',
 };
 
 export function buildIntro(c: Conditions): gsap.core.Timeline {
@@ -36,8 +35,7 @@ export function buildIntro(c: Conditions): gsap.core.Timeline {
         break;
       }
       case 'clip':
-      case 'clip-left':
-      case 'clip-right': {
+      case 'clip-left': {
         const img = el.querySelector('img');
         tl.fromTo(
           el,

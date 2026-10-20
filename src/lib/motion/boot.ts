@@ -1,11 +1,11 @@
 // Page lifecycle: smooth scroll, the curtain between routes, and building or tearing down
 // every scene as Astro's client router swaps pages.
 import Lenis from 'lenis';
-import { gsap, ScrollTrigger, D, E, $$, type Conditions } from './core';
+import { gsap, ScrollTrigger, E, $$, type Conditions } from './core';
 import { common } from './common';
 import { buildIntro } from './intro';
 import { home } from './home';
-import { pointer } from './pointer';
+import { cursor, pointer } from './pointer';
 import { posts } from './posts';
 import { standings } from './standings';
 import { SITE } from '../site';
@@ -80,44 +80,58 @@ function clock(signal: AbortSignal) {
 }
 
 function enter(cover: Cover) {
-  page = new AbortController();
-  const { signal } = page;
+  try {
+    page = new AbortController();
+    const { signal } = page;
 
-  lenis?.resize();
-  lenis?.scrollTo(window.scrollY, { immediate: true, force: true });
-  lenis?.start();
+    lenis?.resize();
+    lenis?.scrollTo(window.scrollY, { immediate: true, force: true });
+    lenis?.start();
 
-  clock(signal);
-  posts(!reduced(), signal);
-  standings(!reduced(), signal);
+    clock(signal);
+    posts(!reduced(), signal);
+    standings(!reduced(), signal);
 
-  mm = gsap.matchMedia();
-  mm.add(
-    { desk: '(min-width: 900px)', fine: '(hover: hover) and (pointer: fine)', ok: '(prefers-reduced-motion: no-preference)' },
-    (ctx) => {
-      const c = ctx.conditions as unknown as Conditions & { ok: boolean };
-      if (!c.ok) {
-        root.classList.remove('js-motion', 'is-first');
-        return;
-      }
-      const local = new AbortController();
-      common(c);
-      home(c);
-      if (c.fine) pointer(local.signal);
-      const intro = buildIntro(c);
-      if (cover === 'done') {
-        // rebuilt after a breakpoint change: the entrance has already played
-        intro.progress(1);
-      } else {
-        if (cover === 'none') intro.play();
-        else curtainOut(cover).add(() => void intro.play(), '-=0.5');
-        cover = 'done';
-      }
-      return () => local.abort();
-    },
-  );
+    mm = gsap.matchMedia();
+    mm.add(
+      // `all` always matches, so the reduced motion branch runs even when no other query does
+      { desk: '(min-width: 900px)', fine: FINE, ok: '(prefers-reduced-motion: no-preference)', all: 'all' },
+      (ctx) => {
+        const c = ctx.conditions as unknown as Conditions & { ok: boolean };
+        if (!c.ok) {
+          root.classList.remove('js-motion', 'is-first');
+          return;
+        }
+        const local = new AbortController();
+        common(c, local.signal);
+        home(c);
+        if (c.fine) {
+          pointer(local.signal);
+          // the cursor outlives the page: a revert would park it at the top left corner
+          ctx.ignore(() => cursor(local.signal));
+        }
+        const intro = buildIntro(c);
+        if (cover === 'done') {
+          // rebuilt after a breakpoint change: the entrance has already played
+          intro.progress(1);
+        } else {
+          if (cover === 'none') intro.play();
+          // outside the context: a revert would put the panel back over the page
+          else ctx.ignore(() => curtainOut(cover).add(() => void intro.play(), '-=0.5'));
+          cover = 'done';
+        }
+        return () => local.abort();
+      },
+    );
 
-  ScrollTrigger.refresh();
+    ScrollTrigger.refresh();
+  } catch (err) {
+    // a scene that fails to build must not leave the page hidden: do what the failsafe does
+    root.classList.remove('js-motion', 'is-first');
+    const el = curtain();
+    if (el) el.style.visibility = 'hidden';
+    throw err;
+  }
 }
 
 function leave() {
@@ -166,8 +180,8 @@ export function boot() {
     } catch {
       // private mode: the lights simply play again next visit
     }
+    // a client navigation in the meantime has already entered its own page
+    if (page) return;
     enter(first ? 'lights' : 'none');
   });
 }
-
-export { D, E };

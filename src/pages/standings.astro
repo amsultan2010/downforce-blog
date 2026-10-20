@@ -30,7 +30,7 @@ const topTeam = f1.teams[0];
               <dt class="mono">championship leader</dt>
               <dd class="facts__big">{leader.last}</dd>
               <dd class="mono">
-                {leader.points} pts{second ? `, ${leader.points - second.points} clear of ${second.last}` : ''}
+                {leader.points} pts{second ? (leader.points === second.points ? `, level with ${second.last}` : `, ${leader.points - second.points} clear of ${second.last}`) : ''}
               </dd>
             </div>
           )

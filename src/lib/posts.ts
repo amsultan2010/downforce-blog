@@ -37,10 +37,13 @@ export function isoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+export function wordCount(body: string | undefined): number {
+  return (body ?? '').split(/\s+/).filter(Boolean).length;
+}
+
 /** Whole minutes at 220 words per minute, never below 1. */
 export function readingTime(body: string | undefined): number {
-  const words = (body ?? '').split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 220));
+  return Math.max(1, Math.round(wordCount(body) / 220));
 }
 
 export function postUrl(post: Post): string {

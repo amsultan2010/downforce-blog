@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import { getImage, Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../lib/site';
-import { CATEGORY_LABEL, formatDate, getPosts, isoDate, postUrl, readingTime, type Post } from '../../lib/posts';
+import { CATEGORY_LABEL, formatDate, getPosts, isoDate, postUrl, readingTime, wordCount, type Post } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -40,14 +40,9 @@ const articleLd = {
   image: [...(photo ? [new URL(photo, Astro.site).href] : []), new URL(`/og/${post.id}.png`, Astro.site).href],
   keywords: tags.join(', '),
   articleSection: CATEGORY_LABEL[category],
-  wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
+  wordCount: wordCount(post.body),
   inLanguage: 'en',
-  author: {
-    '@type': 'Person',
-    '@id': new URL('/#author', Astro.site).href,
-    name: SITE.author,
-    url: new URL('/about/', Astro.site).href,
-  },
+  author: { '@id': new URL('/#author', Astro.site).href },
   publisher: { '@id': new URL('/#author', Astro.site).href },
 };
 ---

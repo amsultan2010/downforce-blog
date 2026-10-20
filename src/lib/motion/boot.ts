@@ -110,7 +110,8 @@ function enter(cover: Cover) {
         intro.progress(1);
       } else {
         if (cover === 'none') intro.play();
-        else curtainOut(cover).add(() => void intro.play(), '-=0.5');
+        // outside the context: a revert would put the panel back over the page
+        else ctx.ignore(() => curtainOut(cover).add(() => void intro.play(), '-=0.5'));
         cover = 'done';
       }
       return () => local.abort();

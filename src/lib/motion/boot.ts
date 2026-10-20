@@ -80,45 +80,53 @@ function clock(signal: AbortSignal) {
 }
 
 function enter(cover: Cover) {
-  page = new AbortController();
-  const { signal } = page;
+  try {
+    page = new AbortController();
+    const { signal } = page;
 
-  lenis?.resize();
-  lenis?.scrollTo(window.scrollY, { immediate: true, force: true });
-  lenis?.start();
+    lenis?.resize();
+    lenis?.scrollTo(window.scrollY, { immediate: true, force: true });
+    lenis?.start();
 
-  clock(signal);
-  posts(!reduced(), signal);
-  standings(!reduced(), signal);
+    clock(signal);
+    posts(!reduced(), signal);
+    standings(!reduced(), signal);
 
-  mm = gsap.matchMedia();
-  mm.add(
-    { desk: '(min-width: 900px)', fine: '(hover: hover) and (pointer: fine)', ok: '(prefers-reduced-motion: no-preference)' },
-    (ctx) => {
-      const c = ctx.conditions as unknown as Conditions & { ok: boolean };
-      if (!c.ok) {
-        root.classList.remove('js-motion', 'is-first');
-        return;
-      }
-      const local = new AbortController();
-      common(c);
-      home(c);
-      if (c.fine) pointer(local.signal);
-      const intro = buildIntro(c);
-      if (cover === 'done') {
-        // rebuilt after a breakpoint change: the entrance has already played
-        intro.progress(1);
-      } else {
-        if (cover === 'none') intro.play();
-        // outside the context: a revert would put the panel back over the page
-        else ctx.ignore(() => curtainOut(cover).add(() => void intro.play(), '-=0.5'));
-        cover = 'done';
-      }
-      return () => local.abort();
-    },
-  );
+    mm = gsap.matchMedia();
+    mm.add(
+      { desk: '(min-width: 900px)', fine: '(hover: hover) and (pointer: fine)', ok: '(prefers-reduced-motion: no-preference)' },
+      (ctx) => {
+        const c = ctx.conditions as unknown as Conditions & { ok: boolean };
+        if (!c.ok) {
+          root.classList.remove('js-motion', 'is-first');
+          return;
+        }
+        const local = new AbortController();
+        common(c);
+        home(c);
+        if (c.fine) pointer(local.signal);
+        const intro = buildIntro(c);
+        if (cover === 'done') {
+          // rebuilt after a breakpoint change: the entrance has already played
+          intro.progress(1);
+        } else {
+          if (cover === 'none') intro.play();
+          // outside the context: a revert would put the panel back over the page
+          else ctx.ignore(() => curtainOut(cover).add(() => void intro.play(), '-=0.5'));
+          cover = 'done';
+        }
+        return () => local.abort();
+      },
+    );
 
-  ScrollTrigger.refresh();
+    ScrollTrigger.refresh();
+  } catch (err) {
+    // a scene that fails to build must not leave the page hidden: do what the failsafe does
+    root.classList.remove('js-motion', 'is-first');
+    const el = curtain();
+    if (el) el.style.visibility = 'hidden';
+    throw err;
+  }
 }
 
 function leave() {

@@ -379,6 +379,15 @@ h4 {
   transform: none;
 }
 
+/* faint grid backdrop behind a section */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 5rem 5rem;
+  opacity: 0.3;
+}
+
 /* tags: square, never pills */
 .tag {
   display: inline-block;

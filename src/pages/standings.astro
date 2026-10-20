@@ -17,7 +17,7 @@ const topTeam = f1.teams[0];
   description={`the ${f1.season} formula 1 driver and constructor championship standings, with points and gaps for every driver and team, refreshed after every round.`}
 >
   <section class="top on-deep" data-intro>
-    <div class="top__grid" aria-hidden="true"></div>
+    <div class="top__grid grid-bg" aria-hidden="true"></div>
     <div class="wrap">
       <p class="eyebrow mono" data-reveal="up"><span data-f1="season">{live.season}</span></p>
       <h1 class="h-xl display" data-split="chars">the <span class="serif-accent">standings</span></h1>
@@ -74,11 +74,6 @@ const topTeam = f1.teams[0];
     overflow: hidden;
   }
   .top__grid {
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 5rem 5rem;
-    opacity: 0.3;
     mask-image: linear-gradient(to bottom, #000, transparent);
   }
   .top .wrap {

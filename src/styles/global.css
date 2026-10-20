@@ -556,6 +556,24 @@ h4 {
   transform: scaleX(0);
 }
 
+/* print shows everything the motion script has not revealed yet; !important beats its inline styles */
+@media print {
+  [data-split],
+  [data-split] *,
+  [data-reveal],
+  [data-reveal] > *,
+  [data-reveal] img,
+  [data-plist],
+  [data-plist] > *,
+  [data-rule],
+  .prose img {
+    visibility: visible !important;
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

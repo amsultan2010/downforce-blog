@@ -41,6 +41,14 @@ async function rerender(data: F1Data, animate: boolean) {
     const Flip = await loadFlip();
     for (const [list, html] of lists) {
       if (!list) continue;
+      const waiting = entrances.get(list);
+      if (waiting && waiting.progress() === 0) {
+        // nobody has seen these rows yet: swap them and point the entrance at the new ones
+        waiting.kill();
+        list.innerHTML = html;
+        entrance([list]);
+        continue;
+      }
       const state = Flip.getState(list.children);
       list.innerHTML = html;
       Flip.from(state, {
@@ -55,11 +63,14 @@ async function rerender(data: F1Data, animate: boolean) {
   }
 }
 
-function entrance() {
-  $$('[data-tower]').forEach((list) => {
+const entrances = new WeakMap<HTMLElement, gsap.core.Timeline>();
+
+function entrance(lists = $$('[data-tower]')) {
+  lists.forEach((list) => {
     const rows = $$('.trow', list);
     if (!rows.length) return;
     const tl = gsap.timeline({ scrollTrigger: { trigger: list, start: 'top 84%', once: true } });
+    entrances.set(list, tl);
     tl.from(rows, { xPercent: -6, autoAlpha: 0, duration: D.base, stagger: 0.045 })
       .from($$('.trow__chip', list), { scaleY: 0, transformOrigin: 'top', duration: D.base, stagger: 0.045 }, 0.05)
       .from(

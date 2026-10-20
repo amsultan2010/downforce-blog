@@ -35,7 +35,8 @@ export function splitLines(el: HTMLElement, vars: gsap.TweenVars = {}) {
     onSplit(self) {
       padMasks(self.masks);
       gsap.set(el, { visibility: 'visible' });
-      return gsap.from(self.lines, { yPercent: 112, duration: D.slow, stagger: 0.085, ...vars });
+      // hand the copy back once it has landed: screen readers skip a label on a plain <p>
+      return gsap.from(self.lines, { yPercent: 112, duration: D.slow, stagger: 0.085, ...vars, onComplete: () => void self.revert() });
     },
   });
 }

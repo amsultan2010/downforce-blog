@@ -102,7 +102,7 @@ function enter(cover: Cover) {
           return;
         }
         const local = new AbortController();
-        common(c);
+        common(c, local.signal);
         home(c);
         if (c.fine) pointer(local.signal);
         const intro = buildIntro(c);

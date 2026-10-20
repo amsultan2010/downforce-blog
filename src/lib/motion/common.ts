@@ -189,7 +189,7 @@ function marquees() {
   });
 }
 
-function header() {
+function header(signal: AbortSignal) {
   const bar = document.querySelector<HTMLElement>('[data-header]');
   if (!bar) return;
   const show = gsap.quickTo(bar, 'yPercent', { duration: 0.5, ease: 'power3' });
@@ -199,6 +199,8 @@ function header() {
     onUpdate: (self) => show(self.direction === 1 && self.scroll() > 400 ? -160 : 0),
     onLeaveBack: () => show(0),
   });
+  // keyboard focus inside a bar that has slid away brings it back
+  bar.addEventListener('focusin', () => show(0), { signal });
 
   const progress = bar.querySelector<HTMLElement>('[data-progress]');
   const article = document.querySelector('[data-article]');
@@ -236,7 +238,7 @@ function footer() {
   $$('[data-kerb]').forEach((k) => park(gsap.to(k, { x: -56, duration: 1.6, ease: 'none', repeat: -1 }), k.parentElement ?? k));
 }
 
-export function common(c: Conditions) {
+export function common(c: Conditions, signal: AbortSignal) {
   splits();
   reveals(c);
   proseImages();
@@ -245,6 +247,6 @@ export function common(c: Conditions) {
   draws();
   parallax(c);
   marquees();
-  header();
+  header(signal);
   footer();
 }

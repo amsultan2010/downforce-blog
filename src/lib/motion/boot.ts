@@ -94,7 +94,8 @@ function enter(cover: Cover) {
 
     mm = gsap.matchMedia();
     mm.add(
-      { desk: '(min-width: 900px)', fine: '(hover: hover) and (pointer: fine)', ok: '(prefers-reduced-motion: no-preference)' },
+      // `all` always matches, so the reduced motion branch runs even when no other query does
+      { desk: '(min-width: 900px)', fine: FINE, ok: '(prefers-reduced-motion: no-preference)', all: 'all' },
       (ctx) => {
         const c = ctx.conditions as unknown as Conditions & { ok: boolean };
         if (!c.ok) {

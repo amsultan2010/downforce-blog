@@ -30,7 +30,7 @@ The owner pastes the text and a thumbnail into the chat. Then:
    ```
 
    `category` is one of `race-report`, `sprint-report`, `editorial`, `guide`, `paddock`, `meta`.
-   `race` is only for posts about one race weekend. `thumbnail` and `thumbnailAlt` are optional.
+   `race` is only for posts about one race weekend. `thumbnail` is optional; a post with one needs `thumbnailAlt`.
    `seoTitle` is only for a `title` longer than 60 characters: it is what a search result shows,
    the page keeps the full title. Cut his title down, keeping the race or the names in it.
    `tldr` is required: it shows in a box at the top of the post and has to fit in four lines.
@@ -69,6 +69,7 @@ standard.
   `data-parallax`, `data-magnetic`, `data-fill`. `boot.ts` owns the page lifecycle.
 - `src/lib/f1.ts` standings from the Jolpica API: fetched at build, refreshed in the browser.
   `src/data/f1-snapshot.json` is the fallback if the API is down during a build.
+  `npm test` checks its date and off-season logic (`src/lib/f1.test.ts`).
 - `src/styles/global.css` tokens. Teal, paper and lime only. Radii are 0 or fully round.
 
 ## Site rules

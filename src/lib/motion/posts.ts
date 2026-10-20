@@ -1,6 +1,6 @@
 // Posts index: category filter (rows glide to their new slots) and the random post button.
 import { navigate } from 'astro:transitions/client';
-import { gsap, ScrollTrigger, D, E, $$ } from './core';
+import { gsap, ScrollTrigger, D, E, $$, loadFlip } from './core';
 
 /** Rows arrive a few at a time as the list scrolls. The <li> belongs to the filter's Flip,
  *  so the entrance moves the parts inside each link and leaves the row itself alone.
@@ -47,8 +47,7 @@ export function posts(motion: boolean, signal: AbortSignal) {
     if (!animate) return apply(cat);
     // the list is about to be reordered, so nothing waits for its scroll position any more
     settle?.();
-    const { Flip } = await import('gsap/Flip');
-    gsap.registerPlugin(Flip);
+    const Flip = await loadFlip();
     const state = Flip.getState(rows);
     apply(cat);
     Flip.from(state, {

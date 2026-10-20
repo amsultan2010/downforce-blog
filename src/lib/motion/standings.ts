@@ -1,5 +1,5 @@
 // Standings: the tower entrance, plus the live refresh from the results API.
-import { gsap, D, E, $$ } from './core';
+import { gsap, D, E, $$, loadFlip } from './core';
 import { fetchF1, type F1Data } from '../f1';
 import { driverRows, f1Text, teamRows } from '../f1-render';
 
@@ -38,8 +38,7 @@ async function rerender(data: F1Data, animate: boolean) {
       continue;
     }
     // positions changed since the build: slide the rows to their new slots
-    const { Flip } = await import('gsap/Flip');
-    gsap.registerPlugin(Flip);
+    const Flip = await loadFlip();
     for (const [list, html] of lists) {
       if (!list) continue;
       const state = Flip.getState(list.children);

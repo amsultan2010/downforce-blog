@@ -9,7 +9,7 @@ function padMasks(masks: Element[]) {
   gsap.set(masks, { paddingTop: '0.12em', paddingBottom: '0.16em', marginTop: '-0.12em', marginBottom: '-0.16em' });
 }
 
-export function splitChars(el: HTMLElement, vars: gsap.TweenVars = {}) {
+function splitChars(el: HTMLElement, vars: gsap.TweenVars = {}) {
   return SplitText.create(el, {
     type: 'words,chars',
     mask: 'words',
@@ -27,7 +27,7 @@ export function splitChars(el: HTMLElement, vars: gsap.TweenVars = {}) {
   });
 }
 
-export function splitLines(el: HTMLElement, vars: gsap.TweenVars = {}) {
+function splitLines(el: HTMLElement, vars: gsap.TweenVars = {}) {
   return SplitText.create(el, {
     type: 'lines',
     mask: 'lines',
@@ -35,7 +35,8 @@ export function splitLines(el: HTMLElement, vars: gsap.TweenVars = {}) {
     onSplit(self) {
       padMasks(self.masks);
       gsap.set(el, { visibility: 'visible' });
-      return gsap.from(self.lines, { yPercent: 112, duration: D.slow, stagger: 0.085, ...vars });
+      // hand the copy back once it has landed: screen readers skip a label on a plain <p>
+      return gsap.from(self.lines, { yPercent: 112, duration: D.slow, stagger: 0.085, ...vars, onComplete: () => void self.revert() });
     },
   });
 }
@@ -53,7 +54,6 @@ function splits() {
 const CLIP_FROM: Record<string, string> = {
   clip: 'inset(0% 0% 100% 0%)',
   'clip-left': 'inset(0% 100% 0% 0%)',
-  'clip-right': 'inset(0% 0% 0% 100%)',
 };
 
 function reveals(c: Conditions) {
@@ -142,18 +142,6 @@ function counts() {
   });
 }
 
-function draws() {
-  $$<SVGGeometryElement>('[data-draw]').forEach((el) => {
-    if (el.closest('[data-intro]')) return;
-    gsap.from(el, {
-      drawSVG: '0%',
-      duration: D.epic,
-      ease: E.inOut,
-      scrollTrigger: ONCE(el.closest('svg') ?? el),
-    });
-  });
-}
-
 function parallax(c: Conditions) {
   $$('[data-parallax]').forEach((el) => {
     const amount = Number(el.dataset.parallax) * (c.desk ? 1 : 0.5);
@@ -172,6 +160,8 @@ function parallax(c: Conditions) {
 function marquees() {
   $$('[data-marquee]').forEach((track) => {
     const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: 'none', repeat: -1, paused: true });
+    // start deep into the repeats: played backwards, a loop stops dead at its very beginning
+    loop.totalTime(loop.duration() * 10_000);
     let settle: gsap.core.Tween | undefined;
     ScrollTrigger.create({
       trigger: track,
@@ -189,7 +179,7 @@ function marquees() {
   });
 }
 
-function header() {
+function header(signal: AbortSignal) {
   const bar = document.querySelector<HTMLElement>('[data-header]');
   if (!bar) return;
   const show = gsap.quickTo(bar, 'yPercent', { duration: 0.5, ease: 'power3' });
@@ -199,6 +189,8 @@ function header() {
     onUpdate: (self) => show(self.direction === 1 && self.scroll() > 400 ? -160 : 0),
     onLeaveBack: () => show(0),
   });
+  // keyboard focus inside a bar that has slid away brings it back
+  bar.addEventListener('focusin', () => show(0), { signal });
 
   const progress = bar.querySelector<HTMLElement>('[data-progress]');
   const article = document.querySelector('[data-article]');
@@ -236,15 +228,14 @@ function footer() {
   $$('[data-kerb]').forEach((k) => park(gsap.to(k, { x: -56, duration: 1.6, ease: 'none', repeat: -1 }), k.parentElement ?? k));
 }
 
-export function common(c: Conditions) {
+export function common(c: Conditions, signal: AbortSignal) {
   splits();
   reveals(c);
   proseImages();
   rules();
   counts();
-  draws();
   parallax(c);
   marquees();
-  header();
+  header(signal);
   footer();
 }

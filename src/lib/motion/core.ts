@@ -41,4 +41,19 @@ export function park(loop: gsap.core.Animation, trigger: Element) {
   });
 }
 
+/** Flip is only needed once someone filters or live data arrives, so it loads on first use. */
+let flip: Promise<typeof import('gsap/Flip').Flip> | undefined;
+export const loadFlip = () =>
+  (flip ??= import('gsap/Flip').then(
+    ({ Flip }) => {
+      gsap.registerPlugin(Flip);
+      return Flip;
+    },
+    (err) => {
+      // a failed chunk load gets another try on the next call
+      flip = undefined;
+      throw err;
+    },
+  ));
+
 export { gsap, ScrollTrigger, SplitText };

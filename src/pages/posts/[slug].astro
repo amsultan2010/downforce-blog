@@ -273,32 +273,20 @@ const articleLd = {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
   }
   .around__link {
-    position: relative;
     display: grid;
     gap: 1rem;
     align-content: start;
     padding: clamp(2rem, 5vw, 5rem) var(--gutter);
     border-top: 1px solid var(--line);
-    overflow: hidden;
-    isolation: isolate;
     transition: color 0.3s var(--ease-out);
+    --fill: var(--lime);
   }
   .around__link + .around__link {
     border-left: 1px solid var(--line);
   }
-  .around__link .fill {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--lime);
-    transform: translateY(101%);
-  }
   .around__link:hover,
   .around__link:focus-visible {
     color: var(--ink);
-  }
-  .around__link:focus-visible .fill {
-    transform: none;
   }
   .around__link .mono {
     color: var(--mute);

@@ -361,6 +361,24 @@ h4 {
   background-position: 100% 100%;
 }
 
+/* hover fill wipe: pointer.ts slides .fill in from the edge the pointer came in on; each [data-fill] sets --fill */
+[data-fill] {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.fill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--fill);
+  transform: translateY(101%);
+}
+/* touch and keyboard never run the pointer script, so give them the fill in CSS */
+[data-fill]:focus-visible .fill {
+  transform: none;
+}
+
 /* tags: square, never pills */
 .tag {
   display: inline-block;

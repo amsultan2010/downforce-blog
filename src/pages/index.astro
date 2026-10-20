@@ -588,28 +588,16 @@ const ticker = ['race reports', 'sprint reports', 'editorials', 'guides', 'paddo
 
   /* archive lanes */
   .lane {
-    position: relative;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 1.5rem;
     padding: clamp(0.9rem, 2vw, 1.6rem) clamp(0.25rem, 1vw, 1rem);
-    overflow: hidden;
-    isolation: isolate;
-  }
-  .lane .fill {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--ink);
-    transform: translateY(101%);
+    --fill: var(--ink);
   }
   .lane:hover,
   .lane:focus-visible {
     color: var(--paper);
-  }
-  .lane:focus-visible .fill {
-    transform: none;
   }
   .lane {
     transition: color 0.3s var(--ease-out);

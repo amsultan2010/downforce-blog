@@ -102,27 +102,14 @@ const year = new Date().getFullYear();
   }
 
   .footer__author {
-    position: relative;
     display: block;
-    overflow: hidden;
-    isolation: isolate;
     transition: color 0.3s var(--ease-out);
-  }
-  .footer__author .fill {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--ink);
-    transform: translateY(101%);
+    --fill: var(--ink);
   }
   .footer__author:focus-visible {
     color: var(--paper);
     outline-color: var(--paper);
     outline-offset: -8px;
-  }
-  /* touch and keyboard never run the pointer script, so give them the fill in CSS */
-  .footer__author:focus-visible .fill {
-    transform: none;
   }
   @media (hover: hover) {
     .footer__author:hover,

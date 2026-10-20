@@ -1,7 +1,7 @@
 // Page lifecycle: smooth scroll, the curtain between routes, and building or tearing down
 // every scene as Astro's client router swaps pages.
 import Lenis from 'lenis';
-import { gsap, ScrollTrigger, D, E, $$, type Conditions } from './core';
+import { gsap, ScrollTrigger, E, $$, type Conditions } from './core';
 import { common } from './common';
 import { buildIntro } from './intro';
 import { home } from './home';
@@ -184,5 +184,3 @@ export function boot() {
     enter(first ? 'lights' : 'none');
   });
 }
-
-export { D, E };

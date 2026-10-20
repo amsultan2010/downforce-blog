@@ -9,7 +9,7 @@ function padMasks(masks: Element[]) {
   gsap.set(masks, { paddingTop: '0.12em', paddingBottom: '0.16em', marginTop: '-0.12em', marginBottom: '-0.16em' });
 }
 
-export function splitChars(el: HTMLElement, vars: gsap.TweenVars = {}) {
+function splitChars(el: HTMLElement, vars: gsap.TweenVars = {}) {
   return SplitText.create(el, {
     type: 'words,chars',
     mask: 'words',
@@ -27,7 +27,7 @@ export function splitChars(el: HTMLElement, vars: gsap.TweenVars = {}) {
   });
 }
 
-export function splitLines(el: HTMLElement, vars: gsap.TweenVars = {}) {
+function splitLines(el: HTMLElement, vars: gsap.TweenVars = {}) {
   return SplitText.create(el, {
     type: 'lines',
     mask: 'lines',
@@ -54,7 +54,6 @@ function splits() {
 const CLIP_FROM: Record<string, string> = {
   clip: 'inset(0% 0% 100% 0%)',
   'clip-left': 'inset(0% 100% 0% 0%)',
-  'clip-right': 'inset(0% 0% 0% 100%)',
 };
 
 function reveals(c: Conditions) {
@@ -139,18 +138,6 @@ function counts() {
       snap: { v: 1 },
       scrollTrigger: ONCE(el, 'top 92%'),
       onUpdate: () => (el.textContent = String(state.v)),
-    });
-  });
-}
-
-function draws() {
-  $$<SVGGeometryElement>('[data-draw]').forEach((el) => {
-    if (el.closest('[data-intro]')) return;
-    gsap.from(el, {
-      drawSVG: '0%',
-      duration: D.epic,
-      ease: E.inOut,
-      scrollTrigger: ONCE(el.closest('svg') ?? el),
     });
   });
 }
@@ -247,7 +234,6 @@ export function common(c: Conditions, signal: AbortSignal) {
   proseImages();
   rules();
   counts();
-  draws();
   parallax(c);
   marquees();
   header(signal);

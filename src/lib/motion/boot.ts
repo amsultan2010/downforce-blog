@@ -5,7 +5,7 @@ import { gsap, ScrollTrigger, D, E, $$, type Conditions } from './core';
 import { common } from './common';
 import { buildIntro } from './intro';
 import { home } from './home';
-import { pointer } from './pointer';
+import { cursor, pointer } from './pointer';
 import { posts } from './posts';
 import { standings } from './standings';
 import { SITE } from '../site';
@@ -104,7 +104,11 @@ function enter(cover: Cover) {
         const local = new AbortController();
         common(c, local.signal);
         home(c);
-        if (c.fine) pointer(local.signal);
+        if (c.fine) {
+          pointer(local.signal);
+          // the cursor outlives the page: a revert would park it at the top left corner
+          ctx.ignore(() => cursor(local.signal));
+        }
         const intro = buildIntro(c);
         if (cover === 'done') {
           // rebuilt after a breakpoint change: the entrance has already played

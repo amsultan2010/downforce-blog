@@ -2,7 +2,7 @@
 // hover and a fine pointer, so touch screens never pay for it.
 import { gsap, D, E, $$ } from './core';
 
-function cursor(signal: AbortSignal) {
+export function cursor(signal: AbortSignal) {
   const el = document.querySelector<HTMLElement>('[data-cursor-el]');
   if (!el) return;
   const label = el.querySelector<HTMLElement>('[data-cursor-label]')!;
@@ -182,7 +182,6 @@ function peek(signal: AbortSignal) {
 }
 
 export function pointer(signal: AbortSignal) {
-  cursor(signal);
   magnetic(signal);
   tilt(signal);
   rolls(signal);

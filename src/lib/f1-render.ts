@@ -1,7 +1,7 @@
 // Markup and copy for the standings, shared by the build (static HTML) and the browser
 // (live refresh), so both always produce the same rows.
-import { teamColor, type DriverRow, type F1Data, type RaceInfo, type TeamRow } from './f1';
-import { SITE } from './site';
+import { teamColor, type DriverRow, type F1Data, type RaceInfo, type TeamRow } from './f1.ts';
+import { SITE } from './site.ts';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]!);
 

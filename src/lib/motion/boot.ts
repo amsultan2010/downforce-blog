@@ -175,6 +175,8 @@ export function boot() {
     } catch {
       // private mode: the lights simply play again next visit
     }
+    // a client navigation in the meantime has already entered its own page
+    if (page) return;
     enter(first ? 'lights' : 'none');
   });
 }

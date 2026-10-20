@@ -86,14 +86,18 @@ function raceInfo(r: any): RaceInfo {
   };
 }
 
+function standings(season: string, signal?: AbortSignal): Promise<any[]> {
+  return Promise.all([
+    get(`${season}/driverStandings/?limit=40`, signal),
+    get(`${season}/constructorStandings/?limit=40`, signal),
+  ]).then(([d, c]) => [d.StandingsTable.StandingsLists[0], c.StandingsTable.StandingsLists[0]]);
+}
+
 export async function fetchF1(signal?: AbortSignal): Promise<F1Data> {
-  const [d, c, s] = await Promise.all([
-    get('current/driverStandings/?limit=40', signal),
-    get('current/constructorStandings/?limit=40', signal),
-    get('current/races/?limit=40', signal),
-  ]);
-  const dl = d.StandingsTable.StandingsLists[0];
-  const cl = c.StandingsTable.StandingsLists[0];
+  const [[d0, c0], s] = await Promise.all([standings('current', signal), get('current/races/?limit=40', signal)]);
+  // off-season: the new season has no standings until its opener, so show last season's final table
+  const offSeason = !d0 || !c0;
+  const [dl, cl] = offSeason ? await standings(String(Number(s.RaceTable.season) - 1), signal) : [d0, c0];
   if (!dl || !cl) throw new Error('jolpica: empty standings');
 
   const races: any[] = s.RaceTable.Races;
@@ -121,14 +125,14 @@ export async function fetchF1(signal?: AbortSignal): Promise<F1Data> {
     wins: Number(x.wins),
   }));
 
-  const last = races.find((r) => Number(r.round) === round);
+  const last = offSeason ? undefined : races.find((r) => Number(r.round) === round);
   // by date, not round + 1: results post hours after a race, and 3h matches the 'under way' window
   const next = races.map(raceInfo).find((r) => Date.parse(r.start) > Date.now() - 3 * 3_600_000);
 
   return {
     season: String(dl.season),
     round,
-    totalRounds: races.length,
+    totalRounds: offSeason ? round : races.length,
     drivers,
     teams,
     lastRace: last ? raceInfo(last) : null,

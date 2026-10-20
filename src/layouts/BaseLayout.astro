@@ -103,7 +103,7 @@ const siteLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     <meta name="robots" content={noindex ? 'noindex' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
 
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -131,7 +131,7 @@ const siteLd = {
     <meta name="twitter:image" content={ogUrl} />
     <meta name="twitter:image:alt" content={shareTitle} />
 
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(siteLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(siteLd).replace(/</g, '\\u003c')} />
     <slot name="head" />
 
     <!-- Motion gate. Runs before first paint: content is only hidden for its entrance when
@@ -181,7 +181,7 @@ const siteLd = {
 
     <Footer />
 
-    <script type="application/json" id="f1-data" is:inline set:html={JSON.stringify(f1)} />
+    <script type="application/json" id="f1-data" is:inline set:html={JSON.stringify(f1).replace(/</g, '\\u003c')} />
     <Analytics />
   </body>
 </html>

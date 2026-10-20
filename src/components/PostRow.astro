@@ -39,15 +39,13 @@ const peek = thumbnail ? (await getImage({ src: thumbnail, width: 560, height: 3
     display: none;
   }
   .prow__link {
-    position: relative;
     display: grid;
     grid-template-columns: auto 1fr auto 7.5rem 2rem;
     align-items: center;
     gap: clamp(0.75rem, 2vw, 2rem);
     padding: clamp(1.1rem, 2.2vw, 1.9rem) clamp(0.25rem, 1vw, 1rem);
-    overflow: hidden;
-    isolation: isolate;
     transition: color 0.3s var(--ease-out);
+    --fill: var(--lime);
   }
   .prow__link--plain {
     grid-template-columns: 1fr auto 7.5rem 2rem;
@@ -55,21 +53,11 @@ const peek = thumbnail ? (await getImage({ src: thumbnail, width: 560, height: 3
   .prow__cat {
     justify-self: start;
   }
-  .fill {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--lime);
-    transform: translateY(101%);
-  }
   .prow__link:hover,
   .prow__link:focus-visible {
     color: var(--ink);
   }
-  /* touch and keyboard never run the pointer script, so give them the fill in CSS */
-  .prow__link:focus-visible .fill {
-    transform: none;
-  }
+  /* touch never runs the pointer script, so give it the fill in CSS */
   @media (hover: none) {
     .prow__link:active .fill {
       transform: none;

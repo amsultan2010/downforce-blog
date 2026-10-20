@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import { getImage, Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE } from '../../lib/site';
-import { CATEGORY_LABEL, formatDate, getPosts, isoDate, postUrl, readingTime, type Post } from '../../lib/posts';
+import { CATEGORY_LABEL, formatDate, getPosts, isoDate, postUrl, readingTime, wordCount, type Post } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -40,20 +40,15 @@ const articleLd = {
   image: [...(photo ? [new URL(photo, Astro.site).href] : []), new URL(`/og/${post.id}.png`, Astro.site).href],
   keywords: tags.join(', '),
   articleSection: CATEGORY_LABEL[category],
-  wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
+  wordCount: wordCount(post.body),
   inLanguage: 'en',
-  author: {
-    '@type': 'Person',
-    '@id': new URL('/#author', Astro.site).href,
-    name: SITE.author,
-    url: new URL('/about/', Astro.site).href,
-  },
+  author: { '@id': new URL('/#author', Astro.site).href },
   publisher: { '@id': new URL('/#author', Astro.site).href },
 };
 ---
 
 <BaseLayout title={title} searchTitle={seoTitle} description={excerpt} ogImage={`/og/${post.id}.png`} article={{ published: date, tags }}>
-  <script type="application/ld+json" is:inline slot="head" set:html={JSON.stringify(articleLd)} />
+  <script type="application/ld+json" is:inline slot="head" set:html={JSON.stringify(articleLd).replace(/</g, '\\u003c')} />
 
   <article data-article>
     <header class="top on-teal" data-intro>
@@ -102,10 +97,16 @@ const articleLd = {
       <div class="wrap body__grid">
         <aside class="side">
           <div class="side__stick">
-            <p class="mono mono--mute">filed under</p>
-            <ul class="side__tags" data-reveal="stagger">
-              {tags.map((tag) => <li class="tag">{tag.replace(/-/g, ' ')}</li>)}
-            </ul>
+            {
+              tags.length > 0 && (
+                <>
+                  <p class="mono mono--mute">filed under</p>
+                  <ul class="side__tags" data-reveal="stagger">
+                    {tags.map((tag) => <li class="tag">{tag.replace(/-/g, ' ')}</li>)}
+                  </ul>
+                </>
+              )
+            }
             {
               thumbnailCredit && (
                 <p class="mono mono--mute">
@@ -273,32 +274,20 @@ const articleLd = {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
   }
   .around__link {
-    position: relative;
     display: grid;
     gap: 1rem;
     align-content: start;
     padding: clamp(2rem, 5vw, 5rem) var(--gutter);
     border-top: 1px solid var(--line);
-    overflow: hidden;
-    isolation: isolate;
     transition: color 0.3s var(--ease-out);
+    --fill: var(--lime);
   }
   .around__link + .around__link {
     border-left: 1px solid var(--line);
   }
-  .around__link .fill {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--lime);
-    transform: translateY(101%);
-  }
   .around__link:hover,
   .around__link:focus-visible {
     color: var(--ink);
-  }
-  .around__link:focus-visible .fill {
-    transform: none;
   }
   .around__link .mono {
     color: var(--mute);

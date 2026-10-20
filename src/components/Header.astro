@@ -3,7 +3,7 @@ import Logo from './Logo.astro';
 import { NAV } from '../lib/site';
 
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+const current = (href: string) => (path === href ? 'page' : href !== '/' && path.startsWith(href) ? 'true' : undefined);
 ---
 
 <header class="site-header" data-header>
@@ -18,7 +18,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         {
           NAV.map((item) => (
             <li>
-              <a href={item.href} class="nav__link mono" aria-current={isCurrent(item.href) ? 'page' : undefined} data-roll>
+              <a href={item.href} class="nav__link mono" aria-current={current(item.href)} data-roll>
                 <span class="roll">
                   <span class="roll__a">{item.label}</span>
                   <span class="roll__b" aria-hidden="true">
@@ -32,9 +32,10 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
       </ul>
     </nav>
 
-    <a href="/standings/" class="next mono" aria-label="next race, see standings">
+    <a href="/standings/" class="next mono">
       <span class="next__dot" aria-hidden="true"></span>
       <span data-f1="next-short">next race</span>
+      <span class="sr-only">, standings</span>
     </a>
 
     <span class="progress" data-progress aria-hidden="true"></span>
@@ -104,7 +105,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   .nav__link:active {
     background: var(--lime);
   }
-  .nav__link[aria-current='page']::after {
+  .nav__link[aria-current]::after {
     content: '';
     position: absolute;
     left: clamp(0.8rem, 1.6vw, 1.5rem);

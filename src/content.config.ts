@@ -20,6 +20,10 @@ const posts = defineCollection({
       thumbnailAlt: z.string().optional(),
       thumbnailCredit: z.string().optional(),
       thumbnailSource: z.string().url().optional(),
+    })
+    .refine((post) => !post.thumbnail || post.thumbnailAlt, {
+      message: 'a post with a thumbnail needs thumbnailAlt',
+      path: ['thumbnailAlt'],
     }),
 });
 

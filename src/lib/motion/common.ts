@@ -173,6 +173,8 @@ function parallax(c: Conditions) {
 function marquees() {
   $$('[data-marquee]').forEach((track) => {
     const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: 'none', repeat: -1, paused: true });
+    // start deep into the repeats: played backwards, a loop stops dead at its very beginning
+    loop.totalTime(loop.duration() * 10_000);
     let settle: gsap.core.Tween | undefined;
     ScrollTrigger.create({
       trigger: track,

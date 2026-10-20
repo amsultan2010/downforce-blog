@@ -36,9 +36,6 @@ export function posts(motion: boolean, signal: AbortSignal) {
   const apply = (cat: string) => {
     rows.forEach((row) => (row.hidden = cat !== 'all' && row.dataset.cat !== cat));
     buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === cat)));
-    // looked up each time: the intro's text split replaces this node when it reverts
-    const shown = document.querySelector<HTMLElement>('[data-shown]');
-    if (shown) shown.textContent = String(rows.filter((r) => !r.hidden).length);
   };
 
   const select = async (cat: string, animate: boolean) => {

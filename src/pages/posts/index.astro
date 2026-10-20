@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostRow from '../../components/PostRow.astro';
-import { CATEGORY_PLURAL, getPosts, type Category } from '../../lib/posts';
+import { CATEGORY_PLURAL, getPosts } from '../../lib/posts';
+import { CATEGORIES } from '../../content.config';
 
 const posts = await getPosts();
-const cats = (['race-report', 'sprint-report', 'editorial', 'guide', 'paddock', 'meta'] as Category[])
+const cats = CATEGORIES
   .map((cat) => ({ cat, count: posts.filter((p) => p.data.category === cat).length }))
   .filter((c) => c.count > 0);
 ---

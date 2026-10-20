@@ -4,7 +4,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostRow from '../components/PostRow.astro';
 import Standings from '../components/Standings.astro';
 import Logo from '../components/Logo.astro';
-import { CATEGORY_LABEL, CATEGORY_PLURAL, formatDate, getPosts, isoDate, postUrl, readingTime, type Category } from '../lib/posts';
+import { CATEGORY_LABEL, CATEGORY_PLURAL, formatDate, getPosts, isoDate, postUrl, readingTime } from '../lib/posts';
+import { CATEGORIES } from '../content.config';
 import { getBuildF1 } from '../lib/f1-build';
 import { f1Text } from '../lib/f1-render';
 import heroImg from '../assets/site/hero.jpg';
@@ -24,7 +25,7 @@ const fallbacks = [race2, race4, race1, race3];
 const featureImg = feature?.data.thumbnail ?? fallbacks[0];
 const featureAlt = feature?.data.thumbnail ? (feature.data.thumbnailAlt ?? '') : '';
 
-const archive = (['race-report', 'sprint-report', 'editorial', 'guide', 'paddock'] as Category[])
+const archive = CATEGORIES.filter((cat) => cat !== 'meta')
   .map((cat) => ({ cat, count: posts.filter((p) => p.data.category === cat).length }))
   .filter((c) => c.count > 0);
 

@@ -97,10 +97,16 @@ const articleLd = {
       <div class="wrap body__grid">
         <aside class="side">
           <div class="side__stick">
-            <p class="mono mono--mute">filed under</p>
-            <ul class="side__tags" data-reveal="stagger">
-              {tags.map((tag) => <li class="tag">{tag.replace(/-/g, ' ')}</li>)}
-            </ul>
+            {
+              tags.length > 0 && (
+                <>
+                  <p class="mono mono--mute">filed under</p>
+                  <ul class="side__tags" data-reveal="stagger">
+                    {tags.map((tag) => <li class="tag">{tag.replace(/-/g, ' ')}</li>)}
+                  </ul>
+                </>
+              )
+            }
             {
               thumbnailCredit && (
                 <p class="mono mono--mute">
